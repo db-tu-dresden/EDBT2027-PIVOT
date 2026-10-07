@@ -45,6 +45,18 @@ folder holds the translated file (`translated.hpp`), its companion header (`pivo
 translated file under `output_name`. The first run also generates the pattern graphs. Compiling
 `tsl` output needs the [TSL library](https://github.com/JPietrzykTUD/tslgen-v2); clang_builtins output only needs Clang (tested with version 22.1).
 
+
+
+## Test
+
+After running the `clang` configs above, check the translated kernels against a scalar
+reference (hash) and `std::sort` (sort); each prints `OK`:
+
+```bash
+clang++ -std=c++17 -O2 -march=native -w -I experiments/width-flexible/autovec-db/multiply_shift_hash/translated_clang test/hash_test.cpp -o hash_test && ./hash_test
+clang++ -std=c++17 -O2 -march=native -w -I experiments/width-flexible/sve_sort/translated/clang_builtins_256 test/sort_test.cpp -o sort_test && ./sort_test
+```
+
 ## Experiments
 
 `experiments/` holds the results and figures of the evaluation and the kernels (except for VIP).
