@@ -15,11 +15,13 @@ python -m venv .venv
 ## Run
 
 A YAML run config describes a translation job (`main.py` lists every key). The two translations
-of the evaluation:
+of the evaluation (and two additional ones):
 
 ```bash
 .venv/bin/python main.py run_configs/ms_hash.yaml              # multiply-shift hash, SSE -> TSL
 .venv/bin/python main.py run_configs/sve_sort/tsl_fixed.yaml   # SVE quicksort -> TSL
+.venv/bin/python main.py run_configs/ms_hash_clang.yaml        # SSE -> Clang vector extensions
+.venv/bin/python main.py run_configs/sve_sort/clang_256.yaml   # SVE -> Clang, 256-bit (also clang_128/512/1024)
 ```
 
 `run_configs/ms_hash.yaml`:
@@ -41,7 +43,7 @@ folder holds the translated file (`translated.hpp`), its companion header (`pivo
 `pivot_clang_builtins.h` for `clang_builtins`) and every intermediate stage in
 `.pivot/debug/<source file>/`. Both files are also copied to the config's `output_dir`, the
 translated file under `output_name`. The first run also generates the pattern graphs. Compiling
-`tsl` output needs the [TSL library](https://github.com/JPietrzykTUD/tslgen-v2).
+`tsl` output needs the [TSL library](https://github.com/JPietrzykTUD/tslgen-v2); clang_builtins output only needs Clang (tested with version 22.1).
 
 ## Experiments
 
