@@ -1,0 +1,60 @@
+- name: _tile_loadconfig
+  input: {mem_addr: const void *}
+  output: {}
+  ir: {input: {mem_addr: ptr}, output: {}}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: _tile_storeconfig
+  input: {mem_addr: void *}
+  output: {}
+  ir: {input: {mem_addr: ptr}, output: {}}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: _tile_loadd
+  input: {dst: constexpr int, base: const void *, stride: size_t}
+  output: {}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: _tile_stream_loadd
+  input: {dst: constexpr int, base: const void *, stride: size_t}
+  output: {}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: _tile_stored
+  input: {src: constexpr int, base: void *, stride: size_t}
+  output: {}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: _tile_zero
+  input: {tdest: constexpr int}
+  output: {}
+  ir: {input: {tdest: int32_t}, output: {}}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: __tile_loadd
+  input: {dst: __tile1024i*, base: const void*, stride: size_t}
+  output: {}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: __tile_stored
+  input: {base: void*, stride: size_t, src: __tile1024i}
+  output: {}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: __tile_stream_loadd
+  input: {dst: __tile1024i*, base: const void*, stride: size_t}
+  output: {}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: __tile_zero
+  input: {dst: __tile1024i*}
+  output: {}
+  ir: {input: {dst: ptr}, output: {}}
+  flags: [AMX-TILE]
+  include: <immintrin.h>
+- name: _tile_release
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [AMX-TILE]
+  include: <immintrin.h>

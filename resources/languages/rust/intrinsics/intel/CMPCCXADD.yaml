@@ -1,0 +1,12 @@
+- name: _cmpccxadd_epi32
+  input: {__A: void*, __B: int, __C: int, __D: const int}
+  output: {dst: int}
+  ir: {input: {__A: ptr, __B: int32_t, __C: int32_t, __D: int32_t}, output: {dst: int32_t}}
+  flags: [CMPCCXADD]
+  include: <immintrin.h>
+- name: _cmpccxadd_epi64
+  input: {__A: void*, __B: __int64, __C: __int64, __D: const int}
+  output: {dst: __int64}
+  ir: {input: {__A: ptr, __B: int64_t, __C: int64_t, __D: int32_t}, output: {dst: int64_t}}
+  flags: [CMPCCXADD]
+  include: <immintrin.h>

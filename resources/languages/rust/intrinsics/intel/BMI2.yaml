@@ -1,0 +1,48 @@
+- name: _bzhi_u32
+  input: {a: unsigned int, index: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, index: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _bzhi_u64
+  input: {a: unsigned __int64, index: unsigned int}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, index: uint32_t}, output: {dst: uint64_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _pdep_u32
+  input: {a: unsigned int, mask: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, mask: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _pdep_u64
+  input: {a: unsigned __int64, mask: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, mask: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _pext_u32
+  input: {a: unsigned int, mask: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, mask: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _pext_u64
+  input: {a: unsigned __int64, mask: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, mask: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _mulx_u32
+  input: {a: unsigned int, b: unsigned int, hi: unsigned int*}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, b: uint32_t, hi: ptr}, output: {dst: uint32_t}}
+  flags: [BMI2]
+  include: <immintrin.h>
+- name: _mulx_u64
+  input: {a: unsigned __int64, b: unsigned __int64, hi: unsigned __int64*}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, b: uint64_t, hi: ptr}, output: {dst: uint64_t}}
+  flags: [BMI2]
+  include: <immintrin.h>

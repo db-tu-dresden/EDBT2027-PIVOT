@@ -1,0 +1,78 @@
+dtype_mapping:
+  sse:
+    float16: null
+    float32: '__m128'
+    float64: '__m128d'
+    int8: '__m128i'
+    uint8: '__m128i'
+    int16: '__m128i'
+    uint16: '__m128i'
+    int32: '__m128i'
+    uint32: '__m128i'
+    int64: '__m128i'
+    uint64: '__m128i'
+  avx:
+    float16: null
+    float32: '__m256'
+    float64: '__m256d'
+    int8: null
+    uint8: null
+    int16: null
+    uint16: null
+    int32: '__m256i'
+    uint32: '__m256i'
+    int64: '__m256i'
+    uint64: '__m256i'
+  avx2:
+    float16: null
+    float32: '__m256'
+    float64: '__m256d'
+    int8: '__m256i'
+    uint8: '__m256i'
+    int16: '__m256i'
+    uint16: '__m256i'
+    int32: '__m256i'
+    uint32: '__m256i'
+    int64: '__m256i'
+    uint64: '__m256i'
+  avx512:
+    float16: null
+    float32: '__m512'
+    float64: '__m512d'
+    int8: '__m512i'
+    uint8: '__m512i'
+    int16: '__m512i'
+    uint16: '__m512i'
+    int32: '__m512i'
+    uint32: '__m512i'
+    int64: '__m512i'
+    uint64: '__m512i'
+    bool8: '__mmask8'
+    bool16: '__mmask16'
+    bool32: '__mmask32'
+    bool64: '__mmask64'
+  neon:
+    float16: 'float16x8_t'
+    float32: 'float32x4_t'
+    float64: 'float64x2_t'
+    int8: 'int8x16_t'
+    uint8: 'uint8x16_t'
+    int16: 'int16x8_t'
+    uint16: 'uint16x8_t'
+    int32: 'int32x4_t'
+    uint32: 'uint32x4_t'
+    int64: 'int64x2_t'
+    uint64: 'uint64x2_t'
+  sve:
+    float16: 'svfloat16_t'
+    float32: 'svfloat32_t'
+    float64: 'svfloat64_t'
+    int8: 'svint8_t'
+    uint8: 'svuint8_t'
+    int16: 'svint16_t'
+    uint16: 'svuint16_t'
+    int32: 'svint32_t'
+    uint32: 'svuint32_t'
+    int64: 'svint64_t'
+    uint64: 'svuint64_t'
+    mask: 'svbool_t'

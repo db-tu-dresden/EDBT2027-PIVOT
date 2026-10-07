@@ -1,0 +1,27 @@
+primitive: VSRLI
+input: [a, imm]
+output: res
+definitions:
+
+  # x86
+  - 'isa': 'x86'
+    'dtype': 'int{16, 32, 64}'
+    'direct': '_mm{x86_widths}_srli_{dtype_suffix}(a, imm);'
+
+  # Clang — x86 srli is a LOGICAL (zero-fill) shift and yields 0 when the count is
+  # >= element width; C's `>>` on a signed vector is arithmetic.  Shift as unsigned
+  # with the count masked to [0,width); select 0 when the count is >= width (folds
+  # away for the usual in-range immediate).
+  - isa: clang_builtins
+    dtype: 'int'
+    signature: {a: '{v}', imm: imm32, res: '{v}'}
+    direct: '({v})((unsigned)(imm) < {elem_bits} ? (({vuint})a >> ((imm) & ({elem_bits} - 1))) : ({vuint}){0});'
+
+  # core_simd — x86 srli is LOGICAL (zero-fill) and yields 0 for a count >= the element
+  # width, whereas Rust's >> on a signed vector is arithmetic and a count >= the
+  # width is UB.  Shift through the unsigned view, guarded by the width check
+  # (both fold away for the usual in-range immediate).
+  - isa: core_simd
+    dtype: 'int'
+    signature: {a: '{v}', imm: imm32, res: '{v}', au: '{vuint}'}
+    direct: 'if (imm as u32) < {elem_bits} { unsafe { core::mem::transmute::<{simd_au}, {simd_res}>(core::mem::transmute::<{simd_a}, {simd_au}>(a) >> Simd::splat(imm as _)) } } else { Simd::splat(0) };'

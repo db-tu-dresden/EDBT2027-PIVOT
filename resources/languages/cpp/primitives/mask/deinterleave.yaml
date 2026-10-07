@@ -1,0 +1,23 @@
+# res = deinterleave_odd(a, b): res[j]=a[2j+1], res[half+j]=b[2j+1]
+primitive: MASK_DEINTERLEAVE_ODD
+input: [a, b]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svuzp2_b{elem_bits}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct:
+      - '{v} _ia = __builtin_convertvector(a, {v});'
+      - '{v} _ib = __builtin_convertvector(b, {v});'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - '{v} _r;'
+      - 'for (int _i = 0; _i < _n / 2; _i++) { _r[_i] = _ia[2 * _i + 1]; _r[_n / 2 + _i] = _ib[2 * _i + 1]; }'
+      - 'return __builtin_convertvector(_r, {vbool});'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_deinterleave_odd<{simd_res}>(a, b);'

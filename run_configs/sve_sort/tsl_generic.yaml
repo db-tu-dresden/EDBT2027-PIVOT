@@ -1,0 +1,11 @@
+name: sve_sort_tsl_generic
+mode: single_file
+source_path: experiments/width-flexible/sve_sort/sources/sortSVE.hpp
+source_isa: arm
+target_isa: tsl
+primitive_set: pivot
+tsl_policy: generic
+tsl_width_mode: vla
+args: ["-I", "experiments/width-flexible/sve_sort/sources"]
+output_dir: experiments/width-flexible/sve_sort/translated/tsl_generic
+output_name: sortSVE.hpp

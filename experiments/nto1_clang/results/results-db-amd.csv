@@ -1,0 +1,13 @@
+machine,arch,march,width,example,category,direction,variant,regime,nops,inner,per_op_bytes,ns_per_op,checksum
+db-amd,znver4,-march=znver4,128,neon_clz_u64_128,clz,arm->x86,clang_1to1,cache,16384,3814,32,0.2790,0x0000000000103639
+db-amd,znver4,-march=znver4,128,neon_clz_u64_128,clz,arm->x86,clang_1to1,dram,33554432,1,32,0.7133,0x0000000081fea5c4
+db-amd,znver4,-march=znver4,128,neon_clz_u64_128,clz,arm->x86,clang_nto1,cache,16384,3814,32,0.1886,0x0000000000103639
+db-amd,znver4,-march=znver4,128,neon_clz_u64_128,clz,arm->x86,clang_nto1,dram,33554432,1,32,0.7194,0x0000000081fea5c4
+db-amd,znver4,-march=znver4,128,neon_mul_u64_128,multiply,arm->x86,clang_1to1,cache,10922,3814,48,0.3897,0x9e39e2150a8ec3f4
+db-amd,znver4,-march=znver4,128,neon_mul_u64_128,multiply,arm->x86,clang_1to1,dram,22369621,1,48,1.1164,0x9433473fd6fe0cec
+db-amd,znver4,-march=znver4,128,neon_mul_u64_128,multiply,arm->x86,clang_nto1,cache,10922,3814,48,0.2918,0x9e39e2150a8ec3f4
+db-amd,znver4,-march=znver4,128,neon_mul_u64_128,multiply,arm->x86,clang_nto1,dram,22369621,1,48,1.0293,0x9433473fd6fe0cec
+db-amd,znver4,-march=znver4,128,neon_popcount_u32_128,popcount,arm->x86,clang_1to1,cache,16384,3814,32,0.5667,0x00080036000801bf
+db-amd,znver4,-march=znver4,128,neon_popcount_u32_128,popcount,arm->x86,clang_1to1,dram,33554432,1,32,0.7306,0x40000dc1400019be
+db-amd,znver4,-march=znver4,128,neon_popcount_u32_128,popcount,arm->x86,clang_nto1,cache,16384,3814,32,0.1886,0x00080036000801bf
+db-amd,znver4,-march=znver4,128,neon_popcount_u32_128,popcount,arm->x86,clang_nto1,dram,33554432,1,32,0.7209,0x40000dc1400019be

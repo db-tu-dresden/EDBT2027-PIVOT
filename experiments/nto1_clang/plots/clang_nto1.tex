@@ -1,0 +1,73 @@
+% Speedup of the n-to-1 over the 1-to-1 translation into Clang, drawn from the tables that
+% plot_nto1_clang.py writes to data/ (one row per kernel, in the order of the x axis).
+\documentclass[9pt]{amsart}
+\usepackage{pivotfig}
+
+\pgfplotstableread[col sep=comma]{data/a64fx.csv}\nToOneAfx
+\pgfplotstableread[col sep=comma]{data/hpi-altra.csv}\nToOneAltra
+\pgfplotstableread[col sep=comma]{data/db-intel.csv}\nToOneSpr
+\pgfplotstableread[col sep=comma]{data/db-amd.csv}\nToOneZen
+
+% Every kernel gets the same slot width, and one doubling the same height in all panels.
+\pgfmathsetlengthmacro{\nToOneSlot}{17.6pt}
+\pgfmathsetlengthmacro{\nToOneOctave}{10.3pt}
+\pgfmathsetlengthmacro{\nToOneBar}{0.34*\nToOneSlot}
+\pgfplotsset{
+  nto1 panel/.style={
+    log origin=0, clip=false, scale only axis, x=\nToOneSlot, enlarge x limits={abs=0.6},
+    axis lines*=left, axis line style={gray1, line width=0.4pt},
+    xtick=data, xtick align=outside, xticklabels={},
+    ytick={0.25,0.5,1,2,4,8}, yticklabels={},
+    tick style={gray1, line width=0.4pt}, ymajorgrids,
+    major grid style={gray1!25, line width=0.2pt},
+    ticklabel style={font=\footnotesize, text=gray1},
+    ybar=0.3pt, bar width=\nToOneBar,
+  },
+  nto1 range/.style 2 args={ymin=#1, ymax=#2, height={ln(#2/#1)/ln(2)*\nToOneOctave}},
+  nto1 left/.style={yticklabel={\pgfmathparse{exp(\tick)}\pgfmathprintnumber[fixed]{\pgfmathresult}},
+    ylabel={speedup}, ylabel style={font=\footnotesize, text=gray1,
+      at={($(rel axis cs:0,0.5)+(-8pt,0)$)}, anchor=south}},
+  nto1 kernels/.style={xticklabels from table={#1}{kernel},
+    xticklabel style={rotate=45, anchor=north east, inner sep=1pt}},
+}
+\tikzset{
+  nto1 cache/.style={draw=violet1, fill=violet2, line width=0.7pt},
+  nto1 dram/.style={draw=teal1, fill=teal2, line width=0.7pt},
+}
+% Draws one panel: the bars of both regimes from 1 and its title.
+\newcommand{\nToOnePanel}[2]{%
+  \addplot[nto1 cache] table[x expr=\coordindex, y=cache] {#1};
+  \addplot[nto1 dram] table[x expr=\coordindex, y=dram] {#1};
+  \draw[gray1, line width=0.4pt] ({rel axis cs:0,0}|-{axis cs:0,1}) -- ({rel axis cs:1,0}|-{axis cs:0,1});
+  \node[font=\footnotesize, text=gray1, anchor=base] at ([yshift=5pt]rel axis cs:0.5,1) {#2};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[ymode=log, nto1 panel, nto1 left, name=afx, nto1 range={0.22}{10}]
+  \nToOnePanel{\nToOneAfx}{Fujitsu A64FX}
+\end{axis}
+\begin{axis}[ymode=log, nto1 panel, name=spr, nto1 range={0.22}{10},
+    at={($(afx.north east)+(6pt,0)$)}, anchor=north west]
+  \nToOnePanel{\nToOneSpr}{Intel Sapphire Rapids}
+\end{axis}
+\begin{axis}[ymode=log, nto1 panel, nto1 left, name=altra, nto1 range={0.45}{6},
+    at={($(afx.south west)+(0,-24pt)$)}, anchor=north west, nto1 kernels=\nToOneAltra]
+  \nToOnePanel{\nToOneAltra}{Ampere Altra}
+\end{axis}
+\begin{axis}[ymode=log, nto1 panel, name=zen, nto1 range={0.45}{6},
+    at={($(altra.north east)+(6pt,0)$)}, anchor=north west, nto1 kernels=\nToOneZen]
+  \nToOnePanel{\nToOneZen}{AMD Zen 4}
+\end{axis}
+\path[font=\small\bfseries, text=gray1, anchor=base, inner sep=0pt]
+  ([yshift=16pt]afx.north) node {SSE kernels on ARM}
+  ([yshift=16pt]spr.north) node {NEON kernels on x86};
+\coordinate (legend) at ($(altra.south west)!0.5!(zen.south east)$);
+\matrix[anchor=north, yshift=-6pt, column sep=3pt,
+    nodes={font=\footnotesize, text=gray1, inner sep=0pt, anchor=base west}]
+    at (legend |- current bounding box.south) {
+  \draw[nto1 cache] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {cache-resident}; &[10pt]
+  \draw[nto1 dram] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {DRAM}; \\
+};
+\end{tikzpicture}
+\end{document}

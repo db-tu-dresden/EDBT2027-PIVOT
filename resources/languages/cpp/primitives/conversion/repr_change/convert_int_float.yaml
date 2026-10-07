@@ -1,0 +1,312 @@
+# res[i] = (float) a[i]
+primitive: CONVERT_INT_TO_FLOAT
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi32_ps(a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepu32_ps(a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi64_pd(a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepu64_pd(a);'
+
+  # m = |a| << lzcnt(|a|); m = (m << 1) | (a != 0 ? (1086 - lzcnt) : 0); res = ror(m, 12) | (a & sign)
+  - isa: x86
+    nto1: true
+    direct: |-
+      cvt_m0 = _mm512_abs_epi64(a);
+      cvt_e0 = _mm512_lzcnt_epi64(cvt_m0);
+      cvt_m1 = _mm512_sllv_epi64(cvt_m0, cvt_e0);
+      cvt_e1 = _mm512_sub_epi64(cvt_bias, cvt_e0);
+      cvt_m2 = _mm512_add_epi64(cvt_m1, cvt_m1);
+      cvt_k = _mm512_test_epi64_mask(a, a);
+      cvt_m3 = _mm512_mask_or_epi64(cvt_m2, cvt_k, cvt_m2, cvt_e1);
+      cvt_m4 = _mm512_ror_epi64(cvt_m3, 12);
+      cvt_m5 = _mm512_ternarylogic_epi64(cvt_m4, a, cvt_sign, 248);
+      res = _mm512_castsi512_pd(cvt_m5);
+
+  - isa: arm
+    direct: 'vcvt{neon_widths}_f32_{dtype_suffix}(a);'
+  - isa: arm
+    direct: 'vcvt{neon_widths}_f64_{dtype_suffix}(a);'
+
+  - isa: arm
+    direct: 'svcvt_f32_s32_{sve_gov}(svptrue_b32(), a);'
+  - isa: arm
+    direct: 'svcvt_f32_u32_{sve_gov}(svptrue_b32(), a);'
+  - isa: arm
+    direct: 'svcvt_f64_s64_{sve_gov}(svptrue_b64(), a);'
+  - isa: arm
+    direct: 'svcvt_f64_u64_{sve_gov}(svptrue_b64(), a);'
+
+  - isa: clang_builtins
+    signature: {a: v4i, res: v4f}
+    direct: '__builtin_convertvector(a, v4f);'
+  - isa: clang_builtins
+    signature: {a: v8i, res: v8f}
+    direct: '__builtin_convertvector(a, v8f);'
+  - isa: clang_builtins
+    signature: {a: v16i, res: v16f}
+    direct: '__builtin_convertvector(a, v16f);'
+  - isa: clang_builtins
+    signature: {a: v4ui, res: v4f}
+    direct: '__builtin_convertvector(a, v4f);'
+  - isa: clang_builtins
+    signature: {a: v8ui, res: v8f}
+    direct: '__builtin_convertvector(a, v8f);'
+  - isa: clang_builtins
+    signature: {a: v16ui, res: v16f}
+    direct: '__builtin_convertvector(a, v16f);'
+  - isa: clang_builtins
+    signature: {a: v2l, res: v2d}
+    direct: '__builtin_convertvector(a, v2d);'
+  - isa: clang_builtins
+    signature: {a: v4l, res: v4d}
+    direct: '__builtin_convertvector(a, v4d);'
+  - isa: clang_builtins
+    signature: {a: v8l, res: v8d}
+    direct: '__builtin_convertvector(a, v8d);'
+  - isa: clang_builtins
+    signature: {a: v2ul, res: v2d}
+    direct: '__builtin_convertvector(a, v2d);'
+  - isa: clang_builtins
+    signature: {a: v4ul, res: v4d}
+    direct: '__builtin_convertvector(a, v4d);'
+  - isa: clang_builtins
+    signature: {a: v8ul, res: v8d}
+    direct: '__builtin_convertvector(a, v8d);'
+
+  - isa: tsl
+    signature: {a: v4i, res: v4f}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8i, res: v8f}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16i, res: v16f}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4ui, res: v4f}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8ui, res: v8f}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16ui, res: v16f}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v2l, res: v2d}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4l, res: v4d}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8l, res: v8d}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v2ul, res: v2d}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4ul, res: v4d}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8ul, res: v8d}
+    direct: 'tsl::cast<{simd_a}, {simd_res}>(a);'
+
+---
+# res[i] = k[i] ? (float) a[i] : src[i]
+primitive: CONVERT_INT_TO_FLOAT_MERGE
+input: [src, k, a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_cvtepi32_ps(src, k, a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_cvtepu32_ps(src, k, a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_cvtepi64_pd(src, k, a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_cvtepu64_pd(src, k, a);'
+
+  - isa: arm
+    direct: 'svcvt_f32_s32_m(src, k, a);'
+  - isa: arm
+    direct: 'svcvt_f32_u32_m(src, k, a);'
+  - isa: arm
+    direct: 'svcvt_f64_s64_m(src, k, a);'
+  - isa: arm
+    direct: 'svcvt_f64_u64_m(src, k, a);'
+
+  - isa: clang_builtins
+    signature: {src: v4f, k: v4b_f, a: v4i, res: v4f}
+    direct: 'k ? __builtin_convertvector(a, v4f) : src;'
+  - isa: clang_builtins
+    signature: {src: v8f, k: v8b_f, a: v8i, res: v8f}
+    direct: 'k ? __builtin_convertvector(a, v8f) : src;'
+  - isa: clang_builtins
+    signature: {src: v16f, k: v16b_f, a: v16i, res: v16f}
+    direct: 'k ? __builtin_convertvector(a, v16f) : src;'
+  - isa: clang_builtins
+    signature: {src: v4f, k: v4b_f, a: v4ui, res: v4f}
+    direct: 'k ? __builtin_convertvector(a, v4f) : src;'
+  - isa: clang_builtins
+    signature: {src: v8f, k: v8b_f, a: v8ui, res: v8f}
+    direct: 'k ? __builtin_convertvector(a, v8f) : src;'
+  - isa: clang_builtins
+    signature: {src: v16f, k: v16b_f, a: v16ui, res: v16f}
+    direct: 'k ? __builtin_convertvector(a, v16f) : src;'
+  - isa: clang_builtins
+    signature: {src: v2d, k: v2b_d, a: v2l, res: v2d}
+    direct: 'k ? __builtin_convertvector(a, v2d) : src;'
+  - isa: clang_builtins
+    signature: {src: v4d, k: v4b_d, a: v4l, res: v4d}
+    direct: 'k ? __builtin_convertvector(a, v4d) : src;'
+  - isa: clang_builtins
+    signature: {src: v8d, k: v8b_d, a: v8l, res: v8d}
+    direct: 'k ? __builtin_convertvector(a, v8d) : src;'
+  - isa: clang_builtins
+    signature: {src: v2d, k: v2b_d, a: v2ul, res: v2d}
+    direct: 'k ? __builtin_convertvector(a, v2d) : src;'
+  - isa: clang_builtins
+    signature: {src: v4d, k: v4b_d, a: v4ul, res: v4d}
+    direct: 'k ? __builtin_convertvector(a, v4d) : src;'
+  - isa: clang_builtins
+    signature: {src: v8d, k: v8b_d, a: v8ul, res: v8d}
+    direct: 'k ? __builtin_convertvector(a, v8d) : src;'
+
+  - isa: tsl
+    signature: {src: v4f, k: v4b_f, a: v4i, res: v4f}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v8f, k: v8b_f, a: v8i, res: v8f}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v16f, k: v16b_f, a: v16i, res: v16f}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v4f, k: v4b_f, a: v4ui, res: v4f}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v8f, k: v8b_f, a: v8ui, res: v8f}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v16f, k: v16b_f, a: v16ui, res: v16f}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v2d, k: v2b_d, a: v2l, res: v2d}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v4d, k: v4b_d, a: v4l, res: v4d}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v8d, k: v8b_d, a: v8l, res: v8d}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v2d, k: v2b_d, a: v2ul, res: v2d}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v4d, k: v4b_d, a: v4ul, res: v4d}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+  - isa: tsl
+    signature: {src: v8d, k: v8b_d, a: v8ul, res: v8d}
+    direct: 'tsl::select<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a), src);'
+
+---
+# res[i] = k[i] ? (float) a[i] : 0
+primitive: CONVERT_INT_TO_FLOAT_ZERO
+input: [k, a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_cvtepi32_ps(k, a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_cvtepu32_ps(k, a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_cvtepi64_pd(k, a);'
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_cvtepu64_pd(k, a);'
+
+  - isa: arm
+    direct: 'svcvt_f32_s32_z(k, a);'
+  - isa: arm
+    direct: 'svcvt_f32_u32_z(k, a);'
+  - isa: arm
+    direct: 'svcvt_f64_s64_z(k, a);'
+  - isa: arm
+    direct: 'svcvt_f64_u64_z(k, a);'
+
+  - isa: clang_builtins
+    signature: {k: v4b_f, a: v4i, res: v4f}
+    direct: 'k ? __builtin_convertvector(a, v4f) : (v4f){0};'
+  - isa: clang_builtins
+    signature: {k: v8b_f, a: v8i, res: v8f}
+    direct: 'k ? __builtin_convertvector(a, v8f) : (v8f){0};'
+  - isa: clang_builtins
+    signature: {k: v16b_f, a: v16i, res: v16f}
+    direct: 'k ? __builtin_convertvector(a, v16f) : (v16f){0};'
+  - isa: clang_builtins
+    signature: {k: v4b_f, a: v4ui, res: v4f}
+    direct: 'k ? __builtin_convertvector(a, v4f) : (v4f){0};'
+  - isa: clang_builtins
+    signature: {k: v8b_f, a: v8ui, res: v8f}
+    direct: 'k ? __builtin_convertvector(a, v8f) : (v8f){0};'
+  - isa: clang_builtins
+    signature: {k: v16b_f, a: v16ui, res: v16f}
+    direct: 'k ? __builtin_convertvector(a, v16f) : (v16f){0};'
+  - isa: clang_builtins
+    signature: {k: v2b_d, a: v2l, res: v2d}
+    direct: 'k ? __builtin_convertvector(a, v2d) : (v2d){0};'
+  - isa: clang_builtins
+    signature: {k: v4b_d, a: v4l, res: v4d}
+    direct: 'k ? __builtin_convertvector(a, v4d) : (v4d){0};'
+  - isa: clang_builtins
+    signature: {k: v8b_d, a: v8l, res: v8d}
+    direct: 'k ? __builtin_convertvector(a, v8d) : (v8d){0};'
+  - isa: clang_builtins
+    signature: {k: v2b_d, a: v2ul, res: v2d}
+    direct: 'k ? __builtin_convertvector(a, v2d) : (v2d){0};'
+  - isa: clang_builtins
+    signature: {k: v4b_d, a: v4ul, res: v4d}
+    direct: 'k ? __builtin_convertvector(a, v4d) : (v4d){0};'
+  - isa: clang_builtins
+    signature: {k: v8b_d, a: v8ul, res: v8d}
+    direct: 'k ? __builtin_convertvector(a, v8d) : (v8d){0};'
+
+  - isa: tsl
+    signature: {k: v4b_f, a: v4i, res: v4f}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v8b_f, a: v8i, res: v8f}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v16b_f, a: v16i, res: v16f}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v4b_f, a: v4ui, res: v4f}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v8b_f, a: v8ui, res: v8f}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v16b_f, a: v16ui, res: v16f}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v2b_d, a: v2l, res: v2d}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v4b_d, a: v4l, res: v4d}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v8b_d, a: v8l, res: v8d}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v2b_d, a: v2ul, res: v2d}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v4b_d, a: v4ul, res: v4d}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'
+  - isa: tsl
+    signature: {k: v8b_d, a: v8ul, res: v8d}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::cast<{simd_a}, {simd_res}>(a));'

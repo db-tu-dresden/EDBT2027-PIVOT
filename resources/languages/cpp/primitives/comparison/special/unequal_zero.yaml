@@ -1,0 +1,17 @@
+# res = data != 0
+primitive: NEZ
+input: [data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_test_{dtype_suffix}_mask(data, data);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {data: '{v}', res: '{vbool}'}
+    direct: 'data != ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {data: '{v}', res: '{vbool}'}
+    direct: 'tsl::unequal_zero<{simd_data}>(data);'

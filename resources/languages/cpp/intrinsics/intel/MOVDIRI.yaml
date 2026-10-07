@@ -1,0 +1,12 @@
+- name: _directstoreu_u64
+  input: {dst: void*, val: unsigned __int64}
+  output: {}
+  ir: {input: {dst: ptr, val: uint64_t}, output: {}}
+  flags: [MOVDIRI]
+  include: <immintrin.h>
+- name: _directstoreu_u32
+  input: {dst: void*, val: unsigned int}
+  output: {}
+  ir: {input: {dst: ptr, val: uint32_t}, output: {}}
+  flags: [MOVDIRI]
+  include: <immintrin.h>

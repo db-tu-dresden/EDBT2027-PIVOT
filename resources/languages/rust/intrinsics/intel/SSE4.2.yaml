@@ -1,0 +1,114 @@
+- name: _mm_cmpistrm
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: blob128}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpistri
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpistrz
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpistrc
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpistrs
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpistro
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpistra
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestrm
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: blob128}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestri
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestrz
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestrc
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestrs
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestro
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpestra
+  input: {a: __m128i, la: int, b: __m128i, lb: int, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: blob128, la: int32_t, b: blob128, lb: int32_t, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_cmpgt_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u8
+  input: {crc: unsigned int, v: unsigned char}
+  output: {dst: unsigned int}
+  ir: {input: {crc: uint32_t, v: uint8_t}, output: {dst: uint32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u16
+  input: {crc: unsigned int, v: unsigned short}
+  output: {dst: unsigned int}
+  ir: {input: {crc: uint32_t, v: uint16_t}, output: {dst: uint32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u32
+  input: {crc: unsigned int, v: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {crc: uint32_t, v: uint32_t}, output: {dst: uint32_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u64
+  input: {crc: unsigned __int64, v: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {crc: uint64_t, v: uint64_t}, output: {dst: uint64_t}}
+  flags: [SSE4.2]
+  include: <nmmintrin.h>

@@ -1,0 +1,24 @@
+- name: _fxrstor
+  input: {mem_addr: void *}
+  output: {}
+  ir: {input: {mem_addr: ptr}, output: {}}
+  flags: [FXSR]
+  include: <immintrin.h>
+- name: _fxrstor64
+  input: {mem_addr: void *}
+  output: {}
+  ir: {input: {mem_addr: ptr}, output: {}}
+  flags: [FXSR]
+  include: <immintrin.h>
+- name: _fxsave
+  input: {mem_addr: void *}
+  output: {}
+  ir: {input: {mem_addr: ptr}, output: {}}
+  flags: [FXSR]
+  include: <immintrin.h>
+- name: _fxsave64
+  input: {mem_addr: void *}
+  output: {}
+  ir: {input: {mem_addr: ptr}, output: {}}
+  flags: [FXSR]
+  include: <immintrin.h>

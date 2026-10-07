@@ -1,0 +1,24 @@
+- name: _mm_popcnt_u32
+  input: {a: unsigned int}
+  output: {dst: int}
+  ir: {input: {a: uint32_t}, output: {dst: int32_t}}
+  flags: [POPCNT]
+  include: <immintrin.h>
+- name: _mm_popcnt_u64
+  input: {a: unsigned long long}
+  output: {dst: long long}
+  ir: {input: {a: uint64_t}, output: {dst: int64_t}}
+  flags: [POPCNT]
+  include: <immintrin.h>
+- name: _popcnt32
+  input: {a: int}
+  output: {dst: int}
+  ir: {input: {a: int32_t}, output: {dst: int32_t}}
+  flags: [POPCNT]
+  include: <immintrin.h>
+- name: _popcnt64
+  input: {a: unsigned long long}
+  output: {dst: int}
+  ir: {input: {a: uint64_t}, output: {dst: int32_t}}
+  flags: [POPCNT]
+  include: <immintrin.h>

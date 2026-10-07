@@ -1,0 +1,18 @@
+- name: _rdseed16_step
+  input: {val: unsigned short *}
+  output: {dst: int}
+  ir: {input: {val: ptr}, output: {dst: int32_t}}
+  flags: [RDSEED]
+  include: <immintrin.h>
+- name: _rdseed32_step
+  input: {val: unsigned int *}
+  output: {dst: int}
+  ir: {input: {val: ptr}, output: {dst: int32_t}}
+  flags: [RDSEED]
+  include: <immintrin.h>
+- name: _rdseed64_step
+  input: {val: unsigned __int64 *}
+  output: {dst: int}
+  ir: {input: {val: ptr}, output: {dst: int32_t}}
+  flags: [RDSEED]
+  include: <immintrin.h>

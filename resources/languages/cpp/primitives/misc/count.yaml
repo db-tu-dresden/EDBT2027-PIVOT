@@ -1,0 +1,49 @@
+# res = register width in bytes
+primitive: LANE_COUNT_8
+input: []
+output: res
+definitions:
+  - isa: arm
+    direct: 'svcntb();'
+
+  - isa: clang_builtins
+    signature: {res: uint64_t}
+    direct: 'PIVOT_CB_VLEN_BITS / 8;'
+
+  - isa: tsl
+    signature: {res: uint64_t, elem: vc}
+    direct: '{simd_elem}::vector_element_count;'
+
+---
+# res = number of 32-bit lanes in a register
+primitive: LANE_COUNT_32
+input: []
+output: res
+definitions:
+  - isa: arm
+    direct: 'svcntw();'
+
+  - isa: clang_builtins
+    signature: {res: uint64_t}
+    direct: 'PIVOT_CB_VLEN_BITS / 32;'
+
+  - isa: tsl
+    signature: {res: uint64_t, elem: vi}
+    direct: '{simd_elem}::vector_element_count;'
+
+---
+# res = number of 64-bit lanes in a register
+primitive: LANE_COUNT_64
+input: []
+output: res
+definitions:
+  - isa: arm
+    direct: 'svcntd();'
+
+  - isa: clang_builtins
+    signature: {res: uint64_t}
+    direct: 'PIVOT_CB_VLEN_BITS / 64;'
+
+  - isa: tsl
+    signature: {res: uint64_t, elem: vl}
+    direct: '{simd_elem}::vector_element_count;'

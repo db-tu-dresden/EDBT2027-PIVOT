@@ -1,0 +1,48 @@
+- name: _readfsbase_u32
+  input: {}
+  output: {dst: unsigned int}
+  ir: {input: {}, output: {dst: uint32_t}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _readfsbase_u64
+  input: {}
+  output: {dst: unsigned __int64}
+  ir: {input: {}, output: {dst: uint64_t}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _readgsbase_u32
+  input: {}
+  output: {dst: unsigned int}
+  ir: {input: {}, output: {dst: uint32_t}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _readgsbase_u64
+  input: {}
+  output: {dst: unsigned __int64}
+  ir: {input: {}, output: {dst: uint64_t}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _writefsbase_u32
+  input: {a: unsigned int}
+  output: {}
+  ir: {input: {a: uint32_t}, output: {}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _writefsbase_u64
+  input: {a: unsigned __int64}
+  output: {}
+  ir: {input: {a: uint64_t}, output: {}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _writegsbase_u32
+  input: {a: unsigned int}
+  output: {}
+  ir: {input: {a: uint32_t}, output: {}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>
+- name: _writegsbase_u64
+  input: {a: unsigned __int64}
+  output: {}
+  ir: {input: {a: uint64_t}, output: {}}
+  flags: [FSGSBASE]
+  include: <immintrin.h>

@@ -1,0 +1,338 @@
+# res[i] = data[indexes[i]]
+primitive: PERMUTE
+input: [data, indexes]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svtbl_s32(data, svreinterpret_u32_s32(indexes));'
+  - isa: arm
+    direct: 'svtbl_f64(data, svreinterpret_u64_s64(indexes));'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {data: '{v}', indexes: '{vint}', res: '{v}'}
+    direct:
+      - '{v} _r;'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - 'for (int _i = 0; _i < _n; _i++) { long _ix = indexes[_i]; _r[_i] = (_ix >= 0 && _ix < _n) ? data[_ix] : 0; }'
+      - 'return _r;'
+
+  - isa: tsl
+    dtype: '{int}'
+    signature: {data: '{v}', indexes: '{v}', res: '{v}'}
+    direct: 'tsl::permute_lanes<{simd_data}, {simd_indexes}>(data, indexes);'
+
+  - isa: tsl
+    signature: {data: vd, indexes: vl, res: vd}
+    direct: 'tsl::permute_lanes<{simd_data}, {simd_indexes}>(data, indexes);'
+
+---
+# res[i] = (idx[i]&16) ? b[idx[i]&15] : a[idx[i]&15]
+primitive: PERMUTE2
+input: [a, idx, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm512_permutex2var_epi32(a, idx, b);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, idx: v16i, b: v16i, res: v16i}
+    direct: |-
+      #if defined(__AVX512F__)
+      return __builtin_ia32_vpermi2vard512(a, idx, b);
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 512
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(512)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(512)));
+      const svbool_t __pg = svptrue_b32();
+      __svu __lo = (__svu)svand_n_s32_x(__pg, (__sv)idx, 15);
+      svbool_t __sel = svcmpne_n_s32(__pg, svand_n_s32_x(__pg, (__sv)idx, 16), 0);
+      return (v16i)(__sv)svsel_s32(__sel, svtbl_s32((__sv)b, __lo), svtbl_s32((__sv)a, __lo));
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 256
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(256)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(256)));
+      const svbool_t __pg = svptrue_b32();
+      v8i __a0 = __builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);
+      v8i __a1 = __builtin_shufflevector(a, a, 8,9,10,11,12,13,14,15);
+      v8i __b0 = __builtin_shufflevector(b, b, 0,1,2,3,4,5,6,7);
+      v8i __b1 = __builtin_shufflevector(b, b, 8,9,10,11,12,13,14,15);
+      v8i __r[2];
+      for (int __h = 0; __h < 2; __h++) {
+        v8i __ix = __h ? __builtin_shufflevector(idx, idx, 8,9,10,11,12,13,14,15)
+                       : __builtin_shufflevector(idx, idx, 0,1,2,3,4,5,6,7);
+        __svu __lo = (__svu)svand_n_s32_x(__pg, (__sv)__ix, 7);
+        __sv __hi = svand_n_s32_x(__pg, (__sv)__ix, 24);
+        __sv __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 8), svtbl_s32((__sv)__a1, __lo), svtbl_s32((__sv)__a0, __lo));
+        __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 16), svtbl_s32((__sv)__b0, __lo), __t);
+        __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 24), svtbl_s32((__sv)__b1, __lo), __t);
+        __r[__h] = (v8i)__t;
+      }
+      return (v16i)__builtin_shufflevector(__r[0], __r[1], 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #elif defined(__ARM_NEON)
+      uint8x16x4_t __ta, __tb;
+      __ta.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 0,1,2,3));
+      __ta.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 4,5,6,7));
+      __ta.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 8,9,10,11));
+      __ta.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 12,13,14,15));
+      __tb.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(b, b, 0,1,2,3));
+      __tb.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(b, b, 4,5,6,7));
+      __tb.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(b, b, 8,9,10,11));
+      __tb.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(b, b, 12,13,14,15));
+      v16i __by = (((idx & 31) << 2) * 0x01010101) + 0x03020100;
+      const uint8x16_t __off = vdupq_n_u8(64);
+      uint8x16_t __i0 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 0,1,2,3));
+      uint8x16_t __i1 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 4,5,6,7));
+      uint8x16_t __i2 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 8,9,10,11));
+      uint8x16_t __i3 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 12,13,14,15));
+      v4i __r0 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i0), vqtbl4q_u8(__tb, vsubq_u8(__i0, __off))));
+      v4i __r1 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i1), vqtbl4q_u8(__tb, vsubq_u8(__i1, __off))));
+      v4i __r2 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i2), vqtbl4q_u8(__tb, vsubq_u8(__i2, __off))));
+      v4i __r3 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i3), vqtbl4q_u8(__tb, vsubq_u8(__i3, __off))));
+      v8i __lo = __builtin_shufflevector(__r0, __r1, 0,1,2,3,4,5,6,7);
+      v8i __hi = __builtin_shufflevector(__r2, __r3, 0,1,2,3,4,5,6,7);
+      return __builtin_shufflevector(__lo, __hi, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #else
+      return (v16i){ (idx[0]&16)?b[idx[0]&15]:a[idx[0]&15], (idx[1]&16)?b[idx[1]&15]:a[idx[1]&15], (idx[2]&16)?b[idx[2]&15]:a[idx[2]&15], (idx[3]&16)?b[idx[3]&15]:a[idx[3]&15], (idx[4]&16)?b[idx[4]&15]:a[idx[4]&15], (idx[5]&16)?b[idx[5]&15]:a[idx[5]&15], (idx[6]&16)?b[idx[6]&15]:a[idx[6]&15], (idx[7]&16)?b[idx[7]&15]:a[idx[7]&15], (idx[8]&16)?b[idx[8]&15]:a[idx[8]&15], (idx[9]&16)?b[idx[9]&15]:a[idx[9]&15], (idx[10]&16)?b[idx[10]&15]:a[idx[10]&15], (idx[11]&16)?b[idx[11]&15]:a[idx[11]&15], (idx[12]&16)?b[idx[12]&15]:a[idx[12]&15], (idx[13]&16)?b[idx[13]&15]:a[idx[13]&15], (idx[14]&16)?b[idx[14]&15]:a[idx[14]&15], (idx[15]&16)?b[idx[15]&15]:a[idx[15]&15] };
+      #endif
+
+  - isa: clang_builtins
+    signature: {a: v16ui, idx: v16ui, b: v16ui, res: v16ui}
+    direct: |-
+      #if defined(__AVX512F__)
+      return (v16ui)__builtin_ia32_vpermi2vard512((v16i)a, (v16i)idx, (v16i)b);
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 512
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(512)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(512)));
+      const svbool_t __pg = svptrue_b32();
+      __svu __lo = (__svu)svand_n_s32_x(__pg, (__sv)(v16i)idx, 15);
+      svbool_t __sel = svcmpne_n_s32(__pg, svand_n_s32_x(__pg, (__sv)(v16i)idx, 16), 0);
+      return (v16ui)(__sv)svsel_s32(__sel, svtbl_s32((__sv)b, __lo), svtbl_s32((__sv)a, __lo));
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 256
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(256)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(256)));
+      const svbool_t __pg = svptrue_b32();
+      v8i __a0 = __builtin_shufflevector((v16i)a, (v16i)a, 0,1,2,3,4,5,6,7);
+      v8i __a1 = __builtin_shufflevector((v16i)a, (v16i)a, 8,9,10,11,12,13,14,15);
+      v8i __b0 = __builtin_shufflevector((v16i)b, (v16i)b, 0,1,2,3,4,5,6,7);
+      v8i __b1 = __builtin_shufflevector((v16i)b, (v16i)b, 8,9,10,11,12,13,14,15);
+      v8i __r[2];
+      for (int __h = 0; __h < 2; __h++) {
+        v8i __ix = __h ? __builtin_shufflevector((v16i)idx, (v16i)idx, 8,9,10,11,12,13,14,15)
+                       : __builtin_shufflevector((v16i)idx, (v16i)idx, 0,1,2,3,4,5,6,7);
+        __svu __lo = (__svu)svand_n_s32_x(__pg, (__sv)__ix, 7);
+        __sv __hi = svand_n_s32_x(__pg, (__sv)__ix, 24);
+        __sv __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 8), svtbl_s32((__sv)__a1, __lo), svtbl_s32((__sv)__a0, __lo));
+        __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 16), svtbl_s32((__sv)__b0, __lo), __t);
+        __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 24), svtbl_s32((__sv)__b1, __lo), __t);
+        __r[__h] = (v8i)__t;
+      }
+      return (v16ui)__builtin_shufflevector(__r[0], __r[1], 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #elif defined(__ARM_NEON)
+      uint8x16x4_t __ta, __tb;
+      __ta.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 0,1,2,3));
+      __ta.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 4,5,6,7));
+      __ta.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 8,9,10,11));
+      __ta.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 12,13,14,15));
+      __tb.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)b, (v16i)b, 0,1,2,3));
+      __tb.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)b, (v16i)b, 4,5,6,7));
+      __tb.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)b, (v16i)b, 8,9,10,11));
+      __tb.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)b, (v16i)b, 12,13,14,15));
+      v16i __by = ((((v16i)idx & 31) << 2) * 0x01010101) + 0x03020100;
+      const uint8x16_t __off = vdupq_n_u8(64);
+      uint8x16_t __i0 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 0,1,2,3));
+      uint8x16_t __i1 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 4,5,6,7));
+      uint8x16_t __i2 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 8,9,10,11));
+      uint8x16_t __i3 = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 12,13,14,15));
+      v4i __r0 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i0), vqtbl4q_u8(__tb, vsubq_u8(__i0, __off))));
+      v4i __r1 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i1), vqtbl4q_u8(__tb, vsubq_u8(__i1, __off))));
+      v4i __r2 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i2), vqtbl4q_u8(__tb, vsubq_u8(__i2, __off))));
+      v4i __r3 = (v4i)vreinterpretq_s32_u8(vorrq_u8(vqtbl4q_u8(__ta, __i3), vqtbl4q_u8(__tb, vsubq_u8(__i3, __off))));
+      v8i __lo = __builtin_shufflevector(__r0, __r1, 0,1,2,3,4,5,6,7);
+      v8i __hi = __builtin_shufflevector(__r2, __r3, 0,1,2,3,4,5,6,7);
+      return (v16ui)__builtin_shufflevector(__lo, __hi, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #else
+      return (v16ui){ (idx[0]&16)?b[idx[0]&15]:a[idx[0]&15], (idx[1]&16)?b[idx[1]&15]:a[idx[1]&15], (idx[2]&16)?b[idx[2]&15]:a[idx[2]&15], (idx[3]&16)?b[idx[3]&15]:a[idx[3]&15], (idx[4]&16)?b[idx[4]&15]:a[idx[4]&15], (idx[5]&16)?b[idx[5]&15]:a[idx[5]&15], (idx[6]&16)?b[idx[6]&15]:a[idx[6]&15], (idx[7]&16)?b[idx[7]&15]:a[idx[7]&15], (idx[8]&16)?b[idx[8]&15]:a[idx[8]&15], (idx[9]&16)?b[idx[9]&15]:a[idx[9]&15], (idx[10]&16)?b[idx[10]&15]:a[idx[10]&15], (idx[11]&16)?b[idx[11]&15]:a[idx[11]&15], (idx[12]&16)?b[idx[12]&15]:a[idx[12]&15], (idx[13]&16)?b[idx[13]&15]:a[idx[13]&15], (idx[14]&16)?b[idx[14]&15]:a[idx[14]&15], (idx[15]&16)?b[idx[15]&15]:a[idx[15]&15] };
+      #endif
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', idx: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::table_lookup<{simd_a}, {simd_idx}>(a, idx, b);'
+
+---
+# res[i] = a[idx[i] & (N-1)]
+primitive: PERMUTEVAR
+input: [a, idx]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm512_permutevar_epi32(idx, a);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, idx: v16i, res: v16i}
+    direct: |-
+      #if defined(__AVX512F__)
+      return __builtin_ia32_permvarsi512(a, idx);
+      #elif defined(__AVX2__)
+      v8i __a0 = __builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);
+      v8i __a1 = __builtin_shufflevector(a, a, 8,9,10,11,12,13,14,15);
+      v8i __r[2];
+      for (int __h = 0; __h < 2; __h++) {
+        v8i __ix = __h ? __builtin_shufflevector(idx, idx, 8,9,10,11,12,13,14,15)
+                       : __builtin_shufflevector(idx, idx, 0,1,2,3,4,5,6,7);
+        __r[__h] = ((__ix & 8) != 0) ? (v8i)__builtin_ia32_permvarsi256(__a1, __ix) : (v8i)__builtin_ia32_permvarsi256(__a0, __ix);
+      }
+      return __builtin_shufflevector(__r[0], __r[1], 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #elif defined(__SSSE3__)
+      v4i __t[4] = { __builtin_shufflevector(a, a, 0,1,2,3), __builtin_shufflevector(a, a, 4,5,6,7),
+                     __builtin_shufflevector(a, a, 8,9,10,11), __builtin_shufflevector(a, a, 12,13,14,15) };
+      v16i __by = ((idx & 3) * 0x04040404) + 0x03020100;
+      v4i __b0 = __builtin_shufflevector(__by, __by, 0,1,2,3), __b1 = __builtin_shufflevector(__by, __by, 4,5,6,7);
+      v4i __b2 = __builtin_shufflevector(__by, __by, 8,9,10,11), __b3 = __builtin_shufflevector(__by, __by, 12,13,14,15);
+      v16i __r = (v16i){0};
+      for (int __k = 0; __k < 4; __k++) {
+        v8i __lo = __builtin_shufflevector((v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b0), (v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b1), 0,1,2,3,4,5,6,7);
+        v8i __hi = __builtin_shufflevector((v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b2), (v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b3), 0,1,2,3,4,5,6,7);
+        __r |= (((idx & 15) >> 2) == __k) & __builtin_shufflevector(__lo, __hi, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      }
+      return __r;
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 512
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(512)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(512)));
+      const svbool_t __pg = svptrue_b32();
+      return (v16i)(__sv)svtbl_s32((__sv)a, (__svu)svand_n_s32_x(__pg, (__sv)idx, 15));
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 256
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(256)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(256)));
+      const svbool_t __pg = svptrue_b32();
+      v8i __a0 = __builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);
+      v8i __a1 = __builtin_shufflevector(a, a, 8,9,10,11,12,13,14,15);
+      v8i __r[2];
+      for (int __h = 0; __h < 2; __h++) {
+        v8i __ix = __h ? __builtin_shufflevector(idx, idx, 8,9,10,11,12,13,14,15)
+                       : __builtin_shufflevector(idx, idx, 0,1,2,3,4,5,6,7);
+        __svu __lo = (__svu)svand_n_s32_x(__pg, (__sv)__ix, 7);
+        __sv __hi = svand_n_s32_x(__pg, (__sv)__ix, 8);
+        __sv __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 8), svtbl_s32((__sv)__a1, __lo), svtbl_s32((__sv)__a0, __lo));
+        __r[__h] = (v8i)__t;
+      }
+      return (v16i)__builtin_shufflevector(__r[0], __r[1], 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #elif defined(__ARM_NEON)
+      uint8x16x4_t __t;
+      __t.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 0,1,2,3));
+      __t.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 4,5,6,7));
+      __t.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 8,9,10,11));
+      __t.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(a, a, 12,13,14,15));
+      v16i __by = (((idx & 15) << 2) * 0x01010101) + 0x03020100;
+      v4i __r0 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 0,1,2,3))));
+      v4i __r1 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 4,5,6,7))));
+      v4i __r2 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 8,9,10,11))));
+      v4i __r3 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 12,13,14,15))));
+      v8i __lo = __builtin_shufflevector(__r0, __r1, 0,1,2,3,4,5,6,7);
+      v8i __hi = __builtin_shufflevector(__r2, __r3, 0,1,2,3,4,5,6,7);
+      return __builtin_shufflevector(__lo, __hi, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #else
+      return (v16i){ a[idx[0]&15], a[idx[1]&15], a[idx[2]&15], a[idx[3]&15], a[idx[4]&15], a[idx[5]&15], a[idx[6]&15], a[idx[7]&15], a[idx[8]&15], a[idx[9]&15], a[idx[10]&15], a[idx[11]&15], a[idx[12]&15], a[idx[13]&15], a[idx[14]&15], a[idx[15]&15] };
+      #endif
+
+  - isa: clang_builtins
+    signature: {a: v16ui, idx: v16ui, res: v16ui}
+    direct: |-
+      #if defined(__AVX512F__)
+      return (v16ui)__builtin_ia32_permvarsi512((v16i)a, (v16i)idx);
+      #elif defined(__AVX2__)
+      v8i __a0 = __builtin_shufflevector((v16i)a, (v16i)a, 0,1,2,3,4,5,6,7);
+      v8i __a1 = __builtin_shufflevector((v16i)a, (v16i)a, 8,9,10,11,12,13,14,15);
+      v8i __r[2];
+      for (int __h = 0; __h < 2; __h++) {
+        v8i __ix = __h ? __builtin_shufflevector((v16i)idx, (v16i)idx, 8,9,10,11,12,13,14,15)
+                       : __builtin_shufflevector((v16i)idx, (v16i)idx, 0,1,2,3,4,5,6,7);
+        __r[__h] = ((__ix & 8) != 0) ? (v8i)__builtin_ia32_permvarsi256(__a1, __ix) : (v8i)__builtin_ia32_permvarsi256(__a0, __ix);
+      }
+      return (v16ui)__builtin_shufflevector(__r[0], __r[1], 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #elif defined(__SSSE3__)
+      v4i __t[4] = { __builtin_shufflevector((v16i)a, (v16i)a, 0,1,2,3), __builtin_shufflevector((v16i)a, (v16i)a, 4,5,6,7),
+                     __builtin_shufflevector((v16i)a, (v16i)a, 8,9,10,11), __builtin_shufflevector((v16i)a, (v16i)a, 12,13,14,15) };
+      v16i __by = (((v16i)idx & 3) * 0x04040404) + 0x03020100;
+      v4i __b0 = __builtin_shufflevector(__by, __by, 0,1,2,3), __b1 = __builtin_shufflevector(__by, __by, 4,5,6,7);
+      v4i __b2 = __builtin_shufflevector(__by, __by, 8,9,10,11), __b3 = __builtin_shufflevector(__by, __by, 12,13,14,15);
+      v16i __r = (v16i){0};
+      for (int __k = 0; __k < 4; __k++) {
+        v8i __lo = __builtin_shufflevector((v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b0), (v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b1), 0,1,2,3,4,5,6,7);
+        v8i __hi = __builtin_shufflevector((v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b2), (v4i)__builtin_ia32_pshufb128((v16c)__t[__k], (v16c)__b3), 0,1,2,3,4,5,6,7);
+        __r |= ((((v16i)idx & 15) >> 2) == __k) & __builtin_shufflevector(__lo, __hi, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      }
+      return (v16ui)__r;
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 512
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(512)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(512)));
+      const svbool_t __pg = svptrue_b32();
+      return (v16ui)(__sv)svtbl_s32((__sv)a, (__svu)svand_n_s32_x(__pg, (__sv)(v16i)idx, 15));
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 256
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(256)));
+      typedef svuint32_t __svu __attribute__((arm_sve_vector_bits(256)));
+      const svbool_t __pg = svptrue_b32();
+      v8i __a0 = __builtin_shufflevector((v16i)a, (v16i)a, 0,1,2,3,4,5,6,7);
+      v8i __a1 = __builtin_shufflevector((v16i)a, (v16i)a, 8,9,10,11,12,13,14,15);
+      v8i __r[2];
+      for (int __h = 0; __h < 2; __h++) {
+        v8i __ix = __h ? __builtin_shufflevector((v16i)idx, (v16i)idx, 8,9,10,11,12,13,14,15)
+                       : __builtin_shufflevector((v16i)idx, (v16i)idx, 0,1,2,3,4,5,6,7);
+        __svu __lo = (__svu)svand_n_s32_x(__pg, (__sv)__ix, 7);
+        __sv __hi = svand_n_s32_x(__pg, (__sv)__ix, 8);
+        __sv __t = svsel_s32(svcmpeq_n_s32(__pg, __hi, 8), svtbl_s32((__sv)__a1, __lo), svtbl_s32((__sv)__a0, __lo));
+        __r[__h] = (v8i)__t;
+      }
+      return (v16ui)__builtin_shufflevector(__r[0], __r[1], 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #elif defined(__ARM_NEON)
+      uint8x16x4_t __t;
+      __t.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 0,1,2,3));
+      __t.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 4,5,6,7));
+      __t.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 8,9,10,11));
+      __t.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector((v16i)a, (v16i)a, 12,13,14,15));
+      v16i __by = ((((v16i)idx & 15) << 2) * 0x01010101) + 0x03020100;
+      v4i __r0 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 0,1,2,3))));
+      v4i __r1 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 4,5,6,7))));
+      v4i __r2 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 8,9,10,11))));
+      v4i __r3 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(__by, __by, 12,13,14,15))));
+      v8i __lo = __builtin_shufflevector(__r0, __r1, 0,1,2,3,4,5,6,7);
+      v8i __hi = __builtin_shufflevector(__r2, __r3, 0,1,2,3,4,5,6,7);
+      return (v16ui)__builtin_shufflevector(__lo, __hi, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+      #else
+      return (v16ui){ a[idx[0]&15], a[idx[1]&15], a[idx[2]&15], a[idx[3]&15], a[idx[4]&15], a[idx[5]&15], a[idx[6]&15], a[idx[7]&15], a[idx[8]&15], a[idx[9]&15], a[idx[10]&15], a[idx[11]&15], a[idx[12]&15], a[idx[13]&15], a[idx[14]&15], a[idx[15]&15] };
+      #endif
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', idx: '{v}', res: '{v}'}
+    direct: 'tsl::table_lookup<{simd_a}, {simd_idx}>(a, idx, a);'
+
+---
+# res = shuffle(a, imm8)   (imm8 = 4 x 2-bit index fields)
+primitive: SHUFFLE
+input: [a, imm8]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_shuffle_epi32(a, imm8);'
+  - isa: x86
+    direct: '_mm256_permute4x64_epi64(a, imm8);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}{128}', imm8: imm32, res: '{v}{128}'}
+    direct: '({v})((v4i){((v4i)a)[imm8 & 3], ((v4i)a)[(imm8>>2) & 3], ((v4i)a)[(imm8>>4) & 3], ((v4i)a)[(imm8>>6) & 3]});'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}{256}', imm8: imm32, res: '{v}{256}'}
+    direct: '({v})((v4l){((v4l)a)[imm8 & 3], ((v4l)a)[(imm8>>2) & 3], ((v4l)a)[(imm8>>4) & 3], ((v4l)a)[(imm8>>6) & 3]});'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}{128}', imm8: imm32, res: '{v}{128}'}
+    direct: 'tsl::permute_lanes_imm<{simd_a}, imm8>(a);'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}{256}', imm8: imm32, res: '{v}{256}'}
+    direct: 'tsl::permute_lanes_imm<{simd_a}, imm8>(a);'

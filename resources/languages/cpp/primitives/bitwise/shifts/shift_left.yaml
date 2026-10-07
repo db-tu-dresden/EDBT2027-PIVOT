@@ -1,0 +1,103 @@
+# res[i] = data[i] << imm
+primitive: SHL_IMM
+input: [data, imm]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_slli_{dtype_suffix}(data, imm);'
+
+  - isa: arm
+    direct: 'vshl{neon_widths}_n_{dtype_suffix}(data, imm);'
+
+  - isa: arm
+    direct: 'svlsl_n_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data, imm);'
+
+  # Count is a runtime scalar, not a template immediate: TSL/clang have a
+  # runtime-count shift, and a compile-time constant passed here still folds to
+  # the immediate-encoded instruction.  x86/arm keep the immediate spelling (ARM `_n`
+  # intrinsics require an integer-constant count).
+  - isa: clang_builtins
+    dtype: int
+    signature: {data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'data << imm;'
+
+  - isa: tsl
+    dtype: int
+    signature: {data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'tsl::shift_left<{simd_res}>(data, imm);'
+
+---
+# res[i] = k[i] ? (data[i] << imm) : src[i]
+primitive: SHL_IMM_MERGE
+input: [src, k, data, imm]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_slli_{dtype_suffix}(src, k, data, imm);'
+
+  - isa: clang_builtins
+    dtype: int
+    signature: {src: '{v}', k: '{vbool}', data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'k ? (data << imm) : src;'
+
+  - isa: tsl
+    dtype: int
+    signature: {src: '{v}', k: '{vbool}', data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(k, tsl::shift_left<{simd_res}>(data, imm), src);'
+
+---
+# res[i] = data[i] << shift[i]
+primitive: SHL
+input: [data, shift]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_sllv_{dtype_suffix}(data, shift);'
+
+  - isa: arm
+    direct: 'vshl{neon_widths}_{dtype_suffix}(data, shift);'
+
+  - isa: arm
+    direct: 'svlsl_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data, shift);'
+
+  - isa: clang_builtins
+    dtype: 'int'
+    signature: {data: '{v}', shift: '{v}', res: '{v}'}
+    direct: '({v})((({vuint})shift < {elem_bits}) ? (({vuint})data << (({vuint})shift & ({elem_bits} - 1))) : ({vuint}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {data: '{v}', shift: '{v}', res: '{v}'}
+    direct: 'tsl::shift_left<{simd_res}>(data, shift);'
+
+---
+# res[i] = data[i] << count[0]   (uniform shift: every lane by the low lane of count)
+primitive: SHL_UNIF
+input: [data, count]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{16, 32, 64}'
+    direct: '_mm{x86_widths}_sll_{dtype_suffix}(data, count);'
+
+  # unsigned shift (C signed << is UB); branchless & -(count<width) mask matches
+  # x86's shift>=width -> 0 (a ternary would emit a branch).
+  - isa: clang_builtins
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v4i', res: '{v}'}
+    direct: '({v})((({vuint})data << ((count[0]) & ({elem_bits} - 1))) & ({s})(-(long long)((unsigned long)(count[0]) < {elem_bits})));'
+
+  - isa: clang_builtins
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v2l', res: '{v}'}
+    direct: '({v})((({vuint})data << ((count[0]) & ({elem_bits} - 1))) & ({s})(-(long long)((unsigned long)(count[0]) < {elem_bits})));'
+
+  - isa: tsl
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v4i', res: '{v}'}
+    direct: 'tsl::shift_left<{simd_res}>(data, tsl::extract_value_at<{simd_count}>(count, 0));'
+
+  - isa: tsl
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v2l', res: '{v}'}
+    direct: 'tsl::shift_left<{simd_res}>(data, tsl::extract_value_at<{simd_count}>(count, 0));'

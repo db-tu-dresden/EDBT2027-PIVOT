@@ -1,0 +1,6 @@
+- name: _rdpid_u32
+  input: {}
+  output: {dst: unsigned int}
+  ir: {input: {}, output: {dst: uint32_t}}
+  flags: [RDPID]
+  include: <immintrin.h>

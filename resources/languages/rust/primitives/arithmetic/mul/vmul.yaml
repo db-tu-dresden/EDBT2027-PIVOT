@@ -1,0 +1,26 @@
+primitive: VMUL
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: '{int, uint}{16}'
+    direct: '_mm{x86_widths}_mullo_epi16(a, b);'
+
+  - isa: x86
+    dtype: '{int, uint}{32}'
+    direct: '_mm{x86_widths}_mullo_epi32(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_mul_{dtype_suffix}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a * b;'
+
+  # core_simd — elementwise operator
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a * b;'

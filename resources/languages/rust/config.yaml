@@ -1,0 +1,26 @@
+name: rust
+# Implementations are importable dotted paths.
+frontend: pivot.frontend.rust_frontend.RustFrontend
+syntax: pivot.lang.syntax.RustSyntax
+locator: pivot.passes.preprocessing.locators.RustLocator
+extensions: [.rs]
+intrinsics_dir: resources/languages/rust/intrinsics
+primitives_dir: resources/languages/rust/primitives
+graphs_yaml_dir: resources/languages/rust/graphs/yaml
+graphs_base_dir: resources/languages/rust/graphs
+# `source_backends` expand a source-arch family into pattern graphs;
+# `target_backends` emit replacement code.
+source_backends:
+  x86: pivot.isa.source_family_expander.X86_EXPANDER
+  arm: pivot.isa.source_family_expander.ARM_EXPANDER
+target_backends:
+  clang_builtins: pivot.backend.clang_builtins_emitter.ClangBuiltinsEmitter
+  # Rust portable SIMD (`core::simd`); needs a nightly toolchain, as the translated
+  # file opens with `#![feature(portable_simd)]`.
+  core_simd: pivot.backend.rust_core_simd_emitter.RustCoreSimdEmitter
+passes:
+  - return_normalization
+  - unnesting
+  - argument_normalization
+  - translation
+  - nesting

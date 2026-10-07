@@ -1,0 +1,61 @@
+# res = a < b ? a : b
+primitive: VMIN
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_min_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    direct: 'vmin{neon_widths}_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    direct: 'svmin_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a < b ? a : b;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::min<{simd_res}>(a, b);'
+
+---
+# res = k ? (a < b ? a : b) : src
+primitive: VMIN_MERGE
+input: [src, k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_min_{dtype_suffix}(src, k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a < b ? a : b) : src;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(k, tsl::min<{simd_res}>(a, b), src);'
+
+---
+# res = k ? (a < b ? a : b) : 0
+primitive: VMIN_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svmin_{dtype_suffix}_z(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a < b ? a : b) : ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::min<{simd_res}>(a, b));'

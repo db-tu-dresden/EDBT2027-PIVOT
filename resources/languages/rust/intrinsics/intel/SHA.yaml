@@ -1,0 +1,42 @@
+- name: _mm_sha1msg1_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>
+- name: _mm_sha1msg2_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>
+- name: _mm_sha1nexte_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>
+- name: _mm_sha1rnds4_epu32
+  input: {a: __m128i, b: __m128i, func: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui, func: int32_t}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>
+- name: _mm_sha256msg1_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>
+- name: _mm_sha256msg2_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>
+- name: _mm_sha256rnds2_epu32
+  input: {a: __m128i, b: __m128i, k: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui, k: v4ui}, output: {dst: v4ui}}
+  flags: [SHA]
+  include: <immintrin.h>

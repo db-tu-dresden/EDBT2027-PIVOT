@@ -1,0 +1,74 @@
+# res = a & b
+primitive: VAND
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_and_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    direct: 'vand{neon_widths}_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    direct: 'svand_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a & b;'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: '{vbool_all}'}
+    direct: 'a & b;'
+
+  - isa: clang_builtins
+    dtype: float
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: '({v})(({vuint})a & ({vuint})b);'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::binary_and<{simd_res}>(a, b);'
+
+---
+# res[i] = k[i] ? a[i] & b[i] : src[i]
+primitive: VAND_MERGE
+input: [src, k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_and_{dtype_suffix}(src, k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a & b) : src;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(k, tsl::binary_and<{simd_res}>(a, b), src);'
+
+---
+# res[i] = k[i] ? a[i] & b[i] : 0
+primitive: VAND_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_and_{dtype_suffix}(k, a, b);'
+
+  - isa: arm
+    direct: 'svand_{dtype_suffix}_z(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a & b) : ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::binary_and_maskz<{simd_res}>(k, a, b);'

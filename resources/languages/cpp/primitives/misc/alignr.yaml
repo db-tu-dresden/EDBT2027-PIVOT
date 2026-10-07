@@ -1,0 +1,105 @@
+# res = concat(a, b) shifted right by 1 element
+primitive: ALIGNR_1
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{32, 64}'
+    direct: '_mm{x86_widths}_alignr_{dtype_suffix}(a, b, 1);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, b: v16i, res: v16i}
+    direct: '__builtin_shufflevector(b, a, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);'
+
+  - isa: clang_builtins
+    signature: {a: v8l, b: v8l, res: v8l}
+    direct: '__builtin_shufflevector(b, a, 1,2,3,4,5,6,7,8);'
+
+  - isa: tsl
+    dtype: 'int{32, 64}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::align_right_lanes<{simd_res}, 1>(a, b);'
+
+---
+# res = concat(a, b) shifted right by 2 elements
+primitive: ALIGNR_2
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{32, 64}'
+    direct: '_mm{x86_widths}_alignr_{dtype_suffix}(a, b, 2);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, b: v16i, res: v16i}
+    direct: '__builtin_shufflevector(b, a, 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17);'
+
+  - isa: clang_builtins
+    signature: {a: v8l, b: v8l, res: v8l}
+    direct: '__builtin_shufflevector(b, a, 2,3,4,5,6,7,8,9);'
+
+  - isa: tsl
+    dtype: 'int{32, 64}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::align_right_lanes<{simd_res}, 2>(a, b);'
+
+---
+# res = concat(a, b) shifted right by 4 elements
+primitive: ALIGNR_4
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{32, 64}'
+    direct: '_mm{x86_widths}_alignr_{dtype_suffix}(a, b, 4);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, b: v16i, res: v16i}
+    direct: '__builtin_shufflevector(b, a, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19);'
+
+  - isa: clang_builtins
+    signature: {a: v8l, b: v8l, res: v8l}
+    direct: '__builtin_shufflevector(b, a, 4,5,6,7,8,9,10,11);'
+
+  - isa: tsl
+    dtype: 'int{32, 64}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::align_right_lanes<{simd_res}, 4>(a, b);'
+
+---
+# res = concat(a, b) shifted right by 8 elements (epi32 only)
+primitive: ALIGNR_8
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: int32
+    direct: '_mm{x86_widths}_alignr_{dtype_suffix}(a, b, 8);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, b: v16i, res: v16i}
+    direct: '__builtin_shufflevector(b, a, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);'
+
+  - isa: tsl
+    dtype: int32
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::align_right_lanes<{simd_res}, 8>(a, b);'
+
+---
+# res = concat(a, b) shifted right by 12 elements (epi32 only)
+primitive: ALIGNR_12
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: int32
+    direct: '_mm{x86_widths}_alignr_{dtype_suffix}(a, b, 12);'
+
+  - isa: clang_builtins
+    signature: {a: v16i, b: v16i, res: v16i}
+    direct: '__builtin_shufflevector(b, a, 12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27);'
+
+  - isa: tsl
+    dtype: int32
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::align_right_lanes<{simd_res}, 12>(a, b);'

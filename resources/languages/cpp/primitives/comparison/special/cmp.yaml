@@ -1,0 +1,75 @@
+# res = a <cmp[imm]> b
+primitive: CMP
+input: [a, b, imm]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_cmp_{dtype_suffix}_mask(a, b, imm);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', imm: imm32, res: '{vbool}'}
+    direct: |-
+      ((imm & 7) == 0) ? (a == b) :              /* _MM_CMPINT_EQ    */
+      ((imm & 7) == 1) ? (a <  b) :              /* _MM_CMPINT_LT    */
+      ((imm & 7) == 2) ? (a <= b) :              /* _MM_CMPINT_LE    */
+      ((imm & 7) == 3) ? ((a <  b) & (a >= b)) : /* _MM_CMPINT_FALSE -> 0 */
+      ((imm & 7) == 4) ? (a != b) :              /* _MM_CMPINT_NE    */
+      ((imm & 7) == 5) ? (a >= b) :              /* _MM_CMPINT_NLT   */
+      ((imm & 7) == 6) ? (a >  b) :              /* _MM_CMPINT_NLE   */
+                         ((a == a) | (a != a))    /* _MM_CMPINT_TRUE -> 1 */
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', imm: int32_t, res: '{vbool}'}
+    direct: |-
+      ((imm & 7) == 0) ? tsl::equal<{simd_a}>(a, b) :
+      ((imm & 7) == 1) ? tsl::less_than<{simd_a}>(a, b) :
+      ((imm & 7) == 2) ? tsl::less_than_or_equal<{simd_a}>(a, b) :
+      ((imm & 7) == 3) ? tsl::mask_false<{simd_a}>() :
+      ((imm & 7) == 4) ? tsl::nequal<{simd_a}>(a, b) :
+      ((imm & 7) == 5) ? tsl::greater_than_or_equal<{simd_a}>(a, b) :
+      ((imm & 7) == 6) ? tsl::greater_than<{simd_a}>(a, b) :
+                         tsl::mask_true<{simd_a}>();
+
+  - isa: clang_builtins
+    dtype: 'float'
+    signature: {a: '{v}', b: '{v}', imm: imm32, res: '{vbool}'}
+    direct: |-
+      (((imm & 31) == 0x00) | ((imm & 31) == 0x10)) ? (a == b) :                        /* EQ_OQ/OS */
+      (((imm & 31) == 0x08) | ((imm & 31) == 0x18)) ? ((a == b) | (a != a) | (b != b)) : /* EQ_UQ/US */
+      (((imm & 31) == 0x01) | ((imm & 31) == 0x11)) ? (a <  b) :                        /* LT_OS/OQ */
+      (((imm & 31) == 0x02) | ((imm & 31) == 0x12)) ? (a <= b) :                        /* LE_OS/OQ */
+      (((imm & 31) == 0x0e) | ((imm & 31) == 0x1e)) ? (a >  b) :                        /* GT_OS/OQ */
+      (((imm & 31) == 0x0d) | ((imm & 31) == 0x1d)) ? (a >= b) :                        /* GE_OS/OQ */
+      (((imm & 31) == 0x04) | ((imm & 31) == 0x14)) ? (a != b) :                        /* NEQ_UQ/US */
+      (((imm & 31) == 0x0c) | ((imm & 31) == 0x1c)) ? ((a <  b) | (a >  b)) :           /* NEQ_OQ/OS */
+      (((imm & 31) == 0x03) | ((imm & 31) == 0x13)) ? ((a != a) | (b != b)) :           /* UNORD_Q/S */
+      (((imm & 31) == 0x07) | ((imm & 31) == 0x17)) ? ((a == a) & (b == b)) :           /* ORD_Q/S */
+      (((imm & 31) == 0x05) | ((imm & 31) == 0x15)) ? ((a >= b) | (a != a) | (b != b)) : /* NLT_US/UQ */
+      (((imm & 31) == 0x06) | ((imm & 31) == 0x16)) ? ((a >  b) | (a != a) | (b != b)) : /* NLE_US/UQ */
+      (((imm & 31) == 0x09) | ((imm & 31) == 0x19)) ? ((a <  b) | (a != a) | (b != b)) : /* NGE_US/UQ */
+      (((imm & 31) == 0x0a) | ((imm & 31) == 0x1a)) ? ((a <= b) | (a != a) | (b != b)) : /* NGT_US/UQ */
+      (((imm & 31) == 0x0b) | ((imm & 31) == 0x1b)) ? ((a <  b) & (a >= b)) :           /* FALSE_OQ/OS -> 0 */
+                                                      ((a == a) | (a != a))              /* TRUE_UQ/US -> 1 */
+
+  - isa: tsl
+    dtype: 'float'
+    signature: {a: '{v}', b: '{v}', imm: int32_t, res: '{vbool}'}
+    direct: |-
+      (((imm & 31) == 0x00) | ((imm & 31) == 0x10)) ? tsl::equal<{simd_a}>(a, b) :
+      (((imm & 31) == 0x08) | ((imm & 31) == 0x18)) ? tsl::mask_binary_or<{simd_a}>(tsl::equal<{simd_a}>(a, b), tsl::mask_binary_or<{simd_a}>(tsl::nequal<{simd_a}>(a, a), tsl::nequal<{simd_a}>(b, b))) :
+      (((imm & 31) == 0x01) | ((imm & 31) == 0x11)) ? tsl::less_than<{simd_a}>(a, b) :
+      (((imm & 31) == 0x02) | ((imm & 31) == 0x12)) ? tsl::less_than_or_equal<{simd_a}>(a, b) :
+      (((imm & 31) == 0x0e) | ((imm & 31) == 0x1e)) ? tsl::greater_than<{simd_a}>(a, b) :
+      (((imm & 31) == 0x0d) | ((imm & 31) == 0x1d)) ? tsl::greater_than_or_equal<{simd_a}>(a, b) :
+      (((imm & 31) == 0x04) | ((imm & 31) == 0x14)) ? tsl::nequal<{simd_a}>(a, b) :
+      (((imm & 31) == 0x0c) | ((imm & 31) == 0x1c)) ? tsl::mask_binary_or<{simd_a}>(tsl::less_than<{simd_a}>(a, b), tsl::greater_than<{simd_a}>(a, b)) :
+      (((imm & 31) == 0x03) | ((imm & 31) == 0x13)) ? tsl::mask_binary_or<{simd_a}>(tsl::nequal<{simd_a}>(a, a), tsl::nequal<{simd_a}>(b, b)) :
+      (((imm & 31) == 0x07) | ((imm & 31) == 0x17)) ? tsl::mask_binary_and<{simd_a}>(tsl::equal<{simd_a}>(a, a), tsl::equal<{simd_a}>(b, b)) :
+      (((imm & 31) == 0x05) | ((imm & 31) == 0x15)) ? tsl::mask_binary_or<{simd_a}>(tsl::greater_than_or_equal<{simd_a}>(a, b), tsl::mask_binary_or<{simd_a}>(tsl::nequal<{simd_a}>(a, a), tsl::nequal<{simd_a}>(b, b))) :
+      (((imm & 31) == 0x06) | ((imm & 31) == 0x16)) ? tsl::mask_binary_or<{simd_a}>(tsl::greater_than<{simd_a}>(a, b), tsl::mask_binary_or<{simd_a}>(tsl::nequal<{simd_a}>(a, a), tsl::nequal<{simd_a}>(b, b))) :
+      (((imm & 31) == 0x09) | ((imm & 31) == 0x19)) ? tsl::mask_binary_or<{simd_a}>(tsl::less_than<{simd_a}>(a, b), tsl::mask_binary_or<{simd_a}>(tsl::nequal<{simd_a}>(a, a), tsl::nequal<{simd_a}>(b, b))) :
+      (((imm & 31) == 0x0a) | ((imm & 31) == 0x1a)) ? tsl::mask_binary_or<{simd_a}>(tsl::less_than_or_equal<{simd_a}>(a, b), tsl::mask_binary_or<{simd_a}>(tsl::nequal<{simd_a}>(a, a), tsl::nequal<{simd_a}>(b, b))) :
+      (((imm & 31) == 0x0b) | ((imm & 31) == 0x1b)) ? tsl::mask_false<{simd_a}>() :
+                                                      tsl::mask_true<{simd_a}>();

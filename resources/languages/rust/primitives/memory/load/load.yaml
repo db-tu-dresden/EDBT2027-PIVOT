@@ -1,0 +1,41 @@
+primitive: LOAD
+input: [ptr]
+output: res
+# Aligned load; the unaligned variant is LOADU (loadu.yaml).
+definitions:
+
+  # x86 - aligned
+  - 'isa': 'x86'
+    'dtype': '{int, float}{32, 64}'
+    'direct': '_mm{x86_widths}_load_{dtype_suffix}(ptr);'
+
+  - 'isa': 'x86'
+    'direct': '_mm_load_si128(ptr);'
+
+  - 'isa': 'x86'
+    'direct': '_mm256_load_si256(ptr);'
+
+  - 'isa': 'x86'
+    'direct': '_mm512_load_si512(ptr);'
+
+  # Neon
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'vld1{neon_widths}_{dtype_suffix}(ptr);'
+
+  # SVE
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'svld1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    # Type-agnostic load (void const*); reinterpret to the vector type.
+    signature: {ptr: 'const void*', res: '{v}'}
+    direct: 'return ({ {v} __ld; __builtin_memcpy(&__ld, ptr, sizeof(__ld)); __ld; });'
+
+  # core_simd — aligned load (the x86 aligned intrinsic promises the alignment)
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'const_ptr', res: '{v}'}
+    direct: 'unsafe { (ptr as *const {simd_res}).read() };'

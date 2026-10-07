@@ -1,0 +1,97 @@
+# res[i] = signed-saturate narrow of data[i]  (low lanes packed, upper zero)
+primitive: CONVERT_DOWN
+input: [data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtsepi16_{dtype_suffix}(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtsepi32_{dtype_suffix}(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtsepi64_{dtype_suffix}(data);'
+
+  - isa: clang_builtins
+    signature: {data: 'v8s', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 8; _i++) { long long _v = data[_i]; __r[_i] = _v < -128 ? -128 : (_v > 127 ? 127 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v16s', res: 'v16c'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v16s)(-128)), (v16s)127), v16c);'
+  - isa: clang_builtins
+    signature: {data: 'v32s', res: 'v32c'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v32s)(-128)), (v32s)127), v32c);'
+  - isa: clang_builtins
+    signature: {data: 'v4i', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < -128 ? -128 : (_v > 127 ? 127 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v4i', res: 'v8s'}
+    direct: |-
+      v8s __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < -32768 ? -32768 : (_v > 32767 ? 32767 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8i', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 8; _i++) { long long _v = data[_i]; __r[_i] = _v < -128 ? -128 : (_v > 127 ? 127 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8i', res: 'v8s'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v8i)(-32768)), (v8i)32767), v8s);'
+  - isa: clang_builtins
+    signature: {data: 'v16i', res: 'v16c'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v16i)(-128)), (v16i)127), v16c);'
+  - isa: clang_builtins
+    signature: {data: 'v16i', res: 'v16s'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v16i)(-32768)), (v16i)32767), v16s);'
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 2; _i++) { long long _v = data[_i]; __r[_i] = _v < -128 ? -128 : (_v > 127 ? 127 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v4i'}
+    direct: |-
+      v4i __r = {0};
+      for (int _i = 0; _i < 2; _i++) { long long _v = data[_i]; __r[_i] = _v < (-2147483647-1) ? (-2147483647-1) : (_v > 2147483647 ? 2147483647 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v8s'}
+    direct: |-
+      v8s __r = {0};
+      for (int _i = 0; _i < 2; _i++) { long long _v = data[_i]; __r[_i] = _v < -32768 ? -32768 : (_v > 32767 ? 32767 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < -128 ? -128 : (_v > 127 ? 127 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v4i'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v4l)(-2147483648)), (v4l)2147483647), v4i);'
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v8s'}
+    direct: |-
+      v8s __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < -32768 ? -32768 : (_v > 32767 ? 32767 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 8; _i++) { long long _v = data[_i]; __r[_i] = _v < -128 ? -128 : (_v > 127 ? 127 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v8i'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v8l)(-2147483648)), (v8l)2147483647), v8i);'
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v8s'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v8l)(-32768)), (v8l)32767), v8s);'
+

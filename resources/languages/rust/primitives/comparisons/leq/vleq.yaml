@@ -1,0 +1,38 @@
+primitive: VLEQ
+# a[i] <= b[i] — returns mask
+input: [a, b]
+output: res
+
+definitions:
+  # x86 — integer/unsigned
+  - isa: x86
+    dtype: '{int, uint}'
+    direct: '_mm{x86_widths}_cmple_{dtype_suffix}_mask(a, b);'
+
+  # x86 — float (named shorthand)
+  - isa: x86
+    dtype: 'float'
+    direct: '_mm512_cmple_{dtype_suffix}_mask(a, b);'
+
+  # x86 — float (generic cmp form)
+  - isa: x86
+    dtype: 'float'
+    direct: '_mm512_cmp_{dtype_suffix}_mask(a, b, _CMP_LE_OQ);'
+
+  # Clang builtins — mask return
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a <= b;'
+
+  # Clang builtins — vector return
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: '({v})(a <= b);'
+
+  # core_simd — SimdPartialOrd -> Mask
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a.simd_le(b);'

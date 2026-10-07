@@ -1,0 +1,110 @@
+# res[i] = a[0]
+primitive: BROADCAST
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    dtype: int8
+    direct: '_mm{x86_widths}_broadcastb_{dtype_suffix}(a);'
+  - isa: x86
+    dtype: int16
+    direct: '_mm{x86_widths}_broadcastw_{dtype_suffix}(a);'
+  - isa: x86
+    dtype: int32
+    direct: '_mm{x86_widths}_broadcastd_{dtype_suffix}(a);'
+  - isa: x86
+    dtype: int64
+    direct: '_mm{x86_widths}_broadcastq_{dtype_suffix}(a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: { res: '{v}{128, 256, 512}', a: '{v}{128}' }
+    direct: 'a[0];'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: { res: '{v}{128, 256, 512}', a: '{v}{128}' }
+    direct: 'tsl::set1<{simd_res}>(tsl::extract_value_at<{simd_a}>(a, 0));'
+
+---
+# res[i] = k[i] ? a[0] : src[i]
+primitive: BROADCAST_MERGE
+input: [src, k, a]
+output: res
+definitions:
+  - isa: x86
+    dtype: int8
+    direct: '_mm{x86_widths}_mask_broadcastb_{dtype_suffix}(src, k, a);'
+  - isa: x86
+    dtype: int16
+    direct: '_mm{x86_widths}_mask_broadcastw_{dtype_suffix}(src, k, a);'
+  - isa: x86
+    dtype: int32
+    direct: '_mm{x86_widths}_mask_broadcastd_{dtype_suffix}(src, k, a);'
+  - isa: x86
+    dtype: int64
+    direct: '_mm{x86_widths}_mask_broadcastq_{dtype_suffix}(src, k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}{128}', res: '{v}'}
+    direct: 'k ? a[0] : src;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}{128}', res: '{v}'}
+    direct: 'tsl::masked_set1<{simd_res}>(k, src, tsl::extract_value_at<{simd_a}>(a, 0));'
+
+---
+# res[i] = *ptr
+primitive: BROADCAST_MEM
+input: [ptr]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_broadcast_ss(ptr);'
+  - isa: x86
+    direct: '_mm256_broadcast_ss(ptr);'
+  - isa: x86
+    direct: '_mm256_broadcast_sd(ptr);'
+
+  - isa: clang_builtins
+    dtype: float32
+    signature: {ptr: 'const float*', res: '{v}'}
+    direct: '*ptr;'
+  - isa: clang_builtins
+    dtype: float64
+    signature: {ptr: 'const double*', res: '{v}'}
+    direct: '*ptr;'
+
+  - isa: tsl
+    dtype: float32
+    signature: {ptr: 'const float*', res: '{v}'}
+    direct: 'tsl::set1<{simd_res}>(*ptr);'
+  - isa: tsl
+    dtype: float64
+    signature: {ptr: 'const double*', res: '{v}'}
+    direct: 'tsl::set1<{simd_res}>(*ptr);'
+
+---
+# res = tile(a) replicated to fill a wider register
+primitive: BROADCAST_TILE
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm256_broadcast_f32x4(a);'
+  - isa: x86
+    direct: '_mm512_broadcast_f32x4(a);'
+  - isa: x86
+    direct: '_mm512_broadcast_f64x4(a);'
+
+  - isa: clang_builtins
+    signature: {a: v4f, res: v8f}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v4f, res: v16f}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3, 0,1,2,3, 0,1,2,3, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v4d, res: v8d}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3, 0,1,2,3);'

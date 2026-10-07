@@ -1,0 +1,171 @@
+- name: _mm256_multishift_epi64_epi8
+  input: {a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_multishift_epi64_epi8
+  input: {src: __m256i, k: __mmask32, a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_multishift_epi64_epi8
+  input: {k: __mmask32, a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_multishift_epi64_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_multishift_epi64_epi8
+  input: {src: __m128i, k: __mmask16, a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_multishift_epi64_epi8
+  input: {k: __mmask16, a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_permutexvar_epi8
+  input: {idx: __m256i, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {idx: v32c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_permutexvar_epi8
+  input: {src: __m256i, k: __mmask32, idx: __m256i, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v32c, k: v32b_c, idx: v32c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_permutexvar_epi8
+  input: {k: __mmask32, idx: __m256i, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v32b_c, idx: v32c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_permutexvar_epi8
+  input: {idx: __m128i, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {idx: v16c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_permutexvar_epi8
+  input: {src: __m128i, k: __mmask16, idx: __m128i, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v16c, k: v16b_c, idx: v16c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_permutexvar_epi8
+  input: {k: __mmask16, idx: __m128i, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v16b_c, idx: v16c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_permutex2var_epi8
+  input: {a: __m256i, idx: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v32c, idx: v32c, b: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_permutex2var_epi8
+  input: {a: __m256i, k: __mmask32, idx: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v32c, k: v32b_c, idx: v32c, b: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask2_permutex2var_epi8
+  input: {a: __m256i, idx: __m256i, k: __mmask32, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v32c, idx: v32c, k: v32b_c, b: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_permutex2var_epi8
+  input: {k: __mmask32, a: __m256i, idx: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v32b_c, a: v32c, idx: v32c, b: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_permutex2var_epi8
+  input: {a: __m128i, idx: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, idx: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_permutex2var_epi8
+  input: {a: __m128i, k: __mmask16, idx: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, k: v16b_c, idx: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask2_permutex2var_epi8
+  input: {a: __m128i, idx: __m128i, k: __mmask16, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, idx: v16c, k: v16b_c, b: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_permutex2var_epi8
+  input: {k: __mmask16, a: __m128i, idx: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v16b_c, a: v16c, idx: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm512_multishift_epi64_epi8
+  input: {a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_mask_multishift_epi64_epi8
+  input: {src: __m512i, k: __mmask64, a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_maskz_multishift_epi64_epi8
+  input: {k: __mmask64, a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_permutexvar_epi8
+  input: {idx: __m512i, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {idx: v64c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_mask_permutexvar_epi8
+  input: {src: __m512i, k: __mmask64, idx: __m512i, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v64c, k: v64b_c, idx: v64c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_maskz_permutexvar_epi8
+  input: {k: __mmask64, idx: __m512i, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v64b_c, idx: v64c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_permutex2var_epi8
+  input: {a: __m512i, idx: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v64c, idx: v64c, b: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_mask_permutex2var_epi8
+  input: {a: __m512i, k: __mmask64, idx: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v64c, k: v64b_c, idx: v64c, b: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_mask2_permutex2var_epi8
+  input: {a: __m512i, idx: __m512i, k: __mmask64, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v64c, idx: v64c, k: v64b_c, b: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>
+- name: _mm512_maskz_permutex2var_epi8
+  input: {k: __mmask64, a: __m512i, idx: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v64b_c, a: v64c, idx: v64c, b: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI]
+  include: <immintrin.h>

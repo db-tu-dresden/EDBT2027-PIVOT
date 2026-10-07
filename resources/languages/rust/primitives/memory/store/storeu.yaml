@@ -1,0 +1,49 @@
+primitive: STOREU
+input: [ptr, v]
+output:
+# Unaligned store; the aligned variant is STORE (store.yaml).
+definitions:
+
+  # x86 - unaligned
+  - 'isa': 'x86'
+    'dtype': '{int, float}'
+    'direct': '_mm{x86_widths}_storeu_{dtype_suffix}(ptr, v);'
+
+  - 'isa': 'x86'
+    'direct': '_mm_storeu_si128(ptr, v);'
+
+  - 'isa': 'x86'
+    'direct': '_mm256_storeu_si256(ptr, v);'
+
+  - 'isa': 'x86'
+    'direct': '_mm512_storeu_si512(ptr, v);'
+
+  # Neon (alignment-agnostic)
+  - 'isa': 'arm'
+    'dtype': 'float{16, 32, 64}'
+    'direct': 'vst1{neon_widths}_{dtype_suffix}(ptr, v);'
+
+  - 'isa': 'arm'
+    'dtype': '{int, uint}'
+    'direct': 'vst1{neon_widths}_{dtype_suffix}(ptr, v);'
+
+  # SVE (alignment-agnostic)
+  - 'isa': 'arm'
+    'dtype': 'float{16, 32, 64}'
+    'direct': 'svst1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr, v);'
+
+  - 'isa': 'arm'
+    'dtype': '{int, uint}'
+    'direct': 'svst1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr, v);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    # Type-agnostic store (void*); unaligned access via memcpy.
+    signature: {ptr: 'void*', v: '{v}'}
+    direct: '__builtin_memcpy(ptr, &v, sizeof(v));'
+
+  # core_simd — unaligned store
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'mut_ptr', v: '{v}'}
+    direct: 'unsafe { (ptr as *mut {simd_v}).write_unaligned(v) };'

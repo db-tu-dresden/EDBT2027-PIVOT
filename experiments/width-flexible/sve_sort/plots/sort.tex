@@ -1,0 +1,91 @@
+% Speedup of the SVE quicksort over std::sort: a panel per dtype on one shared axis, in it a
+% group per machine and variant, a bar per vector width. Drawn from the tables that plot.py
+% writes to data/: the group labels, one table per dtype and width with the group and position
+% in it of each bar, the guide lines, and the range of all speedups.
+\documentclass[9pt]{amsart}
+\usepackage{pivotfig}
+
+\pgfplotstableread[col sep=comma]{data/groups.csv}\sortGroups
+\pgfplotstableread[col sep=comma]{data/range.csv}\sortRange
+\pgfplotstablegetelem{0}{min}\of\sortRange \pgfmathsetmacro{\sortYmin}{\pgfplotsretval/1.25}
+\pgfplotstablegetelem{0}{max}\of\sortRange \pgfmathsetmacro{\sortYmax}{\pgfplotsretval*1.25}
+
+% Every group gets the same width, and one doubling the same height.
+\pgfmathsetlengthmacro{\sortSlot}{19.5pt}
+\pgfmathsetlengthmacro{\sortOctave}{18pt}
+\pgfmathsetlengthmacro{\sortBar}{0.2*\sortSlot}
+% Distance between bars and half a bar, in group widths.
+\def\sortStep{0.21}
+\def\sortHalfBar{0.1}
+\pgfplotsset{
+  sort panel/.style={
+    log origin=0, clip=false, scale only axis, x=\sortSlot, xmin=-0.5, xmax=4.5,
+    ymin=\sortYmin, ymax=\sortYmax, height={ln(\sortYmax/\sortYmin)/ln(2)*\sortOctave},
+    axis lines*=left, axis line style={gray1, line width=0.4pt},
+    xtick={0,...,4}, xtick align=outside, major tick length=2pt,
+    xticklabels from table={\sortGroups}{label},
+    xticklabel style={rotate=45, anchor=north east, inner sep=1pt},
+    ytick={0.25,0.5,1,2,4,8},
+    yticklabel={\pgfmathparse{exp(\tick)}\pgfmathprintnumber[fixed]{\pgfmathresult}},
+    tick style={gray1, line width=0.4pt}, ymajorgrids,
+    major grid style={gray1!25, line width=0.2pt},
+    ticklabel style={font=\footnotesize, text=gray1},
+    ybar, bar width=\sortBar,
+  },
+  sort left/.style={ylabel={speedup over \texttt{std::sort}},
+    ylabel style={font=\footnotesize, text=gray1}},
+  sort right/.style={yticklabels={}},
+}
+\tikzset{
+  sort 128/.style={draw=magenta1, fill=magenta2, line width=0.5pt},
+  sort 256/.style={draw=teal1, fill=teal2, line width=0.5pt},
+  sort 512/.style={draw=blue1, fill=blue2, line width=0.5pt},
+  sort 1024/.style={draw=orange1, fill=orange2, line width=0.5pt},
+  sort guide/.style={#1, opacity=0.55, line width=0.4pt, dash pattern=on 1.5pt off 1pt},
+}
+% Draws the guide lines of one dtype and width, behind the bars: from the top of each A64FX SVE
+% bar to the right edge of the same TSL bar.
+\newcommand{\sortGuide}[3]{% dtype, width, colour
+  \IfFileExists{data/guides-#1-#2.csv}{%
+    \addplot[sort guide=#3, sharp plot, forget plot, unbounded coords=jump]
+      table[col sep=comma, y=speedup,
+        x expr={\thisrow{group} + \thisrow{k}*\sortStep + \sortHalfBar}]
+      {data/guides-#1-#2.csv};}{}}
+% Draws the bars of one dtype and width.
+\newcommand{\sortBars}[2]{% dtype, width
+  \IfFileExists{data/#1-#2.csv}{%
+    \addplot[sort #2, bar shift=0pt] table[col sep=comma, y=speedup,
+      x expr={\thisrow{group} + \thisrow{k}*\sortStep}] {data/#1-#2.csv};}{}}
+% Draws one panel: guides, bars, the line at 1 and the title.
+\newcommand{\sortPanel}[1]{% dtype
+  \sortGuide{#1}{128}{magenta1}
+  \sortGuide{#1}{256}{teal1}
+  \sortGuide{#1}{512}{blue1}
+  \sortBars{#1}{128}
+  \sortBars{#1}{256}
+  \sortBars{#1}{512}
+  \sortBars{#1}{1024}
+  \draw[gray1, line width=0.4pt] ({rel axis cs:0,0}|-{axis cs:0,1}) -- ({rel axis cs:1,0}|-{axis cs:0,1});
+  \node[font=\footnotesize, text=gray1, anchor=base] at ([yshift=4pt]rel axis cs:0.5,1) {#1};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[ymode=log, sort panel, sort left, name=int]
+  \sortPanel{int32}
+\end{axis}
+\begin{axis}[ymode=log, sort panel, sort right, name=dbl, at={($(int.north east)+(8pt,0)$)},
+    anchor=north west]
+  \sortPanel{double}
+\end{axis}
+\coordinate (legend) at ($(int.south west)!0.5!(dbl.south east)$);
+\matrix[anchor=north, yshift=-6pt, column sep=3pt,
+    nodes={font=\footnotesize, text=gray1, inner sep=0pt, anchor=base west}]
+    at (legend |- current bounding box.south) {
+  \draw[sort 128] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {128 bit}; &[8pt]
+  \draw[sort 256] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {256 bit}; &[8pt]
+  \draw[sort 512] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {512 bit}; &[8pt]
+  \draw[sort 1024] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {1024 bit}; \\
+};
+\end{tikzpicture}
+\end{document}

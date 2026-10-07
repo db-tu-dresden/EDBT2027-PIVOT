@@ -1,0 +1,48 @@
+- name: _mm256_madd52hi_avx_epu64
+  input: {__X: __m256i, __Y: __m256i, __Z: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__X: v4ul, __Y: v4ul, __Z: v4ul}, output: {dst: v4ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm256_madd52lo_avx_epu64
+  input: {__X: __m256i, __Y: __m256i, __Z: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__X: v4ul, __Y: v4ul, __Z: v4ul}, output: {dst: v4ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm_madd52hi_avx_epu64
+  input: {__X: __m128i, __Y: __m128i, __Z: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__X: v2ul, __Y: v2ul, __Z: v2ul}, output: {dst: v2ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm_madd52lo_avx_epu64
+  input: {__X: __m128i, __Y: __m128i, __Z: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__X: v2ul, __Y: v2ul, __Z: v2ul}, output: {dst: v2ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm256_madd52hi_epu64
+  input: {__X: __m256i, __Y: __m256i, __Z: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__X: v4ul, __Y: v4ul, __Z: v4ul}, output: {dst: v4ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm256_madd52lo_epu64
+  input: {__X: __m256i, __Y: __m256i, __Z: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__X: v4ul, __Y: v4ul, __Z: v4ul}, output: {dst: v4ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm_madd52hi_epu64
+  input: {__X: __m128i, __Y: __m128i, __Z: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__X: v2ul, __Y: v2ul, __Z: v2ul}, output: {dst: v2ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>
+- name: _mm_madd52lo_epu64
+  input: {__X: __m128i, __Y: __m128i, __Z: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__X: v2ul, __Y: v2ul, __Z: v2ul}, output: {dst: v2ul}}
+  flags: [AVX_IFMA]
+  include: <immintrin.h>

@@ -1,0 +1,74 @@
+# ptr[i] = v[i]
+primitive: STORE
+input: [ptr, v]
+output:
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_store_{dtype_suffix}(ptr, v);'
+
+  - isa: arm
+    direct: 'vst1{neon_widths}_{dtype_suffix}(ptr, v);'
+
+  # `svst1` requires no alignment, so it is in STOREU (storeu.yaml) only.
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', v: '{v}'}
+    direct: '__builtin_memcpy(ptr, &v, sizeof(v));'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', v: '{v}'}
+    direct: 'tsl::store<{simd_v}, true>((typename {simd_v}::base_type*)ptr, v);'
+
+---
+# if k[i]: ptr[i] = v[i]
+primitive: STORE_MASKED
+input: [ptr, k, v]
+output:
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_store_{dtype_suffix}(ptr, k, v);'
+
+  # `svst1` (masked) is unaligned — see STORE above; it belongs to STOREU_MASKED only.
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', k: '{vbool}', v: '{v}'}
+    direct: '__builtin_masked_store(k, v, ({s}*)ptr);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', k: '{vbool}', v: '{v}'}
+    direct: 'tsl::store_mask<{simd_v}, true>(k, (typename {simd_v}::base_type*)ptr, v);'
+
+---
+# ptr[i] = v[i], non-temporal
+primitive: NONTEMPORAL_STORE
+input: [ptr, v]
+output:
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_stream_{dtype_suffix}(ptr, v);'
+
+  - isa: x86
+    direct: '_mm_stream_si32(ptr, v);'
+
+  - isa: x86
+    direct: '_mm_stream_si64(ptr, v);'
+
+  - isa: arm
+    direct: 'svstnt1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr, v);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', v: '{v}'}
+    direct: '__builtin_nontemporal_store(v, ({v}*)ptr);'
+
+  - isa: clang_builtins
+    signature: {ptr: 'int32_t*', v: 'int32_t'}
+    direct: '__builtin_nontemporal_store(v, ptr);'
+
+  - isa: clang_builtins
+    signature: {ptr: 'int64_t*', v: 'int64_t'}
+    direct: '__builtin_nontemporal_store(v, ptr);'

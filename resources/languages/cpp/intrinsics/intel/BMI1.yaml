@@ -1,0 +1,138 @@
+- name: _bextr_u32
+  input: {a: unsigned int, start: unsigned int, len: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, start: uint32_t, len: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _bextr2_u32
+  input: {a: unsigned int, control: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, control: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _bextr_u64
+  input: {a: unsigned __int64, start: unsigned int, len: unsigned int}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, start: uint32_t, len: uint32_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _bextr2_u64
+  input: {a: unsigned __int64, control: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, control: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _blsi_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _blsi_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: __blsi_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: __blsi_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _blsmsk_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _blsmsk_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _blsr_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _blsr_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: __blsr_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: __blsr_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _andn_u32
+  input: {a: unsigned int, b: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, b: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _andn_u64
+  input: {a: unsigned __int64, b: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, b: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _tzcnt_u16
+  input: {a: unsigned short}
+  output: {dst: unsigned short}
+  ir: {input: {a: uint16_t}, output: {dst: uint16_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _tzcnt_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _tzcnt_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: __tzcnt_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: __tzcnt_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _mm_tzcnt_32
+  input: {a: unsigned int}
+  output: {dst: int}
+  ir: {input: {a: uint32_t}, output: {dst: int32_t}}
+  flags: [BMI1]
+  include: <immintrin.h>
+- name: _mm_tzcnt_64
+  input: {a: unsigned __int64}
+  output: {dst: __int64}
+  ir: {input: {a: uint64_t}, output: {dst: int64_t}}
+  flags: [BMI1]
+  include: <immintrin.h>

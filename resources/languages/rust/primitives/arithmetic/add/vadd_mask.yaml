@@ -1,0 +1,21 @@
+primitive: VADD_MASK
+input: [src, k, a, b]   # res[i] := k[i] ? a[i] + b[i] : src[i]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: '{int, float}'
+    direct: '_mm{x86_widths}_mask_add_{dtype_suffix}(src, k, a, b);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a + b) : src;'
+
+  # core_simd — Select::select(mask, true_lanes, false_lanes)
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k.select(a + b, src);'

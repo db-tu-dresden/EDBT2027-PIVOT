@@ -1,0 +1,210 @@
+# res = a * b
+primitive: MUL
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mullo_{dtype_suffix}(a, b);'
+
+  - isa: x86
+    nto1: true
+    direct: |
+      _mm_add_epi64(
+        _mm_mul_epu32(a, b),
+        _mm_shuffle_epi32(
+          _mm_hadd_epi32(
+            _mm_mullo_epi32(a, _mm_shuffle_epi32(b, 0xB1)),
+            _mm_setzero_si128()
+          ),
+          0x73
+        )
+      );
+
+  - isa: x86
+    nto1: true
+    direct: |
+      _mm256_add_epi64(
+        _mm256_mul_epu32(a, b),
+        _mm256_shuffle_epi32(
+          _mm256_hadd_epi32(
+            _mm256_mullo_epi32(a, _mm256_shuffle_epi32(b, 0xB1)),
+            _mm256_setzero_si256()
+          ),
+          0x73
+        )
+      );
+
+  - isa: x86
+    nto1: true
+    direct: |
+      _mm512_add_epi64(
+        _mm512_mul_epu32(a, b),
+        _mm512_shuffle_epi32(
+          _mm512_hadd_epi32(
+            _mm512_mullo_epi32(a, _mm512_shuffle_epi32(b, 0xB1)),
+            _mm512_setzero_si512()
+          ),
+          0x73
+        )
+      );
+
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_mul_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    nto1: true
+    direct: |
+      vmlal_u32(
+        vshlq_n_u64(
+          vpaddlq_u32(
+            vmulq_u32(
+              a,
+              vrev64q_u32(b)
+            )
+          ),
+          32
+        ),
+        vmovn_u64(b),
+        vmovn_u64(a)
+      );
+
+  - isa: arm
+    direct: 'vmul{neon_widths}_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    direct: 'svmul_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), a, b);'
+
+  # scalar-broadcast form: b is a scalar multiplied into every lane
+  - isa: arm
+    direct: 'svmul_n_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a * b;'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{s}', res: '{v}'}
+    direct: 'a * ({v})(b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::mul<{simd_res}>(a, b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{s}', res: '{v}'}
+    direct: 'tsl::mul<{simd_res}>(a, tsl::set1<{simd_res}>(b));'
+
+  # 64-bit multiply matched from the 32-bit-op emulation (x86 has no 64-bit
+  # vector mul below AVX-512DQ): the source boundary is typed 32-bit-in/64-bit-out
+  # by first-use inference, so reinterpret the inputs up to 64-bit and multiply.
+  - isa: clang_builtins
+    signature: {a: v4ui, b: v4ui, res: v2l}
+    direct: '(v2l)(a) * (v2l)(b);'
+
+  - isa: clang_builtins
+    signature: {a: v8ui, b: v8ui, res: v4l}
+    direct: '(v4l)(a) * (v4l)(b);'
+
+  - isa: clang_builtins
+    signature: {a: v16ui, b: v16ui, res: v8l}
+    direct: '(v8l)(a) * (v8l)(b);'
+
+  - isa: tsl
+    signature: {a: v4ui, b: v4ui, res: v2l}
+    direct: 'tsl::mul<{simd_res}>(tsl::reinterpret<{simd_a}, {simd_res}>(a), tsl::reinterpret<{simd_b}, {simd_res}>(b));'
+
+  - isa: tsl
+    signature: {a: v8ui, b: v8ui, res: v4l}
+    direct: 'tsl::mul<{simd_res}>(tsl::reinterpret<{simd_a}, {simd_res}>(a), tsl::reinterpret<{simd_b}, {simd_res}>(b));'
+
+  - isa: tsl
+    signature: {a: v16ui, b: v16ui, res: v8l}
+    direct: 'tsl::mul<{simd_res}>(tsl::reinterpret<{simd_a}, {simd_res}>(a), tsl::reinterpret<{simd_b}, {simd_res}>(b));'
+
+---
+# res = k ? a * b : src
+primitive: MUL_MERGE
+input: [src, k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_mullo_{dtype_suffix}(src, k, a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_mask_mul_{dtype_suffix}(src, k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a * b) : src;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(k, tsl::mul<{simd_res}>(a, b), src);'
+
+---
+# res = k ? a * b : 0
+primitive: MUL_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_mullo_{dtype_suffix}(k, a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_maskz_mul_{dtype_suffix}(k, a, b);'
+
+  - isa: arm
+    direct: 'svmul_{dtype_suffix}_z(k, a, b);'
+
+  - isa: arm
+    direct: 'svmul_n_{dtype_suffix}_z(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? (a * b) : ({v}){0};'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{s}', res: '{v}'}
+    direct: 'k ? (a * ({v})(b)) : ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::mul_maskz<{simd_res}>(k, a, b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{s}', res: '{v}'}
+    direct: 'tsl::mul_maskz<{simd_res}>(k, a, tsl::set1<{simd_res}>(b));'
+
+---
+# res = lo32(a) * lo32(b)   (32->64 widening; clang path is 512-bit only)
+primitive: MUL_WIDEN
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: '{int, uint}{32}'
+    direct: '_mm{x86_widths}_mul_{dtype_suffix}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}{32}'
+    signature: {a: '{v}{512}', b: '{v}{512}', res: '{v}{512}'}
+    direct: '({v})(((v8ul)a & 0xFFFFFFFF) * ((v8ul)b & 0xFFFFFFFF));'
+
+  # low32(a)*low32(b) via same-width 64-bit mul over zero-extended halves; clang
+  # folds mul(and(x,0xFFFFFFFF), and(y,..)) back to a single vpmuludq.
+  - isa: tsl
+    signature: {a: v16ui, b: v16ui, res: v16ui, wide: v8ul}
+    direct: 'tsl::reinterpret<{simd_wide}, {simd_res}>(tsl::mul<{simd_wide}>(tsl::binary_and<{simd_wide}>(tsl::reinterpret<{simd_a}, {simd_wide}>(a), tsl::set1<{simd_wide}>(0xFFFFFFFF)), tsl::binary_and<{simd_wide}>(tsl::reinterpret<{simd_b}, {simd_wide}>(b), tsl::set1<{simd_wide}>(0xFFFFFFFF))));'

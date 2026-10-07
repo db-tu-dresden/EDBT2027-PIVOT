@@ -1,0 +1,53 @@
+primitive: VEQ
+input: [a, b]
+output: res
+definitions:
+  # x86 - mask return type
+  - 'isa': 'x86'
+    'dtype': '{int, uint}'
+    'direct': '_mm_cmpeq_{dtype_suffix}_mask(a, b);'
+
+  - 'isa': 'x86'
+    'dtype': '{int, uint}'
+    'direct': '_mm256_cmpeq_{dtype_suffix}_mask(a, b);'
+
+  - 'isa': 'x86'
+    'dtype': '{int, uint, float}'
+    'direct': '_mm512_cmpeq_{dtype_suffix}_mask(a, b);'
+
+  - isa: x86
+    dtype: 'float'
+    direct: '_mm512_cmp_{dtype_suffix}_mask(a, b, _CMP_EQ_OQ);'
+
+  # x86 - vector return type
+  - 'isa': 'x86'
+    'dtype': '{int, float}'
+    'direct': '_mm_cmpeq_{dtype_suffix}(a, b);'
+
+  - 'isa': 'x86'
+    'dtype': 'int'
+    'direct': '_mm256_cmpeq_{dtype_suffix}(a, b);'
+
+  # Clang builtins - mask return type
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a == b;'
+  # Clang builtins - vector return type
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: { a: '{v}', b: '{v}', res: '{v}' }
+    direct: '({v})(a == b);'
+
+  # core_simd — SimdPartialEq -> Mask
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a.simd_eq(b);'
+
+  # core_simd — vector-returning form (all-ones / all-zero lanes) for the non-mask
+  # x86 compares; select spells the lane fill without a bitcast
+  - isa: core_simd
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a.simd_eq(b).select(Simd::splat(!0), Simd::splat(0));'

@@ -1,0 +1,39 @@
+# res = a ^ b
+primitive: MASK_XOR
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_kxor_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    direct: 'sveor_b_z(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: '{vbool_all}'}
+    direct: 'a ^ b;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_xor<{simd_res}>(a, b);'
+
+---
+# res = k ? (a ^ b) : 0
+primitive: MASK_XOR_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: arm
+    direct: 'sveor_b_z(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {k: '{vbool_all}', a: '{vbool_all}', b: '{vbool_all}', res: '{vbool_all}'}
+    direct: 'k & (a ^ b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_and<{simd_res}>(k, tsl::mask_binary_xor<{simd_res}>(a, b));'

@@ -1,0 +1,56 @@
+# res = bitwise function of (a, b, c) selected by 8-bit truth table imm
+primitive: TERNARYLOGIC
+input: [a, b, c, imm]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm512_ternarylogic_epi32(a, b, c, imm);'
+
+  - isa: x86
+    direct: '_mm512_ternarylogic_epi64(a, b, c, imm);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}{512}', b: '{v}{512}', c: '{v}{512}', imm: imm32, res: '{v}{512}'}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (imm) {
+      case 7:   return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 7, -1);
+      case 24:  return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 24, -1);
+      case 36:  return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 36, -1);
+      case 66:  return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 66, -1);
+      case 106: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 106, -1);
+      case 120: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 120, -1);
+      case 150: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 150, -1);
+      case 168: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 168, -1);
+      case 234: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 234, -1);
+      case 248: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 248, -1);
+      case 254: return ({v})__builtin_ia32_pternlogd512_mask((v16i)a, (v16i)b, (v16i)c, 254, -1);
+      default: break;
+      }
+      #endif
+      return ({v})(
+          (((imm >> 0) & 1) ? (~a & ~b & ~c) : ({v}){0}) |
+          (((imm >> 1) & 1) ? (~a & ~b &  c) : ({v}){0}) |
+          (((imm >> 2) & 1) ? (~a &  b & ~c) : ({v}){0}) |
+          (((imm >> 3) & 1) ? (~a &  b &  c) : ({v}){0}) |
+          (((imm >> 4) & 1) ? ( a & ~b & ~c) : ({v}){0}) |
+          (((imm >> 5) & 1) ? ( a & ~b &  c) : ({v}){0}) |
+          (((imm >> 6) & 1) ? ( a &  b & ~c) : ({v}){0}) |
+          (((imm >> 7) & 1) ? ( a &  b &  c) : ({v}){0}));
+
+  # OR of the 8 imm-selected min-terms of (a,b,c); ~x := binary_xor(x, set1(-1)).
+  # No native 3-input TSL op; with a constant imm clang and gcc fold this blend
+  # back to 1-3 vpternlogd once the helper is inlined.
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}{512}', b: '{v}{512}', c: '{v}{512}', imm: int32_t, res: '{v}{512}'}
+    direct: |-
+      tsl::binary_or<{simd_res}>((((imm >> 0) & 1) ? tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(a, tsl::set1<{simd_res}>(-1)), tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(b, tsl::set1<{simd_res}>(-1)), tsl::binary_xor<{simd_res}>(c, tsl::set1<{simd_res}>(-1)))) : tsl::set1<{simd_res}>(0)),
+      tsl::binary_or<{simd_res}>((((imm >> 1) & 1) ? tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(a, tsl::set1<{simd_res}>(-1)), tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(b, tsl::set1<{simd_res}>(-1)), c)) : tsl::set1<{simd_res}>(0)),
+      tsl::binary_or<{simd_res}>((((imm >> 2) & 1) ? tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(a, tsl::set1<{simd_res}>(-1)), tsl::binary_and<{simd_res}>(b, tsl::binary_xor<{simd_res}>(c, tsl::set1<{simd_res}>(-1)))) : tsl::set1<{simd_res}>(0)),
+      tsl::binary_or<{simd_res}>((((imm >> 3) & 1) ? tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(a, tsl::set1<{simd_res}>(-1)), tsl::binary_and<{simd_res}>(b, c)) : tsl::set1<{simd_res}>(0)),
+      tsl::binary_or<{simd_res}>((((imm >> 4) & 1) ? tsl::binary_and<{simd_res}>(a, tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(b, tsl::set1<{simd_res}>(-1)), tsl::binary_xor<{simd_res}>(c, tsl::set1<{simd_res}>(-1)))) : tsl::set1<{simd_res}>(0)),
+      tsl::binary_or<{simd_res}>((((imm >> 5) & 1) ? tsl::binary_and<{simd_res}>(a, tsl::binary_and<{simd_res}>(tsl::binary_xor<{simd_res}>(b, tsl::set1<{simd_res}>(-1)), c)) : tsl::set1<{simd_res}>(0)),
+      tsl::binary_or<{simd_res}>((((imm >> 6) & 1) ? tsl::binary_and<{simd_res}>(a, tsl::binary_and<{simd_res}>(b, tsl::binary_xor<{simd_res}>(c, tsl::set1<{simd_res}>(-1)))) : tsl::set1<{simd_res}>(0)),
+      (((imm >> 7) & 1) ? tsl::binary_and<{simd_res}>(a, tsl::binary_and<{simd_res}>(b, c)) : tsl::set1<{simd_res}>(0)))))))));

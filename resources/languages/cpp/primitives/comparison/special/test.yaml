@@ -1,0 +1,74 @@
+# res = (a & b) != 0
+primitive: TEST
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_test_{dtype_suffix}_mask(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: '(a & b) != ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'tsl::unequal_zero<{simd_a}>(tsl::binary_and<{simd_a}>(a, b));'
+
+---
+# res = k ? (a & b) != 0 : 0
+primitive: TEST_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_test_{dtype_suffix}_mask(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'k ? ((a & b) != ({v}){0}) : false;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_and<{simd_res}>(k, tsl::unequal_zero<{simd_a}>(tsl::binary_and<{simd_a}>(a, b)));'
+
+---
+# res = (a & b) == 0
+primitive: TESTN
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_testn_{dtype_suffix}_mask(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: '(a & b) == ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_not<{simd_res}>(tsl::unequal_zero<{simd_a}>(tsl::binary_and<{simd_a}>(a, b)));'
+
+---
+# res = k ? (a & b) == 0 : 0
+primitive: TESTN_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_testn_{dtype_suffix}_mask(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'k ? ((a & b) == ({v}){0}) : false;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_and<{simd_res}>(k, tsl::mask_binary_not<{simd_res}>(tsl::unequal_zero<{simd_a}>(tsl::binary_and<{simd_a}>(a, b))));'

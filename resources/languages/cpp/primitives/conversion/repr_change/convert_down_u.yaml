@@ -1,0 +1,97 @@
+# res[i] = unsigned-saturate narrow of signed data[i]  (neg -> 0, low lanes packed, upper zero)
+primitive: CONVERT_DOWN_U
+input: [data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtusepi16_{dtype_suffix}(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtusepi32_{dtype_suffix}(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtusepi64_{dtype_suffix}(data);'
+
+  - isa: clang_builtins
+    signature: {data: 'v8s', res: 'v16uc'}
+    direct: |-
+      v16uc __r = {0};
+      for (int _i = 0; _i < 8; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 255 ? 255 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v16s', res: 'v16uc'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v16s)(0)), (v16s)255), v16uc);'
+  - isa: clang_builtins
+    signature: {data: 'v32s', res: 'v32uc'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v32s)(0)), (v32s)255), v32uc);'
+  - isa: clang_builtins
+    signature: {data: 'v4i', res: 'v16uc'}
+    direct: |-
+      v16uc __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 255 ? 255 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v4i', res: 'v8us'}
+    direct: |-
+      v8us __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 65535 ? 65535 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8i', res: 'v16uc'}
+    direct: |-
+      v16uc __r = {0};
+      for (int _i = 0; _i < 8; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 255 ? 255 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8i', res: 'v8us'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v8i)(0)), (v8i)65535), v8us);'
+  - isa: clang_builtins
+    signature: {data: 'v16i', res: 'v16uc'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v16i)(0)), (v16i)255), v16uc);'
+  - isa: clang_builtins
+    signature: {data: 'v16i', res: 'v16us'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v16i)(0)), (v16i)65535), v16us);'
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v16uc'}
+    direct: |-
+      v16uc __r = {0};
+      for (int _i = 0; _i < 2; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 255 ? 255 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v4ui'}
+    direct: |-
+      v4ui __r = {0};
+      for (int _i = 0; _i < 2; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 4294967295 ? 4294967295 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v8us'}
+    direct: |-
+      v8us __r = {0};
+      for (int _i = 0; _i < 2; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 65535 ? 65535 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v16uc'}
+    direct: |-
+      v16uc __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 255 ? 255 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v4ui'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v4l)(0)), (v4l)4294967295), v4ui);'
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v8us'}
+    direct: |-
+      v8us __r = {0};
+      for (int _i = 0; _i < 4; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 65535 ? 65535 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v16uc'}
+    direct: |-
+      v16uc __r = {0};
+      for (int _i = 0; _i < 8; _i++) { long long _v = data[_i]; __r[_i] = _v < 0 ? 0 : (_v > 255 ? 255 : _v); }
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v8ui'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v8l)(0)), (v8l)4294967295), v8ui);'
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v8us'}
+    direct: 'return __builtin_convertvector(__builtin_elementwise_min(__builtin_elementwise_max(data, (v8l)(0)), (v8l)65535), v8us);'
+

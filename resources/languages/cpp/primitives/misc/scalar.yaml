@@ -1,0 +1,54 @@
+# res = a[0]
+primitive: SCALAR_EXTRACT
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_cvtsi128_si32(a);'
+  - isa: x86
+    direct: '_mm_cvtsi128_si64(a);'
+  - isa: x86
+    direct: '_mm_cvtss_f32(a);'
+  - isa: x86
+    direct: '_mm256_cvtss_f32(a);'
+  - isa: x86
+    direct: '_mm512_cvtss_f32(a);'
+  - isa: x86
+    direct: '_mm_cvtsd_f64(a);'
+  - isa: x86
+    direct: '_mm256_cvtsd_f64(a);'
+  - isa: x86
+    direct: '_mm512_cvtsd_f64(a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', res: '{s}'}
+    direct: 'a[0];'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', res: '{s}'}
+    direct: 'tsl::extract_value_at<{simd_a}>(a, 0);'
+
+---
+# res[0] = a
+primitive: SCALAR_INSERT
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_cvtsi32_si128(a);'
+  - isa: x86
+    direct: '_mm_cvtsi64_si128(a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{s}', res: '{v}{128}'}
+    direct:
+      - '{v} res = ({v}){};'
+      - 'res[0] = ({s})a;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{s}', res: '{v}{128}'}
+    direct: 'tsl::insert_value_at<{simd_res}>(tsl::set_zero<{simd_res}>(), 0, ({s})a);'

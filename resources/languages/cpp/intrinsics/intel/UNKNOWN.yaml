@@ -1,0 +1,397 @@
+- name: _bit_scan_forward
+  input: {a: int}
+  output: {dst: int}
+  ir: {input: {a: int32_t}, output: {dst: int32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bit_scan_reverse
+  input: {a: int}
+  output: {dst: int}
+  ir: {input: {a: int32_t}, output: {dst: int32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _BitScanForward
+  input: {index: unsigned __int32*, a: unsigned __int32}
+  output: {dst: unsigned char}
+  flags: []
+  include: <immintrin.h>
+- name: _BitScanReverse
+  input: {index: unsigned __int32*, a: unsigned __int32}
+  output: {dst: unsigned char}
+  flags: []
+  include: <immintrin.h>
+- name: _BitScanForward64
+  input: {index: unsigned __int32*, a: unsigned __int64}
+  output: {dst: unsigned char}
+  ir: {input: {index: ptr, a: uint64_t}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _BitScanReverse64
+  input: {index: unsigned __int32*, a: unsigned __int64}
+  output: {dst: unsigned char}
+  ir: {input: {index: ptr, a: uint64_t}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bittest
+  input: {a: __int32*, b: __int32}
+  output: {dst: unsigned char}
+  flags: []
+  include: <immintrin.h>
+- name: _bittestandcomplement
+  input: {a: __int32*, b: __int32}
+  output: {dst: unsigned char}
+  flags: []
+  include: <immintrin.h>
+- name: _bittestandreset
+  input: {a: __int32*, b: __int32}
+  output: {dst: unsigned char}
+  flags: []
+  include: <immintrin.h>
+- name: _bittestandset
+  input: {a: __int32*, b: __int32}
+  output: {dst: unsigned char}
+  flags: []
+  include: <immintrin.h>
+- name: _bittest64
+  input: {a: __int64*, b: __int64}
+  output: {dst: unsigned char}
+  ir: {input: {a: ptr, b: int64_t}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bittestandcomplement64
+  input: {a: __int64*, b: __int64}
+  output: {dst: unsigned char}
+  ir: {input: {a: ptr, b: int64_t}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bittestandreset64
+  input: {a: __int64*, b: __int64}
+  output: {dst: unsigned char}
+  ir: {input: {a: ptr, b: int64_t}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bittestandset64
+  input: {a: __int64*, b: __int64}
+  output: {dst: unsigned char}
+  ir: {input: {a: ptr, b: int64_t}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bswap
+  input: {a: int}
+  output: {dst: int}
+  ir: {input: {a: int32_t}, output: {dst: int32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _bswap64
+  input: {a: __int64}
+  output: {dst: __int64}
+  ir: {input: {a: int64_t}, output: {dst: int64_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _lrotl
+  input: {a: unsigned long, shift: int}
+  output: {dst: unsigned long}
+  flags: []
+  include: <immintrin.h>
+- name: _lrotr
+  input: {a: unsigned long, shift: int}
+  output: {dst: unsigned long}
+  flags: []
+  include: <immintrin.h>
+- name: _rotl
+  input: {a: unsigned int, shift: int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, shift: int32_t}, output: {dst: uint32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _rotr
+  input: {a: unsigned int, shift: int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t, shift: int32_t}, output: {dst: uint32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _rotwl
+  input: {a: unsigned short, shift: int}
+  output: {dst: unsigned short}
+  ir: {input: {a: uint16_t, shift: int32_t}, output: {dst: uint16_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _rotwr
+  input: {a: unsigned short, shift: int}
+  output: {dst: unsigned short}
+  ir: {input: {a: uint16_t, shift: int32_t}, output: {dst: uint16_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _rotl64
+  input: {a: unsigned __int64, shift: int}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, shift: int32_t}, output: {dst: uint64_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _rotr64
+  input: {a: unsigned __int64, shift: int}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t, shift: int32_t}, output: {dst: uint64_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _allow_cpu_features
+  input: {a: unsigned __int64}
+  output: {}
+  ir: {input: {a: uint64_t}, output: {}}
+  flags: []
+  include: <immintrin.h>
+- name: _may_i_use_cpu_feature
+  input: {a: unsigned __int64}
+  output: {k: int}
+  ir: {input: {a: uint64_t}, output: {k: int32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _may_i_use_cpu_feature_ext
+  input: {a: unsigned __int64, page: unsigned}
+  output: {k: int}
+  ir: {input: {a: uint64_t, page: uint32_t}, output: {k: int32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _rdpmc
+  input: {a: int}
+  output: {dst: __int64}
+  ir: {input: {a: int32_t}, output: {dst: int64_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _addcarry_u32
+  input: {c_in: unsigned char, a: unsigned int, b: unsigned int, out: unsigned int *}
+  output: {dst: unsigned char}
+  ir: {input: {c_in: uint8_t, a: uint32_t, b: uint32_t, out: ptr}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _addcarry_u64
+  input: {c_in: unsigned char, a: unsigned __int64, b: unsigned __int64, out: unsigned __int64 *}
+  output: {dst: unsigned char}
+  ir: {input: {c_in: uint8_t, a: uint64_t, b: uint64_t, out: ptr}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _subborrow_u32
+  input: {c_in: unsigned char, a: unsigned int, b: unsigned int, out: unsigned int *}
+  output: {dst: unsigned char}
+  ir: {input: {c_in: uint8_t, a: uint32_t, b: uint32_t, out: ptr}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _subborrow_u64
+  input: {c_in: unsigned char, a: unsigned __int64, b: unsigned __int64, out: unsigned __int64 *}
+  output: {dst: unsigned char}
+  ir: {input: {c_in: uint8_t, a: uint64_t, b: uint64_t, out: ptr}, output: {dst: uint8_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _cvtsh_ss
+  input: {a: unsigned short}
+  output: {dst: float}
+  ir: {input: {a: uint16_t}, output: {dst: float}}
+  flags: []
+  include: <emmintrin.h>
+- name: _cvtss_sh
+  input: {a: float, rounding: int}
+  output: {dst: unsigned short}
+  ir: {input: {a: float, rounding: int32_t}, output: {dst: uint16_t}}
+  flags: []
+  include: <emmintrin.h>
+- name: _castf32_u32
+  input: {a: float}
+  output: {dst: unsigned __int32}
+  flags: []
+  include: <immintrin.h>
+- name: _castf64_u64
+  input: {a: double}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: double}, output: {dst: uint64_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _castu32_f32
+  input: {a: unsigned __int32}
+  output: {dst: float}
+  flags: []
+  include: <immintrin.h>
+- name: _castu64_f64
+  input: {a: unsigned __int64}
+  output: {dst: double}
+  ir: {input: {a: uint64_t}, output: {dst: double}}
+  flags: []
+  include: <immintrin.h>
+- name: _clui
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [UINTR]
+  include: <immintrin.h>
+- name: _encls_u32
+  input: {a: const int, __data: size_t*}
+  output: {dst: unsigned int}
+  ir: {input: {a: int32_t, __data: ptr}, output: {dst: uint32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _enclu_u32
+  input: {a: const int, __data: size_t*}
+  output: {dst: unsigned int}
+  ir: {input: {a: int32_t, __data: ptr}, output: {dst: uint32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _enclv_u32
+  input: {a: const int, __data: size_t*}
+  output: {dst: unsigned int}
+  ir: {input: {a: int32_t, __data: ptr}, output: {dst: uint32_t}}
+  flags: []
+  include: <immintrin.h>
+- name: _enqcmd
+  input: {__dst: void*, __src: const void*}
+  output: {dst: int}
+  ir: {input: {__dst: ptr, __src: ptr}, output: {dst: int32_t}}
+  flags: [ENQCMD]
+  include: <immintrin.h>
+- name: _enqcmds
+  input: {__dst: void*, __src: const void*}
+  output: {dst: int}
+  ir: {input: {__dst: ptr, __src: ptr}, output: {dst: int32_t}}
+  flags: [ENQCMD]
+  include: <immintrin.h>
+- name: _hreset
+  input: {__eax: int}
+  output: {}
+  ir: {input: {__eax: int32_t}, output: {}}
+  flags: [HRESET]
+  include: <immintrin.h>
+- name: _m_prefetchit0
+  input: {__P: const void*}
+  output: {}
+  ir: {input: {__P: ptr}, output: {}}
+  flags: [PREFETCHI]
+  include: <x86gprintrin.h>
+- name: _m_prefetchit1
+  input: {__P: const void*}
+  output: {}
+  ir: {input: {__P: ptr}, output: {}}
+  flags: [PREFETCHI]
+  include: <x86gprintrin.h>
+- name: _may_i_use_cpu_feature_str
+  input: {feature: null, '...': string literal}
+  output: {k: int}
+  flags: []
+  include: <immintrin.h>
+- name: _mm_cldemote
+  input: {p: void const *}
+  output: {}
+  ir: {input: {p: ptr}, output: {}}
+  flags: [CLDEMOTE]
+  include: <immintrin.h>
+- name: _mm_clflushopt
+  input: {p: void const *}
+  output: {}
+  ir: {input: {p: ptr}, output: {}}
+  flags: [CLFLUSHOPT]
+  include: <immintrin.h>
+- name: _mm_clwb
+  input: {p: void const *}
+  output: {}
+  ir: {input: {p: ptr}, output: {}}
+  flags: [CLWB]
+  include: <immintrin.h>
+- name: _mm_monitor
+  input: {p: void const*, extensions: unsigned, hints: unsigned}
+  output: {}
+  ir: {input: {p: ptr, extensions: uint32_t, hints: uint32_t}, output: {}}
+  flags: [MONITOR]
+  include: <pmmintrin.h>
+- name: _mm_mwait
+  input: {extensions: unsigned, hints: unsigned}
+  output: {}
+  ir: {input: {extensions: uint32_t, hints: uint32_t}, output: {}}
+  flags: [MONITOR]
+  include: <pmmintrin.h>
+- name: _mm_prefetch
+  input: {p: char const*, i: int}
+  output: {}
+  ir: {input: {p: ptr, i: int32_t}, output: {}}
+  flags: [PRFCHW]
+  include: <immintrin.h>
+- name: _pconfig_u32
+  input: {a: int, __data: size_t*}
+  output: {dst: unsigned int}
+  ir: {input: {a: int32_t, __data: ptr}, output: {dst: uint32_t}}
+  flags: [PCONFIG]
+  include: <immintrin.h>
+- name: _ptwrite32
+  input: {a: unsigned int}
+  output: {}
+  ir: {input: {a: uint32_t}, output: {}}
+  flags: []
+  include: <immintrin.h>
+- name: _ptwrite64
+  input: {a: unsigned __int64}
+  output: {}
+  ir: {input: {a: uint64_t}, output: {}}
+  flags: []
+  include: <immintrin.h>
+- name: _senduipi
+  input: {__a: unsigned __int64}
+  output: {}
+  ir: {input: {__a: uint64_t}, output: {}}
+  flags: [UINTR]
+  include: <immintrin.h>
+- name: _serialize
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [SERIALIZE]
+  include: <immintrin.h>
+- name: _stui
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [UINTR]
+  include: <immintrin.h>
+- name: _testui
+  input: {}
+  output: {dst: unsigned char}
+  ir: {input: {}, output: {dst: uint8_t}}
+  flags: [UINTR]
+  include: <immintrin.h>
+- name: _tpause
+  input: {ctrl: unsigned int, counter: unsigned __int64}
+  output: {dst: unsigned char}
+  ir: {input: {ctrl: uint32_t, counter: uint64_t}, output: {dst: uint8_t}}
+  flags: [WAITPKG]
+  include: <immintrin.h>
+- name: _umonitor
+  input: {a: void*}
+  output: {}
+  ir: {input: {a: ptr}, output: {}}
+  flags: [WAITPKG]
+  include: <immintrin.h>
+- name: _umwait
+  input: {ctrl: unsigned int, counter: unsigned __int64}
+  output: {dst: unsigned char}
+  ir: {input: {ctrl: uint32_t, counter: uint64_t}, output: {dst: uint8_t}}
+  flags: [WAITPKG]
+  include: <immintrin.h>
+- name: _wbinvd
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: []
+  include: <immintrin.h>
+- name: _wbnoinvd
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [WBNOINVD]
+  include: <immintrin.h>
+- name: _xresldtrk
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [TSXLDTRK]
+  include: <immintrin.h>
+- name: _xsusldtrk
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [TSXLDTRK]
+  include: <immintrin.h>

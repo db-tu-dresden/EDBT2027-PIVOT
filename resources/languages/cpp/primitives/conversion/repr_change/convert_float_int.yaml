@@ -1,0 +1,70 @@
+# res[i] = (int) trunc_toward_zero(a[i])   (float -> int, same width)
+primitive: CONVERT_FLOAT_TO_INT_TRUNC
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    dtype: int32
+    direct: '_mm256_cvttps_epi32(a);'
+
+  - isa: clang_builtins
+    dtype: int32
+    signature: {a: v8f, res: v8i}
+    direct: '__builtin_convertvector(a, v8i);'
+
+---
+# res[i] = (int) round_half_away_from_zero(a[i])
+primitive: CONVERT_FLOAT_TO_INT_ROUND_AWAY
+input: [a]
+output: res
+definitions:
+  # m = mantissa(a) | implicit_one; m = ((m >> (1075 - exponent(a))) + 1) >> 1; res = a < 0 ? -m : m
+  - isa: x86
+    nto1: true
+    direct: |-
+      rnd_t = _mm512_castpd_si512(a);
+      rnd_m0 = _mm512_add_epi64(rnd_t, rnd_t);
+      rnd_e0 = _mm512_srli_epi64(rnd_m0, 53);
+      rnd_m1 = _mm512_ternarylogic_epi64(rnd_m0, rnd_mant, rnd_one_53, 234);
+      rnd_e1 = _mm512_sub_epi64(rnd_bias, rnd_e0);
+      rnd_m2 = _mm512_srlv_epi64(rnd_m1, rnd_e1);
+      rnd_m3 = _mm512_add_epi64(rnd_m2, rnd_one);
+      rnd_m4 = _mm512_srli_epi64(rnd_m3, 1);
+      rnd_s = _mm512_srai_epi64(rnd_t, 63);
+      rnd_m5 = _mm512_xor_epi64(rnd_m4, rnd_s);
+      res = _mm512_sub_epi64(rnd_m5, rnd_s);
+
+  - isa: arm
+    direct: 'vcvta{neon_widths}_{dtype_suffix}_f32(a);'
+  - isa: arm
+    direct: 'vcvta{neon_widths}_{dtype_suffix}_f64(a);'
+
+  - isa: arm
+    direct: 'svcvt_s32_f32_x(svptrue_b32(), svrinta_f32_x(svptrue_b32(), a));'
+  - isa: arm
+    direct: 'svcvt_s64_f64_x(svptrue_b64(), svrinta_f64_x(svptrue_b64(), a));'
+
+  - isa: clang_builtins
+    signature: {a: v4f, res: v4i}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v4i);'
+  - isa: clang_builtins
+    signature: {a: v8f, res: v8i}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v8i);'
+  - isa: clang_builtins
+    signature: {a: v16f, res: v16i}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v16i);'
+  - isa: clang_builtins
+    signature: {a: v4f, res: v4ui}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v4ui);'
+  - isa: clang_builtins
+    signature: {a: v2d, res: v2l}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v2l);'
+  - isa: clang_builtins
+    signature: {a: v4d, res: v4l}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v4l);'
+  - isa: clang_builtins
+    signature: {a: v8d, res: v8l}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v8l);'
+  - isa: clang_builtins
+    signature: {a: v2d, res: v2ul}
+    direct: '__builtin_convertvector(__builtin_elementwise_round(a), v2ul);'

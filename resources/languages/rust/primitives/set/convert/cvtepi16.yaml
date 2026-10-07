@@ -1,0 +1,34 @@
+primitive: CVTEPI16
+input: [a]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: 'int{32, 64}'
+    direct: '_mm{x86_widths}_cvtepi16_{dtype_suffix}(a);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: 'int32'
+    signature: {a: 'v16s', res: 'v16i'}
+    direct: '__builtin_convertvector((v16s)a, v16i);'
+
+  - isa: clang_builtins
+    dtype: 'int64'
+    signature: {a: 'v8s', res: 'v8l'}
+    direct: '__builtin_convertvector((v8s)a, v8l);'
+
+  # core_simd — Simd::cast is elementwise `as`: it sign-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  - isa: core_simd
+    dtype: 'int32'
+    signature: {a: 'v16s', res: 'v16i'}
+    direct: 'a.cast();'
+
+  # core_simd — Simd::cast is elementwise `as`: it sign-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  - isa: core_simd
+    dtype: 'int64'
+    signature: {a: 'v8s', res: 'v8l'}
+    direct: 'a.cast();'

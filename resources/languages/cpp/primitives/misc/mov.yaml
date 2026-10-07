@@ -1,0 +1,39 @@
+# res = k ? data : src
+primitive: MOV_MERGE
+input: [src, k, data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_mov_{dtype_suffix}(src, k, data);'
+
+  - isa: arm
+    direct: 'svsel_{dtype_suffix}(k, data, src);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'k ? data : src;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'tsl::mov_mask<{simd_res}>(k, src, data);'
+
+---
+# res = k ? src : 0
+primitive: MOV_ZERO
+input: [k, src]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_mov_{dtype_suffix}(k, src);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', src: '{v}', res: '{v}'}
+    direct: 'k ? src : ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', src: '{v}', res: '{v}'}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, src);'

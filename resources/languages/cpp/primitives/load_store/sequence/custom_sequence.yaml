@@ -1,0 +1,21 @@
+# res[i] = start + i * stepwidth
+primitive: CUSTOM_SEQUENCE
+input: [start, stepwidth]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svindex_{dtype_suffix}(start, stepwidth);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {start: '{s}', stepwidth: '{s}', res: '{v}'}
+    direct:
+      - '{v} _r;'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - 'for (int _i = 0; _i < _n; _i++) _r[_i] = start + ({s})_i * stepwidth;'
+      - 'return _r;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {start: '{s}', stepwidth: '{s}', res: '{v}'}
+    direct: 'tsl::custom_sequence<{simd_res}>(start, stepwidth);'

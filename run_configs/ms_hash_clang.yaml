@@ -1,0 +1,7 @@
+name: autovec_db_ms_hash_clang
+mode: single_file
+source_path: experiments/width-flexible/autovec-db/multiply_shift_hash/native/sse.hpp
+source_isa: x86
+target_isa: clang_builtins
+output_dir: experiments/width-flexible/autovec-db/multiply_shift_hash/translated_clang
+output_name: hash.hpp

@@ -1,0 +1,47 @@
+primitive: VXOR
+input: [a, b]
+output: res
+definitions:
+
+  # x86
+  - 'isa': 'x86'
+    'dtype': '{int, float}{32, 64}'
+    'direct': '_mm{x86_widths}_xor_{dtype_suffix}(a, b);'
+
+  # Type-agnostic integer XOR (untyped __m*i forms), matching VAND/VOR.
+  - 'isa': 'x86'
+    'direct': '_mm_xor_si128(a, b);'
+
+  - 'isa': 'x86'
+    'direct': '_mm256_xor_si256(a, b);'
+
+  - 'isa': 'x86'
+    'direct': '_mm512_xor_si512(a, b);'
+
+  # Neon
+  - 'isa': 'arm'
+    'dtype': '{int, uint}'
+    'direct': 'veor{neon_widths}_{dtype_suffix}(a, b);'
+
+  # SVE
+  - 'isa': 'arm'
+    'dtype': '{int, uint}'
+    'direct': 'sveor_{dtype_suffix}_z(svptrue_b{elem_bits}(), a, b);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a ^ b;'
+
+  # core_simd — elementwise operator
+  - isa: core_simd
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a ^ b;'
+
+  # core_simd — float has no bitwise operator; combine the bits through the integer view
+  - isa: core_simd
+    dtype: float
+    signature: {a: '{v}', b: '{v}', res: '{v}', ai: '{vint}'}
+    direct: 'unsafe { core::mem::transmute::<{simd_ai}, {simd_res}>(core::mem::transmute::<{simd_a}, {simd_ai}>(a) ^ core::mem::transmute::<{simd_b}, {simd_ai}>(b)) };'

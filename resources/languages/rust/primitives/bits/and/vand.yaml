@@ -1,0 +1,54 @@
+primitive: VAND
+input: [a, b]
+output: res
+definitions:
+
+  # x86
+  - 'isa': 'x86'
+    'dtype': 'float'
+    'direct': '_mm_and_{dtype_suffix}(a, b);'
+
+  - 'isa': 'x86'
+    'direct': '_mm_and_si128(a, b);'
+
+  - 'isa': 'x86'
+    'dtype': 'float'
+    'direct': '_mm256_and_{dtype_suffix}(a, b);'
+
+  - 'isa': 'x86'
+    'direct': '_mm256_and_si256(a, b);'
+
+  - 'isa': 'x86'
+    'dtype': '{int, float}{32, 64}'
+    'direct': '_mm512_and_{dtype_suffix}(a, b);'
+
+  - 'isa': 'x86'
+    'direct': '_mm512_and_si512(a, b);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a & b;'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: '{vbool_all}'}
+    direct: 'a & b;'
+
+  - isa: clang_builtins
+    dtype: float
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: '({v})(({vuint})a & ({vuint})b);'
+
+  # core_simd — elementwise operator
+  - isa: core_simd
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a & b;'
+
+  # core_simd — float has no bitwise operator; mask the bits through the integer view
+  - isa: core_simd
+    dtype: float
+    signature: {a: '{v}', b: '{v}', res: '{v}', ai: '{vint}'}
+    direct: 'unsafe { core::mem::transmute::<{simd_ai}, {simd_res}>(core::mem::transmute::<{simd_a}, {simd_ai}>(a) & core::mem::transmute::<{simd_b}, {simd_ai}>(b)) };'

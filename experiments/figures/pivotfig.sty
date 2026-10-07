@@ -1,0 +1,33 @@
+% Preamble of the paper figures, used with \documentclass[9pt]{amsart}. acmart (sigconf)
+% builds on that class with these fonts, so the figures have the paper's fonts and sizes.
+% Every tikzpicture becomes one cropped page.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{pivotfig}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[tt=false, type1=true]{libertine}
+\RequirePackage[varqu]{zi4}
+\RequirePackage[libertine]{newtxmath}
+% Same bytes on every build.
+\ifdefined\pdftrailerid \pdftrailerid{}\fi
+\RequirePackage{pgfplots}
+\RequirePackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{calc}
+\RequirePackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{0pt}
+
+% Color scheme of the paper (as in its preamble). Each hue has a dark shade (1) for lines
+% and text and a light shade (2) for fills.
+\definecolor{blue1}{HTML}{2F57B2}    \definecolor{blue2}{HTML}{97C6FF}
+\definecolor{violet1}{HTML}{7369BE}  \definecolor{violet2}{HTML}{C8C8FF}
+\definecolor{magenta1}{HTML}{BC1589} \definecolor{magenta2}{HTML}{FFB9FF}
+\definecolor{red1}{HTML}{D20F41}     \definecolor{red2}{HTML}{FFAAA5}
+\definecolor{orange1}{HTML}{C85000}  \definecolor{orange2}{HTML}{FFBE78}
+\definecolor{yellow1}{HTML}{FFC700}  \definecolor{yellow2}{HTML}{FFE483}
+\definecolor{olive1}{HTML}{767A23}   \definecolor{olive2}{HTML}{D2DC46}
+\definecolor{green1}{HTML}{007D4B}   \definecolor{green2}{HTML}{8CE6AA}
+\definecolor{teal1}{HTML}{0A777F}    \definecolor{teal2}{HTML}{8CE6D7}
+\definecolor{primary}{HTML}{00008C}
+\definecolor{darkblue}{HTML}{001450}
+\definecolor{gray1}{HTML}{323F4B}

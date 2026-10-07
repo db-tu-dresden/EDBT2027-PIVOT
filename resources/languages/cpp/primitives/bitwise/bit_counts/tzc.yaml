@@ -1,0 +1,26 @@
+# res = count_trailing_zeros(a)
+primitive: TZC
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_tzcnt_u32(a);'
+
+  - isa: x86
+    direct: '__tzcnt_u32(a);'
+
+  - isa: x86
+    direct: '_tzcnt_u64(a);'
+
+  - isa: x86
+    direct: '__tzcnt_u64(a);'
+
+  - isa: clang_builtins
+    dtype: uint32
+    signature: {a: uint32_t, res: uint32_t}
+    direct: '(uint32_t)(a ? __builtin_ctz((unsigned int)a) : 32);'
+
+  - isa: clang_builtins
+    dtype: uint64
+    signature: {a: uint64_t, res: uint64_t}
+    direct: '(uint64_t)(a ? __builtin_ctzll((unsigned long long)a) : 64);'

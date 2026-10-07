@@ -1,0 +1,18 @@
+paths:
+  # Base directory of the per-run output folders.
+  logs_dir: resources/logs
+
+# The primitive corpus a run translates against: "pivot" is each language's
+# built-in one; a manifest may name others under `primitive_sets`.  A run
+# config's `primitive_set` overrides this.
+primitive_set: pivot
+
+# How the `tsl` target realizes each vector: "generic" (portable array-backed),
+# "fixed" (native ISA intrinsics), or "clang_fixed" (Clang vector builtins). A run
+# config's `tsl_policy` overrides this.
+tsl_policy: generic
+
+translation:
+  # Assumed SVE vector size in bits for width-sensitive matching.
+  # Set this explicitly when translating SVE/SVE2 code, e.g. 128/256/512/1024/2048.
+  sve_assumed_bits: 128

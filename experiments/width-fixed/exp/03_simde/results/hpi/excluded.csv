@@ -1,0 +1,12 @@
+arch,method,width,driver,run,label,selectivity,bpts,btps,round,seed,start
+a64fx,simde,256,main_shuffle,4,"shuffle_offset",100.00,0.017518,0.017518,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"shuffle_byte",100.00,0.168629,0.168629,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"flush_byte",100.00,637.141729,637.141729,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"shuffle_short",100.00,0.137225,0.137225,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"flush_short",100.00,656.478064,656.478064,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"shuffle_int",100.00,0.135937,0.135937,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"flush_int",100.00,695.803583,695.803583,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"shuffle_long",100.00,0.089723,0.089723,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"flush_long",100.00,941.038792,941.038792,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"shuffle_char",100.00,0.008708,0.008708,4,4,2026-10-07T08:45:51+02:00
+a64fx,simde,256,main_shuffle,4,"flush_char",100.00,610.132562,610.132562,4,4,2026-10-07T08:45:51+02:00

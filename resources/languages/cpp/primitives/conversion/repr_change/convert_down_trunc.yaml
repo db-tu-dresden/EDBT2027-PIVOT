@@ -1,0 +1,125 @@
+# res[i] = truncate-narrow of data[i]  (low lanes packed, upper zero)
+primitive: CONVERT_DOWN_TRUNC
+input: [data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi32_epi16(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi32_epi8(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi64_epi32(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi64_epi16(data);'
+  - isa: x86
+    direct: '_mm{x86_widths}_cvtepi64_epi8(data);'
+
+  - isa: clang_builtins
+    signature: {data: 'v16i', res: 'v16s'}
+    direct: 'return __builtin_convertvector(data, v16s);'
+  - isa: clang_builtins
+    signature: {data: 'v8i', res: 'v8s'}
+    direct: 'return __builtin_convertvector(data, v8s);'
+  - isa: clang_builtins
+    signature: {data: 'v4i', res: 'v8s'}
+    direct: |-
+      v8s __r = {0};
+      for (int _i = 0; _i < 4; _i++) __r[_i] = (short)data[_i];
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v16i', res: 'v16c'}
+    direct: 'return __builtin_convertvector(data, v16c);'
+  - isa: clang_builtins
+    signature: {data: 'v8i', res: 'v16c'}
+    direct: 'return __builtin_convertvector(__builtin_shufflevector(data, (v8i){0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), v16c);'
+  - isa: clang_builtins
+    signature: {data: 'v4i', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 4; _i++) __r[_i] = (signed char)data[_i];
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v8i'}
+    direct: 'return __builtin_convertvector(data, v8i);'
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v4i'}
+    direct: 'return __builtin_convertvector(data, v4i);'
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v4i'}
+    direct: |-
+      v4i __r = {0};
+      for (int _i = 0; _i < 2; _i++) __r[_i] = (int)data[_i];
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v8s'}
+    direct: 'return __builtin_convertvector(data, v8s);'
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v8s'}
+    direct: 'return __builtin_convertvector(__builtin_shufflevector(data, (v4l){0}, 0,1,2,3,4,5,6,7), v8s);'
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v8s'}
+    direct: |-
+      v8s __r = {0};
+      for (int _i = 0; _i < 2; _i++) __r[_i] = (short)data[_i];
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v8l', res: 'v16c'}
+    direct: 'return __builtin_convertvector(__builtin_shufflevector(data, (v8l){0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), v16c);'
+  - isa: clang_builtins
+    signature: {data: 'v4l', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 4; _i++) __r[_i] = (signed char)data[_i];
+      return __r;
+  - isa: clang_builtins
+    signature: {data: 'v2l', res: 'v16c'}
+    direct: |-
+      v16c __r = {0};
+      for (int _i = 0; _i < 2; _i++) __r[_i] = (signed char)data[_i];
+      return __r;
+
+  - isa: tsl
+    signature: {data: 'v16i', res: 'v16s', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v8i', res: 'v8s', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v4i', res: 'v8s'}
+    direct: 'tsl::convert_down<{simd_data}, {simd_res}, 0>(data);'
+  - isa: tsl
+    signature: {data: 'v16i', res: 'v16c', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v8i', res: 'v16c', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v4i', res: 'v16c'}
+    direct: 'tsl::convert_down<{simd_data}, {simd_res}, 0>(data);'
+  - isa: tsl
+    signature: {data: 'v8l', res: 'v8i', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v4l', res: 'v4i', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v2l', res: 'v4i'}
+    direct: 'tsl::convert_down<{simd_data}, {simd_res}, 0>(data);'
+  - isa: tsl
+    signature: {data: 'v8l', res: 'v8s', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v4l', res: 'v8s', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v2l', res: 'v8s'}
+    direct: 'tsl::convert_down<{simd_data}, {simd_res}, 0>(data);'
+  - isa: tsl
+    signature: {data: 'v8l', res: 'v16c', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v4l', res: 'v16c', wide: '{res@data}'}
+    direct: 'tsl::resize_down<{simd_wide}, {simd_res}>(tsl::convert_down<{simd_data}, {simd_wide}, 0>(data));'
+  - isa: tsl
+    signature: {data: 'v2l', res: 'v16c'}
+    direct: 'tsl::convert_down<{simd_data}, {simd_res}, 0>(data);'

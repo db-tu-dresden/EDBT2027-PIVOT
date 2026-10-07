@@ -1,0 +1,18 @@
+- name: _mm_sm3msg1_epi32
+  input: {__A: __m128i, __B: __m128i, __C: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__A: v4i, __B: v4i, __C: v4i}, output: {dst: v4i}}
+  flags: [SM3, AVX]
+  include: <immintrin.h>
+- name: _mm_sm3msg2_epi32
+  input: {__A: __m128i, __B: __m128i, __C: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__A: v4i, __B: v4i, __C: v4i}, output: {dst: v4i}}
+  flags: [SM3, AVX]
+  include: <immintrin.h>
+- name: _mm_sm3rnds2_epi32
+  input: {__A: __m128i, __B: __m128i, __C: __m128i, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {__A: v4i, __B: v4i, __C: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [SM3, AVX]
+  include: <immintrin.h>

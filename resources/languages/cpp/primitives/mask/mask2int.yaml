@@ -1,0 +1,20 @@
+# res = integer bitmap of mask k
+primitive: MASK2INT
+input: [k]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm512_mask2int(k);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {k: '{vbool_all}', res: int32_t}
+    direct:
+      - 'uint64_t _bits = 0;'
+      - '__builtin_memcpy(&_bits, &k, sizeof(k) < sizeof(_bits) ? sizeof(k) : sizeof(_bits));'
+      - 'return (int32_t)_bits;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', res: int32_t}
+    direct: '(int32_t)tsl::to_integral<{simd_k}>(k);'

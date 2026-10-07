@@ -1,0 +1,12 @@
+- name: _urdmsr
+  input: {__A: unsigned __int64}
+  output: {}
+  ir: {input: {__A: uint64_t}, output: {}}
+  flags: [USER_MSR]
+  include: <x86gprintrin.h>
+- name: _uwrmsr
+  input: {__A: unsigned __int64, __B: unsigned __int64}
+  output: {}
+  ir: {input: {__A: uint64_t, __B: uint64_t}, output: {}}
+  flags: [USER_MSR]
+  include: <x86gprintrin.h>

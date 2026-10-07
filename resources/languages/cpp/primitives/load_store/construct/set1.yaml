@@ -1,0 +1,60 @@
+# res = {value, value, ...}
+primitive: SET1
+input: [value]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_set1_{dtype_suffix}(value);'
+
+  # 64-bit scalar broadcast: at 128/256 Intel spells it `epi64x` (the `x` marks the
+  # __int64 form vs the legacy MMX `_mm_set1_epi64`); only 512 drops the `x` and is
+  # covered by the generic def above.
+  - isa: x86
+    direct: '_mm_set1_epi64x(value);'
+
+  - isa: x86
+    direct: '_mm256_set1_epi64x(value);'
+
+  - isa: x86
+    direct: '_mm{x86_widths}_broadcastd_epi32(_mm_cvtsi64_si128(value));'
+
+  - isa: x86
+    direct: '_mm{x86_widths}_broadcastq_epi64(_mm_cvtsi64_si128(value));'
+
+  - isa: arm
+    direct: 'vdup{neon_widths}_n_{dtype_suffix}(value);'
+
+  - isa: arm
+    direct: 'svdup_n_{dtype_suffix}(value);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {value: '{s}', res: '{v}'}
+    direct: '({v})(value);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {value: '{s}', res: '{v}'}
+    direct: 'tsl::set1<{simd_res}>(value);'
+
+---
+# res[i] = k[i] ? scalar : data[i]
+primitive: SET1_MERGE
+input: [data, k, scalar]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_set1_{dtype_suffix}(data, k, scalar);'
+
+  - isa: arm
+    direct: 'svdup_n_{dtype_suffix}_m(data, k, scalar);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {data: '{v}', k: '{vbool}', scalar: '{s}', res: '{v}'}
+    direct: 'k ? ({v})(scalar) : data;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {data: '{v}', k: '{vbool}', scalar: '{s}', res: '{v}'}
+    direct: 'tsl::masked_set1<{simd_res}>(k, data, scalar);'

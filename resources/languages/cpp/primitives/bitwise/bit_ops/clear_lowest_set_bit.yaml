@@ -1,0 +1,26 @@
+# res = a & (a - 1)  — clear the lowest set bit
+primitive: CLEAR_LOWEST_SET_BIT
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_blsr_u32(a);'
+
+  - isa: x86
+    direct: '__blsr_u32(a);'
+
+  - isa: x86
+    direct: '_blsr_u64(a);'
+
+  - isa: x86
+    direct: '__blsr_u64(a);'
+
+  - isa: clang_builtins
+    dtype: uint32
+    signature: {a: uint32_t, res: uint32_t}
+    direct: 'a & (a - 1);'
+
+  - isa: clang_builtins
+    dtype: uint64
+    signature: {a: uint64_t, res: uint64_t}
+    direct: 'a & (a - 1);'

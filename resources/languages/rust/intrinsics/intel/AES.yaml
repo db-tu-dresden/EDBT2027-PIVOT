@@ -1,0 +1,36 @@
+- name: _mm_aesenc_si128
+  input: {a: __m128i, RoundKey: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, RoundKey: blob128}, output: {dst: blob128}}
+  flags: [AES]
+  include: <wmmintrin.h>
+- name: _mm_aesenclast_si128
+  input: {a: __m128i, RoundKey: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, RoundKey: blob128}, output: {dst: blob128}}
+  flags: [AES]
+  include: <wmmintrin.h>
+- name: _mm_aesdec_si128
+  input: {a: __m128i, RoundKey: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, RoundKey: blob128}, output: {dst: blob128}}
+  flags: [AES]
+  include: <wmmintrin.h>
+- name: _mm_aesdeclast_si128
+  input: {a: __m128i, RoundKey: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, RoundKey: blob128}, output: {dst: blob128}}
+  flags: [AES]
+  include: <wmmintrin.h>
+- name: _mm_aesimc_si128
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128}, output: {dst: blob128}}
+  flags: [AES]
+  include: <wmmintrin.h>
+- name: _mm_aeskeygenassist_si128
+  input: {a: __m128i, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, imm8: int32_t}, output: {dst: blob128}}
+  flags: [AES]
+  include: <wmmintrin.h>

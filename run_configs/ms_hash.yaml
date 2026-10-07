@@ -1,0 +1,9 @@
+name: autovec_db_ms_hash
+mode: single_file
+source_path: experiments/width-flexible/autovec-db/multiply_shift_hash/native/sse.hpp
+source_isa: x86
+target_isa: tsl
+tsl_policy: fixed
+tsl_width_mode: vla
+output_dir: experiments/width-flexible/autovec-db/multiply_shift_hash/translated
+output_name: hash.hpp

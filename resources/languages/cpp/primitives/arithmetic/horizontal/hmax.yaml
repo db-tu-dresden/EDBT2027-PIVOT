@@ -1,0 +1,40 @@
+# res = max(vec[*])
+primitive: HMAX
+input: [vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_reduce_max_{dtype_suffix}(vec);'
+
+  - isa: arm
+    direct: 'vmaxv{neon_widths}_{dtype_suffix}(vec);'
+
+  - isa: arm
+    direct: 'svmaxv_{dtype_suffix}(svptrue_b{elem_bits}(), vec);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: '__builtin_reduce_max(vec);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: 'tsl::hmax<{simd_vec}>(vec);'
+
+---
+# res = max(vec[i] for active k[i])
+primitive: HMAX_MASKED
+input: [k, vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_reduce_max_{dtype_suffix}(k, vec);'
+
+  - isa: arm
+    direct: 'svmaxv_{dtype_suffix}(k, vec);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', vec: '{v}', res: '{s}'}
+    direct: 'tsl::hmax_mask<{simd_vec}>(k, vec);'

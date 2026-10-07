@@ -1,0 +1,39 @@
+# res = bitcast(a)   (same-size reinterpret, float <-> int)
+primitive: REINTERPRET
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm512_castpd_si512(a);'
+  - isa: x86
+    direct: '_mm512_castps_si512(a);'
+  - isa: x86
+    direct: '_mm512_castsi512_pd(a);'
+  - isa: x86
+    direct: '_mm512_castsi512_ps(a);'
+
+  - isa: clang_builtins
+    signature: {a: v8d, res: v8l}
+    direct: '(v8l)a;'
+  - isa: clang_builtins
+    signature: {a: v16f, res: v16i}
+    direct: '(v16i)a;'
+  - isa: clang_builtins
+    signature: {a: v8l, res: v8d}
+    direct: '(v8d)a;'
+  - isa: clang_builtins
+    signature: {a: v16i, res: v16f}
+    direct: '(v16f)a;'
+
+  - isa: tsl
+    signature: {a: v8d, res: v8l}
+    direct: 'tsl::reinterpret<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16f, res: v16i}
+    direct: 'tsl::reinterpret<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8l, res: v8d}
+    direct: 'tsl::reinterpret<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16i, res: v16f}
+    direct: 'tsl::reinterpret<{simd_a}, {simd_res}>(a);'

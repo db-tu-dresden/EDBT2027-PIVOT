@@ -1,0 +1,27 @@
+# res[i] = (a + i) < b
+primitive: WHILELT
+input: [a, b]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svwhilelt_b32_s32(a, b);'
+
+  - isa: arm
+    direct: 'svwhilelt_b64_s32(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: int32_t, b: int32_t, res: '{vbool}'}
+    direct:
+      - '{v} _s;'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - 'for (int _i = 0; _i < _n; _i++) _s[_i] = ((int64_t)a + _i < (int64_t)b) ? 1 : 0;'
+      - 'return __builtin_convertvector(_s, {vbool});'
+
+  - isa: tsl
+    signature: {a: int32_t, b: int32_t, res: vb_i}
+    direct: 'tsl::less_than<{simd_res}>(tsl::custom_sequence<{simd_res}>(a, 1), tsl::set1<{simd_res}>(b));'
+
+  - isa: tsl
+    signature: {a: int32_t, b: int32_t, res: vb_l}
+    direct: 'tsl::less_than<{simd_res}>(tsl::custom_sequence<{simd_res}>(a, 1), tsl::set1<{simd_res}>(b));'

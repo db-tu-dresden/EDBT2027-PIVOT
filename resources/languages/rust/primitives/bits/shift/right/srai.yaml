@@ -1,0 +1,22 @@
+primitive: VSRAI
+input: [a, imm]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: 'int{16, 32, 64}'
+    direct: '_mm{x86_widths}_srai_{dtype_suffix}(a, imm);'
+
+  # Clang — signed right shift is arithmetic (sign-extending).  The shift count is
+  # a compile-time immediate (imm32), independent of the element width.
+  - isa: clang_builtins
+    dtype: int
+    signature: {a: '{v}', imm: imm32, res: '{v}'}
+    direct: 'a >> imm;'
+
+  # core_simd — signed >> is arithmetic (sign-extending), matching x86 srai
+  - isa: core_simd
+    dtype: int
+    signature: {a: '{v}', imm: imm32, res: '{v}'}
+    direct: 'a >> Simd::splat(imm as _);'

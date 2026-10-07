@@ -1,0 +1,192 @@
+- name: _mm_abs_pi8
+  input: {a: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_abs_epi8
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c}, output: {dst: v16c}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_abs_pi16
+  input: {a: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_abs_epi16
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_abs_pi32
+  input: {a: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_abs_epi32
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i}, output: {dst: v4i}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_shuffle_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_shuffle_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_alignr_epi8
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c, imm8: int32_t}, output: {dst: v16c}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_alignr_pi8
+  input: {a: __m64, b: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hadd_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hadds_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hadd_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hadd_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hadd_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hadds_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hsub_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hsubs_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hsub_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hsub_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hsub_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_hsubs_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_maddubs_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_maddubs_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_mulhrs_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_mulhrs_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_sign_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_sign_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_sign_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_sign_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_sign_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>
+- name: _mm_sign_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSSE3]
+  include: <tmmintrin.h>

@@ -1,0 +1,48 @@
+- name: _aadd_i32
+  input: {__A: int*, __B: int}
+  output: {}
+  ir: {input: {__A: ptr, __B: int32_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _aadd_i64
+  input: {__A: __int64*, __B: __int64}
+  output: {}
+  ir: {input: {__A: ptr, __B: int64_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _aand_i32
+  input: {__A: int*, __B: int}
+  output: {}
+  ir: {input: {__A: ptr, __B: int32_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _aand_i64
+  input: {__A: __int64*, __B: __int64}
+  output: {}
+  ir: {input: {__A: ptr, __B: int64_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _aor_i32
+  input: {__A: int*, __B: int}
+  output: {}
+  ir: {input: {__A: ptr, __B: int32_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _aor_i64
+  input: {__A: __int64*, __B: __int64}
+  output: {}
+  ir: {input: {__A: ptr, __B: int64_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _axor_i32
+  input: {__A: int*, __B: int}
+  output: {}
+  ir: {input: {__A: ptr, __B: int32_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>
+- name: _axor_i64
+  input: {__A: __int64*, __B: __int64}
+  output: {}
+  ir: {input: {__A: ptr, __B: int64_t}, output: {}}
+  flags: [RAO_INT]
+  include: <x86gprintrin.h>

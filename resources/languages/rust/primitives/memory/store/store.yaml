@@ -1,0 +1,49 @@
+primitive: STORE
+input: [ptr, v]
+output:
+# Aligned store; the unaligned variant is STOREU (storeu.yaml).
+definitions:
+
+  # x86 - aligned
+  - 'isa': 'x86'
+    'dtype': '{int, float}{32, 64}'
+    'direct': '_mm{x86_widths}_store_{dtype_suffix}(ptr, v);'
+
+  - 'isa': 'x86'
+    'direct': '_mm_store_si128(ptr, v);'
+
+  - 'isa': 'x86'
+    'direct': '_mm256_store_si256(ptr, v);'
+
+  - 'isa': 'x86'
+    'direct': '_mm512_store_si512(ptr, v);'
+
+  # Neon
+  - 'isa': 'arm'
+    'dtype': 'float{16, 32, 64}'
+    'direct': 'vst1{neon_widths}_{dtype_suffix}(ptr, v);'
+
+  - 'isa': 'arm'
+    'dtype': '{int, uint}'
+    'direct': 'vst1{neon_widths}_{dtype_suffix}(ptr, v);'
+
+  # SVE
+  - 'isa': 'arm'
+    'dtype': 'float{16, 32, 64}'
+    'direct': 'svst1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr, v);'
+
+  - 'isa': 'arm'
+    'dtype': '{int, uint}'
+    'direct': 'svst1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr, v);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    # Type-agnostic store (void*); reinterpret to the vector type.
+    signature: {ptr: 'void*', v: '{v}'}
+    direct: '__builtin_memcpy(ptr, &v, sizeof(v));'
+
+  # core_simd — aligned store
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'mut_ptr', v: '{v}'}
+    direct: 'unsafe { (ptr as *mut {simd_v}).write(v) };'

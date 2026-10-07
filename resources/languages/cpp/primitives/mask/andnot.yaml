@@ -1,0 +1,20 @@
+# res = ~a & b
+primitive: MASK_ANDNOT
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_kandn_{dtype_suffix}(a, b);'
+
+  - isa: x86
+    direct: '_mm512_kandn(a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: '{vbool_all}'}
+    direct: '~a & b;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_and<{simd_res}>(tsl::mask_binary_not<{simd_res}>(a), b);'

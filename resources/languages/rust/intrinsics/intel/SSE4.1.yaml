@@ -1,0 +1,366 @@
+- name: _mm_blend_pd
+  input: {a: __m128d, b: __m128d, imm8: const int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_blend_ps
+  input: {a: __m128, b: __m128, imm8: const int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_blendv_pd
+  input: {a: __m128d, b: __m128d, mask: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, mask: v2d}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_blendv_ps
+  input: {a: __m128, b: __m128, mask: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, mask: v4f}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_blendv_epi8
+  input: {a: __m128i, b: __m128i, mask: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c, mask: v16c}, output: {dst: v16c}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_blend_epi16
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_extract_ps
+  input: {a: __m128, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: v4f, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_extract_epi8
+  input: {a: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: v16c, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_extract_epi32
+  input: {a: __m128i, imm8: const int}
+  output: {dst: int}
+  ir: {input: {a: v4i, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_extract_epi64
+  input: {a: __m128i, imm8: const int}
+  output: {dst: __int64}
+  ir: {input: {a: v2l, imm8: int32_t}, output: {dst: int64_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_insert_ps
+  input: {a: __m128, b: __m128, imm8: const int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_insert_epi8
+  input: {a: __m128i, i: int, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, i: int32_t, imm8: int32_t}, output: {dst: v16c}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_insert_epi32
+  input: {a: __m128i, i: int, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, i: int32_t, imm8: int32_t}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_insert_epi64
+  input: {a: __m128i, i: __int64, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, i: int64_t, imm8: int32_t}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_dp_pd
+  input: {a: __m128d, b: __m128d, imm8: const int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_dp_ps
+  input: {a: __m128, b: __m128, imm8: const int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_mul_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_mullo_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_mpsadbw_epu8
+  input: {a: __m128i, b: __m128i, imm8: const int}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc, imm8: int32_t}, output: {dst: v16uc}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_max_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_max_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_max_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_max_epu16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us, b: v8us}, output: {dst: v8us}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_min_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_min_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_min_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_min_epu16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us, b: v8us}, output: {dst: v8us}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_round_pd
+  input: {a: __m128d, rounding: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, rounding: int32_t}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_floor_pd
+  input: {a: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_ceil_pd
+  input: {a: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_round_ps
+  input: {a: __m128, rounding: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, rounding: int32_t}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_floor_ps
+  input: {a: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_ceil_ps
+  input: {a: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_round_sd
+  input: {a: __m128d, b: __m128d, rounding: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, rounding: int32_t}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_floor_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_ceil_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_round_ss
+  input: {a: __m128, b: __m128, rounding: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, rounding: int32_t}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_floor_ss
+  input: {a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_ceil_ss
+  input: {a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_packus_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepi8_epi16
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c}, output: {dst: v8s}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepi8_epi32
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepi8_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepi16_epi32
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepi16_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepi32_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepu8_epi16
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc}, output: {dst: v8s}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepu8_epi32
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepu8_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepu16_epi32
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us}, output: {dst: v4i}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepu16_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cvtepu32_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_cmpeq_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_testz_si128
+  input: {a: __m128i, b: __m128i}
+  output: {k: int}
+  ir: {input: {a: blob128, b: blob128}, output: {k: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_testc_si128
+  input: {a: __m128i, b: __m128i}
+  output: {k: int}
+  ir: {input: {a: blob128, b: blob128}, output: {k: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_testnzc_si128
+  input: {a: __m128i, b: __m128i}
+  output: {dst: int}
+  ir: {input: {a: blob128, b: blob128}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_test_all_zeros
+  input: {mask: __m128i, a: __m128i}
+  output: {dst: int}
+  ir: {input: {mask: blob128, a: blob128}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_test_mix_ones_zeros
+  input: {mask: __m128i, a: __m128i}
+  output: {dst: int}
+  ir: {input: {mask: blob128, a: blob128}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_test_all_ones
+  input: {a: __m128i}
+  output: {dst: int}
+  ir: {input: {a: blob128}, output: {dst: int32_t}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_minpos_epu16
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us}, output: {dst: v8us}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>
+- name: _mm_stream_load_si128
+  input: {mem_addr: void*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE4.1]
+  include: <smmintrin.h>

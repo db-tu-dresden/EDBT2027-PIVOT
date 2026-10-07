@@ -1,0 +1,12 @@
+- name: _mm256_clmulepi64_epi128
+  input: {b: __m256i, c: __m256i, Imm8: const int}
+  output: {dst: __m256i}
+  ir: {input: {b: v4l, c: v4l, Imm8: int32_t}, output: {dst: v4l}}
+  flags: [VPCLMULQDQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm512_clmulepi64_epi128
+  input: {b: __m512i, c: __m512i, Imm8: const int}
+  output: {dst: __m512i}
+  ir: {input: {b: v8l, c: v8l, Imm8: int32_t}, output: {dst: v8l}}
+  flags: [VPCLMULQDQ]
+  include: <immintrin.h>

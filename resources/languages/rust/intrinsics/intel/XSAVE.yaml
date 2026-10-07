@@ -1,0 +1,84 @@
+- name: _xsavec
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSAVEC]
+  include: <immintrin.h>
+- name: _xsavec64
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSAVEC]
+  include: <immintrin.h>
+- name: _xsaveopt
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSAVEOPT]
+  include: <immintrin.h>
+- name: _xsaveopt64
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSAVEOPT]
+  include: <immintrin.h>
+- name: _xsaves
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSS]
+  include: <immintrin.h>
+- name: _xsaves64
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSS]
+  include: <immintrin.h>
+- name: _xrstors
+  input: {mem_addr: const void *, rs_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, rs_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSS]
+  include: <immintrin.h>
+- name: _xrstors64
+  input: {mem_addr: const void *, rs_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, rs_mask: uint64_t}, output: {}}
+  flags: [XSAVE, XSS]
+  include: <immintrin.h>
+- name: _xgetbv
+  input: {a: unsigned int}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint32_t}, output: {dst: uint64_t}}
+  flags: [XSAVE]
+  include: <immintrin.h>
+- name: _xrstor
+  input: {mem_addr: void *, rs_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, rs_mask: uint64_t}, output: {}}
+  flags: [XSAVE]
+  include: <immintrin.h>
+- name: _xrstor64
+  input: {mem_addr: void *, rs_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, rs_mask: uint64_t}, output: {}}
+  flags: [XSAVE]
+  include: <immintrin.h>
+- name: _xsave
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE]
+  include: <immintrin.h>
+- name: _xsave64
+  input: {mem_addr: void *, save_mask: unsigned __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, save_mask: uint64_t}, output: {}}
+  flags: [XSAVE]
+  include: <immintrin.h>
+- name: _xsetbv
+  input: {a: unsigned int, val: unsigned __int64}
+  output: {}
+  ir: {input: {a: uint32_t, val: uint64_t}, output: {}}
+  flags: [XSAVE]
+  include: <immintrin.h>

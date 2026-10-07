@@ -1,0 +1,20 @@
+# res = uninitialized vector
+primitive: SET_UNDEF
+input: []
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_undefined_{dtype_suffix}();'
+
+  - isa: arm
+    direct: 'svundef_{dtype_suffix}();'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {res: '{v}'}
+    direct: '({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {res: '{v}'}
+    direct: 'tsl::set_undef<{simd_res}>();'

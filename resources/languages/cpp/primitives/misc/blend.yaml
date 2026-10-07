@@ -1,0 +1,20 @@
+# res = k ? b : a
+primitive: BLEND
+input: [k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_blend_{dtype_suffix}(k, a, b);'
+
+  - isa: arm
+    direct: 'svsel_{dtype_suffix}(k, b, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'k ? b : a;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(k, b, a);'

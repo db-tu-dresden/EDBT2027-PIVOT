@@ -1,0 +1,2394 @@
+- name: _mm256_mask_andnot_pd
+  input: {src: __m256d, k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_andnot_pd
+  input: {k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_andnot_pd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_andnot_pd
+  input: {k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_andnot_ps
+  input: {src: __m256, k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_andnot_ps
+  input: {k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_andnot_ps
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_andnot_ps
+  input: {k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_and_pd
+  input: {src: __m256d, k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_and_pd
+  input: {k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_and_pd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_and_pd
+  input: {k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_and_ps
+  input: {src: __m256, k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_and_ps
+  input: {k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_and_ps
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_and_ps
+  input: {k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_or_pd
+  input: {src: __m256d, k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_or_pd
+  input: {k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_or_pd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_or_pd
+  input: {k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_or_ps
+  input: {src: __m256, k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_or_ps
+  input: {k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_or_ps
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_or_ps
+  input: {k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_xor_pd
+  input: {src: __m256d, k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_xor_pd
+  input: {k: __mmask8, a: __m256d, b: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4d, b: v4d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_xor_pd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_xor_pd
+  input: {k: __mmask8, a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_xor_ps
+  input: {src: __m256, k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_xor_ps
+  input: {k: __mmask8, a: __m256, b: __m256}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v8f, b: v8f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_xor_ps
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_xor_ps
+  input: {k: __mmask8, a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_broadcast_f32x2
+  input: {a: __m128}
+  output: {dst: __m256}
+  ir: {input: {a: v4f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_broadcast_f32x2
+  input: {src: __m256, k: __mmask8, a: __m128}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v4f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_broadcast_f32x2
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v4f}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_broadcast_f64x2
+  input: {a: __m128d}
+  output: {dst: __m256d}
+  ir: {input: {a: v2d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_broadcast_f64x2
+  input: {src: __m256d, k: __mmask8, a: __m128d}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v2b_d, a: v2d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_broadcast_f64x2
+  input: {k: __mmask8, a: __m128d}
+  output: {dst: __m256d}
+  ir: {input: {k: v2b_d, a: v2d}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_broadcast_i32x2
+  input: {a: __m128i}
+  output: {dst: __m256i}
+  ir: {input: {a: blob128}, output: {dst: v8i}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_broadcast_i32x2
+  input: {src: __m256i, k: __mmask8, a: __m128i}
+  output: {dst: __m256i}
+  ir: {input: {src: blob256, k: v8b_bALL, a: blob128}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_broadcast_i32x2
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_bALL, a: blob128}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_broadcast_i32x2
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128}, output: {dst: v4i}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_broadcast_i32x2
+  input: {src: __m128i, k: __mmask8, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: blob128, k: v8b_bALL, a: blob128}, output: {dst: blob128}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_broadcast_i32x2
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_bALL, a: blob128}, output: {dst: blob128}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_broadcast_i64x2
+  input: {a: __m128i}
+  output: {dst: __m256i}
+  ir: {input: {a: blob128}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_broadcast_i64x2
+  input: {src: __m256i, k: __mmask8, a: __m128i}
+  output: {dst: __m256i}
+  ir: {input: {src: blob256, k: v8b_bALL, a: blob128}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_broadcast_i64x2
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_bALL, a: blob128}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_extractf64x2_pd
+  input: {a: __m256d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v4d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_extractf64x2_pd
+  input: {src: __m128d, k: __mmask8, a: __m256d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v4d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_extractf64x2_pd
+  input: {k: __mmask8, a: __m256d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v4d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_extracti64x2_epi64
+  input: {a: __m256i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_extracti64x2_epi64
+  input: {src: __m128i, k: __mmask8, a: __m256i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v4l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_extracti64x2_epi64
+  input: {k: __mmask8, a: __m256i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v4l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_fpclass_pd_mask
+  input: {a: __m256d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v4d, imm8: int32_t}, output: {k: v4b_d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_fpclass_pd_mask
+  input: {k1: __mmask8, a: __m256d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v4b_d, a: v4d, imm8: int32_t}, output: {k: v4b_d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_fpclass_pd_mask
+  input: {a: __m128d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v2d, imm8: int32_t}, output: {k: v2b_d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_fpclass_pd_mask
+  input: {k1: __mmask8, a: __m128d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v2b_d, a: v2d, imm8: int32_t}, output: {k: v2b_d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_fpclass_ps_mask
+  input: {a: __m256, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v8f, imm8: int32_t}, output: {k: v8b_f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_fpclass_ps_mask
+  input: {k1: __mmask8, a: __m256, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v8b_f, a: v8f, imm8: int32_t}, output: {k: v8b_f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_fpclass_ps_mask
+  input: {a: __m128, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v4f, imm8: int32_t}, output: {k: v4b_f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_fpclass_ps_mask
+  input: {k1: __mmask8, a: __m128, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v4b_f, a: v4f, imm8: int32_t}, output: {k: v4b_f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_insertf64x2
+  input: {a: __m256d, b: __m128d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v2d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_insertf64x2
+  input: {src: __m256d, k: __mmask8, a: __m256d, b: __m128d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v2b_d, a: v4d, b: v2d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_insertf64x2
+  input: {k: __mmask8, a: __m256d, b: __m128d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {k: v2b_d, a: v4d, b: v2d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_inserti64x2
+  input: {a: __m256i, b: __m128i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: blob256, b: blob128, imm8: int32_t}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_inserti64x2
+  input: {src: __m256i, k: __mmask8, a: __m256i, b: __m128i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: blob256, k: v8b_bALL, a: blob256, b: blob128, imm8: int32_t}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_inserti64x2
+  input: {k: __mmask8, a: __m256i, b: __m128i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_bALL, a: blob256, b: blob128, imm8: int32_t}, output: {dst: blob256}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_movepi32_mask
+  input: {a: __m256i}
+  output: {k: __mmask8}
+  ir: {input: {a: v8i}, output: {k: v8b_i}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_movepi32_mask
+  input: {a: __m128i}
+  output: {k: __mmask8}
+  ir: {input: {a: v4i}, output: {k: v4b_i}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_movm_epi32
+  input: {k: __mmask8}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_i}, output: {dst: v8i}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_movm_epi32
+  input: {k: __mmask8}
+  output: {dst: __m128i}
+  ir: {input: {k: v4b_i}, output: {dst: v4i}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_movm_epi64
+  input: {k: __mmask8}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_movm_epi64
+  input: {k: __mmask8}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_movepi64_mask
+  input: {a: __m256i}
+  output: {k: __mmask8}
+  ir: {input: {a: v4l}, output: {k: v4b_l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_movepi64_mask
+  input: {a: __m128i}
+  output: {k: __mmask8}
+  ir: {input: {a: v2l}, output: {k: v2b_l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_range_pd
+  input: {src: __m256d, k: __mmask8, a: __m256d, b: __m256d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4d, b: v4d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_range_pd
+  input: {k: __mmask8, a: __m256d, b: __m256d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4d, b: v4d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_range_pd
+  input: {a: __m256d, b: __m256d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_range_pd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_range_pd
+  input: {k: __mmask8, a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_range_pd
+  input: {a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_range_ps
+  input: {src: __m256, k: __mmask8, a: __m256, b: __m256, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8f, b: v8f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_range_ps
+  input: {k: __mmask8, a: __m256, b: __m256, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v8f, b: v8f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_range_ps
+  input: {a: __m256, b: __m256, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_range_ps
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_range_ps
+  input: {k: __mmask8, a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_range_ps
+  input: {a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_reduce_pd
+  input: {src: __m256d, k: __mmask8, a: __m256d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_reduce_pd
+  input: {k: __mmask8, a: __m256d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_reduce_pd
+  input: {a: __m256d, imm8: int}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, imm8: int32_t}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_reduce_pd
+  input: {src: __m128d, k: __mmask8, a: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_reduce_pd
+  input: {k: __mmask8, a: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_reduce_pd
+  input: {a: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_reduce_ps
+  input: {src: __m256, k: __mmask8, a: __m256, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_reduce_ps
+  input: {k: __mmask8, a: __m256, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v8f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_reduce_ps
+  input: {a: __m256, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_reduce_ps
+  input: {src: __m128, k: __mmask8, a: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_reduce_ps
+  input: {k: __mmask8, a: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_reduce_ps
+  input: {a: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtpd_epi64
+  input: {a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {a: v4d}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtpd_epi64
+  input: {src: __m256i, k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4d}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtpd_epi64
+  input: {k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4d}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtpd_epi64
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtpd_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v2d}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtpd_epi64
+  input: {k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2d}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtpd_epu64
+  input: {a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {a: v4d}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtpd_epu64
+  input: {src: __m256i, k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {src: v4ul, k: v4b_ul, a: v4d}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtpd_epu64
+  input: {k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_ul, a: v4d}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtpd_epu64
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtpd_epu64
+  input: {src: __m128i, k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {src: v2ul, k: v2b_ul, a: v2d}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtpd_epu64
+  input: {k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_ul, a: v2d}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtps_epi64
+  input: {a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {a: v4f}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtps_epi64
+  input: {src: __m256i, k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4f}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtps_epi64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4f}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtps_epi64
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtps_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v4f}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtps_epi64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v4f}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtps_epu64
+  input: {a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {a: v4f}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtps_epu64
+  input: {src: __m256i, k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {src: v4ul, k: v4b_ul, a: v4f}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtps_epu64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_ul, a: v4f}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtps_epu64
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtps_epu64
+  input: {src: __m128i, k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {src: v2ul, k: v2b_ul, a: v4f}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtps_epu64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_ul, a: v4f}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtepi64_pd
+  input: {a: __m256i}
+  output: {dst: __m256d}
+  ir: {input: {a: v4l}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtepi64_pd
+  input: {src: __m256d, k: __mmask8, a: __m256i}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4l}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtepi64_pd
+  input: {k: __mmask8, a: __m256i}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4l}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtepi64_pd
+  input: {a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {a: v2l}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtepi64_pd
+  input: {src: __m128d, k: __mmask8, a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2l}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtepi64_pd
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2l}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtepi64_ps
+  input: {a: __m256i}
+  output: {dst: __m128}
+  ir: {input: {a: v4l}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtepi64_ps
+  input: {src: __m128, k: __mmask8, a: __m256i}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4l}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtepi64_ps
+  input: {k: __mmask8, a: __m256i}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4l}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtepi64_ps
+  input: {a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {a: v2l}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtepi64_ps
+  input: {src: __m128, k: __mmask8, a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v2b_f, a: v2l}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtepi64_ps
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {k: v2b_f, a: v2l}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvttpd_epi64
+  input: {a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {a: v4d}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvttpd_epi64
+  input: {src: __m256i, k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4d}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvttpd_epi64
+  input: {k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4d}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvttpd_epi64
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvttpd_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v2d}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvttpd_epi64
+  input: {k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2d}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvttpd_epu64
+  input: {a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {a: v4d}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvttpd_epu64
+  input: {src: __m256i, k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {src: v4ul, k: v4b_ul, a: v4d}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvttpd_epu64
+  input: {k: __mmask8, a: __m256d}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_ul, a: v4d}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvttpd_epu64
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvttpd_epu64
+  input: {src: __m128i, k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {src: v2ul, k: v2b_ul, a: v2d}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvttpd_epu64
+  input: {k: __mmask8, a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_ul, a: v2d}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvttps_epi64
+  input: {a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {a: v4f}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvttps_epi64
+  input: {src: __m256i, k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4f}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvttps_epi64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4f}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvttps_epi64
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvttps_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v4f}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvttps_epi64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v4f}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvttps_epu64
+  input: {a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {a: v4f}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvttps_epu64
+  input: {src: __m256i, k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {src: v4ul, k: v4b_ul, a: v4f}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvttps_epu64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_ul, a: v4f}, output: {dst: v4ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvttps_epu64
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvttps_epu64
+  input: {src: __m128i, k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {src: v2ul, k: v2b_ul, a: v4f}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvttps_epu64
+  input: {k: __mmask8, a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_ul, a: v4f}, output: {dst: v2ul}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtepu64_pd
+  input: {a: __m256i}
+  output: {dst: __m256d}
+  ir: {input: {a: v4ul}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtepu64_pd
+  input: {src: __m256d, k: __mmask8, a: __m256i}
+  output: {dst: __m256d}
+  ir: {input: {src: v4d, k: v4b_d, a: v4ul}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtepu64_pd
+  input: {k: __mmask8, a: __m256i}
+  output: {dst: __m256d}
+  ir: {input: {k: v4b_d, a: v4ul}, output: {dst: v4d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtepu64_pd
+  input: {a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {a: v2ul}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtepu64_pd
+  input: {src: __m128d, k: __mmask8, a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2ul}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtepu64_pd
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2ul}, output: {dst: v2d}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_cvtepu64_ps
+  input: {a: __m256i}
+  output: {dst: __m128}
+  ir: {input: {a: v4ul}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_cvtepu64_ps
+  input: {src: __m128, k: __mmask8, a: __m256i}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4ul}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_cvtepu64_ps
+  input: {k: __mmask8, a: __m256i}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4ul}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_cvtepu64_ps
+  input: {a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {a: v2ul}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_cvtepu64_ps
+  input: {src: __m128, k: __mmask8, a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v2b_f, a: v2ul}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_cvtepu64_ps
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {k: v2b_f, a: v2ul}, output: {dst: v4f}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_mullo_epi64
+  input: {src: __m256i, k: __mmask8, a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4l, b: v4l}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_mullo_epi64
+  input: {k: __mmask8, a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4l, b: v4l}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mullo_epi64
+  input: {a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, b: v4l}, output: {dst: v4l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_mullo_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_mullo_epi64
+  input: {k: __mmask8, a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mullo_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [AVX512DQ, AVX512VL]
+  include: <immintrin.h>
+- name: _mm512_andnot_pd
+  input: {a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_andnot_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_andnot_pd
+  input: {k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_andnot_ps
+  input: {a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_andnot_ps
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_andnot_ps
+  input: {k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_and_pd
+  input: {a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_and_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_and_pd
+  input: {k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_and_ps
+  input: {a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_and_ps
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_and_ps
+  input: {k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_or_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_or_pd
+  input: {k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_or_pd
+  input: {a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_or_ps
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_or_ps
+  input: {k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_or_ps
+  input: {a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_xor_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_xor_pd
+  input: {k: __mmask8, a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_xor_pd
+  input: {a: __m512d, b: __m512d}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v8d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_xor_ps
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_xor_ps
+  input: {k: __mmask16, a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_xor_ps
+  input: {a: __m512, b: __m512}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v16f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_broadcast_f32x2
+  input: {a: __m128}
+  output: {dst: __m512}
+  ir: {input: {a: v4f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_broadcast_f32x2
+  input: {src: __m512, k: __mmask16, a: __m128}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v4f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_broadcast_f32x2
+  input: {k: __mmask16, a: __m128}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v4f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_broadcast_f32x8
+  input: {a: __m256}
+  output: {dst: __m512}
+  ir: {input: {a: v8f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_broadcast_f32x8
+  input: {src: __m512, k: __mmask16, a: __m256}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v8f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_broadcast_f32x8
+  input: {k: __mmask16, a: __m256}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v8f}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_broadcast_f64x2
+  input: {a: __m128d}
+  output: {dst: __m512d}
+  ir: {input: {a: v2d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_broadcast_f64x2
+  input: {src: __m512d, k: __mmask8, a: __m128d}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v2d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_broadcast_f64x2
+  input: {k: __mmask8, a: __m128d}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v2d}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_broadcast_i32x2
+  input: {a: __m128i}
+  output: {dst: __m512i}
+  ir: {input: {a: blob128}, output: {dst: v16i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_broadcast_i32x2
+  input: {src: __m512i, k: __mmask16, a: __m128i}
+  output: {dst: __m512i}
+  ir: {input: {src: blob512, k: v16b_bALL, a: blob128}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_broadcast_i32x2
+  input: {k: __mmask16, a: __m128i}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_bALL, a: blob128}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_broadcast_i32x8
+  input: {a: __m256i}
+  output: {dst: __m512i}
+  ir: {input: {a: blob256}, output: {dst: v16i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_broadcast_i32x8
+  input: {src: __m512i, k: __mmask16, a: __m256i}
+  output: {dst: __m512i}
+  ir: {input: {src: blob512, k: v16b_bALL, a: blob256}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_broadcast_i32x8
+  input: {k: __mmask16, a: __m256i}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_bALL, a: blob256}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_broadcast_i64x2
+  input: {a: __m128i}
+  output: {dst: __m512i}
+  ir: {input: {a: blob128}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_broadcast_i64x2
+  input: {src: __m512i, k: __mmask8, a: __m128i}
+  output: {dst: __m512i}
+  ir: {input: {src: blob512, k: v8b_bALL, a: blob128}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_broadcast_i64x2
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_bALL, a: blob128}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_extractf32x8_ps
+  input: {a: __m512, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {a: v16f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_extractf32x8_ps
+  input: {src: __m256, k: __mmask8, a: __m512, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v16f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_extractf32x8_ps
+  input: {k: __mmask8, a: __m512, imm8: int}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_f, a: v16f, imm8: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_extractf64x2_pd
+  input: {a: __m512d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v8d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_extractf64x2_pd
+  input: {src: __m128d, k: __mmask8, a: __m512d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v8b_d, a: v8d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_extractf64x2_pd
+  input: {k: __mmask8, a: __m512d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v8b_d, a: v8d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_extracti32x8_epi32
+  input: {a: __m512i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v16i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_extracti32x8_epi32
+  input: {src: __m256i, k: __mmask8, a: __m512i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v8i, k: v8b_i, a: v16i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_extracti32x8_epi32
+  input: {k: __mmask8, a: __m512i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_i, a: v16i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_extracti64x2_epi64
+  input: {a: __m512i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_extracti64x2_epi64
+  input: {src: __m128i, k: __mmask8, a: __m512i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v8b_l, a: v8l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_extracti64x2_epi64
+  input: {k: __mmask8, a: __m512i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_l, a: v8l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_fpclass_pd_mask
+  input: {a: __m512d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v8d, imm8: int32_t}, output: {k: v8b_d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_fpclass_pd_mask
+  input: {k1: __mmask8, a: __m512d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v8b_d, a: v8d, imm8: int32_t}, output: {k: v8b_d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_fpclass_ps_mask
+  input: {a: __m512, imm8: int}
+  output: {k: __mmask16}
+  ir: {input: {a: v16f, imm8: int32_t}, output: {k: v16b_f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_fpclass_ps_mask
+  input: {k1: __mmask16, a: __m512, imm8: int}
+  output: {k: __mmask16}
+  ir: {input: {k1: v16b_f, a: v16f, imm8: int32_t}, output: {k: v16b_f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_fpclass_sd_mask
+  input: {a: __m128d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v2d, imm8: int32_t}, output: {k: v2b_d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_fpclass_sd_mask
+  input: {k1: __mmask8, a: __m128d, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v2b_d, a: v2d, imm8: int32_t}, output: {k: v2b_d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_fpclass_ss_mask
+  input: {a: __m128, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {a: v4f, imm8: int32_t}, output: {k: v4b_f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_fpclass_ss_mask
+  input: {k1: __mmask8, a: __m128, imm8: int}
+  output: {k: __mmask8}
+  ir: {input: {k1: v4b_f, a: v4f, imm8: int32_t}, output: {k: v4b_f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_insertf32x8
+  input: {a: __m512, b: __m256, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v8f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_insertf32x8
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m256, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v8f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_insertf32x8
+  input: {k: __mmask16, a: __m512, b: __m256, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v8f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_insertf64x2
+  input: {a: __m512d, b: __m128d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v2d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_insertf64x2
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m128d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v2d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_insertf64x2
+  input: {k: __mmask8, a: __m512d, b: __m128d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v2d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_inserti32x8
+  input: {a: __m512i, b: __m256i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: blob512, b: blob256, imm8: int32_t}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_inserti32x8
+  input: {src: __m512i, k: __mmask16, a: __m512i, b: __m256i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: blob512, k: v16b_bALL, a: blob512, b: blob256, imm8: int32_t}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_inserti32x8
+  input: {k: __mmask16, a: __m512i, b: __m256i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_bALL, a: blob512, b: blob256, imm8: int32_t}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_inserti64x2
+  input: {a: __m512i, b: __m128i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: blob512, b: blob128, imm8: int32_t}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_inserti64x2
+  input: {src: __m512i, k: __mmask8, a: __m512i, b: __m128i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: blob512, k: v8b_bALL, a: blob512, b: blob128, imm8: int32_t}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_inserti64x2
+  input: {k: __mmask8, a: __m512i, b: __m128i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_bALL, a: blob512, b: blob128, imm8: int32_t}, output: {dst: blob512}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_movepi32_mask
+  input: {a: __m512i}
+  output: {k: __mmask16}
+  ir: {input: {a: v16i}, output: {k: v16b_i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_movm_epi32
+  input: {k: __mmask16}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_i}, output: {dst: v16i}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_movm_epi64
+  input: {k: __mmask8}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_l}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_movepi64_mask
+  input: {a: __m512i}
+  output: {k: __mmask8}
+  ir: {input: {a: v8l}, output: {k: v8b_l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_range_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m512d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v8d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_range_round_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, b: __m512d, imm8: int, sae: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, b: v8d, imm8: int32_t, sae: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_range_pd
+  input: {k: __mmask8, a: __m512d, b: __m512d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v8d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_range_round_pd
+  input: {k: __mmask8, a: __m512d, b: __m512d, imm8: int, sae: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, b: v8d, imm8: int32_t, sae: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_range_pd
+  input: {a: __m512d, b: __m512d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v8d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_range_round_pd
+  input: {a: __m512d, b: __m512d, imm8: int, sae: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, b: v8d, imm8: int32_t, sae: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_range_ps
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m512, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v16f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_range_round_ps
+  input: {src: __m512, k: __mmask16, a: __m512, b: __m512, imm8: int, sae: int}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, b: v16f, imm8: int32_t, sae: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_range_ps
+  input: {k: __mmask16, a: __m512, b: __m512, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v16f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_range_round_ps
+  input: {k: __mmask16, a: __m512, b: __m512, imm8: int, sae: int}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, b: v16f, imm8: int32_t, sae: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_range_ps
+  input: {a: __m512, b: __m512, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v16f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_range_round_ps
+  input: {a: __m512, b: __m512, imm8: int, sae: int}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, b: v16f, imm8: int32_t, sae: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_range_round_sd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d, imm8: int, sae: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d, imm8: int32_t, sae: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_range_sd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_range_round_sd
+  input: {k: __mmask8, a: __m128d, b: __m128d, imm8: int, sae: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d, imm8: int32_t, sae: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_range_sd
+  input: {k: __mmask8, a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_range_round_sd
+  input: {a: __m128d, b: __m128d, imm8: int, sae: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t, sae: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_range_round_ss
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128, imm8: int, sae: int}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f, imm8: int32_t, sae: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_range_ss
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_range_round_ss
+  input: {k: __mmask8, a: __m128, b: __m128, imm8: int, sae: int}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f, imm8: int32_t, sae: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_range_ss
+  input: {k: __mmask8, a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_range_round_ss
+  input: {a: __m128, b: __m128, imm8: int, sae: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t, sae: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_reduce_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_reduce_round_pd
+  input: {src: __m512d, k: __mmask8, a: __m512d, imm8: int, sae: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8d, imm8: int32_t, sae: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_reduce_pd
+  input: {k: __mmask8, a: __m512d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_reduce_round_pd
+  input: {k: __mmask8, a: __m512d, imm8: int, sae: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_d, a: v8d, imm8: int32_t, sae: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_reduce_pd
+  input: {a: __m512d, imm8: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, imm8: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_reduce_round_pd
+  input: {a: __m512d, imm8: int, sae: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8d, imm8: int32_t, sae: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_reduce_ps
+  input: {src: __m512, k: __mmask16, a: __m512, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_reduce_round_ps
+  input: {src: __m512, k: __mmask16, a: __m512, imm8: int, sae: int}
+  output: {dst: __m512}
+  ir: {input: {src: v16f, k: v16b_f, a: v16f, imm8: int32_t, sae: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_reduce_ps
+  input: {k: __mmask16, a: __m512, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_reduce_round_ps
+  input: {k: __mmask16, a: __m512, imm8: int, sae: int}
+  output: {dst: __m512}
+  ir: {input: {k: v16b_f, a: v16f, imm8: int32_t, sae: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_reduce_ps
+  input: {a: __m512, imm8: int}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, imm8: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_reduce_round_ps
+  input: {a: __m512, imm8: int, sae: int}
+  output: {dst: __m512}
+  ir: {input: {a: v16f, imm8: int32_t, sae: int32_t}, output: {dst: v16f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_reduce_sd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_reduce_round_sd
+  input: {src: __m128d, k: __mmask8, a: __m128d, b: __m128d, imm8: int, sae: int}
+  output: {dst: __m128d}
+  ir: {input: {src: v2d, k: v2b_d, a: v2d, b: v2d, imm8: int32_t, sae: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_reduce_sd
+  input: {k: __mmask8, a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_reduce_round_sd
+  input: {k: __mmask8, a: __m128d, b: __m128d, imm8: int, sae: int}
+  output: {dst: __m128d}
+  ir: {input: {k: v2b_d, a: v2d, b: v2d, imm8: int32_t, sae: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_reduce_sd
+  input: {a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_reduce_round_sd
+  input: {a: __m128d, b: __m128d, imm8: int, sae: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t, sae: int32_t}, output: {dst: v2d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_reduce_ss
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_mask_reduce_round_ss
+  input: {src: __m128, k: __mmask8, a: __m128, b: __m128, imm8: int, sae: int}
+  output: {dst: __m128}
+  ir: {input: {src: v4f, k: v4b_f, a: v4f, b: v4f, imm8: int32_t, sae: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_reduce_ss
+  input: {k: __mmask8, a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_maskz_reduce_round_ss
+  input: {k: __mmask8, a: __m128, b: __m128, imm8: int, sae: int}
+  output: {dst: __m128}
+  ir: {input: {k: v4b_f, a: v4f, b: v4f, imm8: int32_t, sae: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_reduce_ss
+  input: {a: __m128, b: __m128, imm8: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm_reduce_round_ss
+  input: {a: __m128, b: __m128, imm8: int, sae: int}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, imm8: int32_t, sae: int32_t}, output: {dst: v4f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundpd_epi64
+  input: {a: __m512d, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d, rounding: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtpd_epi64
+  input: {a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundpd_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512d, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8d, rounding: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtpd_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8d}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundpd_epi64
+  input: {k: __mmask8, a: __m512d, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d, rounding: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtpd_epi64
+  input: {k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundpd_epu64
+  input: {a: __m512d, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d, rounding: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtpd_epu64
+  input: {a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundpd_epu64
+  input: {src: __m512i, k: __mmask8, a: __m512d, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8d, rounding: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtpd_epu64
+  input: {src: __m512i, k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8d}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundpd_epu64
+  input: {k: __mmask8, a: __m512d, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d, rounding: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtpd_epu64
+  input: {k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundps_epi64
+  input: {a: __m256, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f, rounding: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtps_epi64
+  input: {a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundps_epi64
+  input: {src: __m512i, k: __mmask8, a: __m256, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8f, rounding: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtps_epi64
+  input: {src: __m512i, k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8f}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundps_epi64
+  input: {k: __mmask8, a: __m256, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f, rounding: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtps_epi64
+  input: {k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundps_epu64
+  input: {a: __m256, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f, rounding: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtps_epu64
+  input: {a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundps_epu64
+  input: {src: __m512i, k: __mmask8, a: __m256, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8f, rounding: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtps_epu64
+  input: {src: __m512i, k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8f}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundps_epu64
+  input: {k: __mmask8, a: __m256, rounding: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f, rounding: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtps_epu64
+  input: {k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundepi64_pd
+  input: {a: __m512i, rounding: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8l, rounding: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtepi64_pd
+  input: {a: __m512i}
+  output: {dst: __m512d}
+  ir: {input: {a: v8l}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundepi64_pd
+  input: {src: __m512d, k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8l, rounding: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtepi64_pd
+  input: {src: __m512d, k: __mmask8, a: __m512i}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8l}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundepi64_pd
+  input: {k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_l, a: v8l, rounding: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtepi64_pd
+  input: {k: __mmask8, a: __m512i}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_l, a: v8l}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundepi64_ps
+  input: {a: __m512i, rounding: int}
+  output: {dst: __m256}
+  ir: {input: {a: v8l, rounding: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtepi64_ps
+  input: {a: __m512i}
+  output: {dst: __m256}
+  ir: {input: {a: v8l}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundepi64_ps
+  input: {src: __m256, k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8l, rounding: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtepi64_ps
+  input: {src: __m256, k: __mmask8, a: __m512i}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8l}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundepi64_ps
+  input: {k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_l, a: v8l, rounding: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtepi64_ps
+  input: {k: __mmask8, a: __m512i}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_l, a: v8l}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtt_roundpd_epi64
+  input: {a: __m512d, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d, sae: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvttpd_epi64
+  input: {a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtt_roundpd_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512d, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8d, sae: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvttpd_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8d}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtt_roundpd_epi64
+  input: {k: __mmask8, a: __m512d, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d, sae: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvttpd_epi64
+  input: {k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtt_roundpd_epu64
+  input: {a: __m512d, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d, sae: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvttpd_epu64
+  input: {a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {a: v8d}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtt_roundpd_epu64
+  input: {src: __m512i, k: __mmask8, a: __m512d, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8d, sae: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvttpd_epu64
+  input: {src: __m512i, k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8d}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtt_roundpd_epu64
+  input: {k: __mmask8, a: __m512d, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d, sae: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvttpd_epu64
+  input: {k: __mmask8, a: __m512d}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_d, a: v8d}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtt_roundps_epi64
+  input: {a: __m256, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f, sae: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvttps_epi64
+  input: {a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtt_roundps_epi64
+  input: {src: __m512i, k: __mmask8, a: __m256, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8f, sae: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvttps_epi64
+  input: {src: __m512i, k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8f}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtt_roundps_epi64
+  input: {k: __mmask8, a: __m256, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f, sae: int32_t}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvttps_epi64
+  input: {k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtt_roundps_epu64
+  input: {a: __m256, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f, sae: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvttps_epu64
+  input: {a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {a: v8f}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtt_roundps_epu64
+  input: {src: __m512i, k: __mmask8, a: __m256, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8f, sae: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvttps_epu64
+  input: {src: __m512i, k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {src: v8ul, k: v8b_ul, a: v8f}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtt_roundps_epu64
+  input: {k: __mmask8, a: __m256, sae: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f, sae: int32_t}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvttps_epu64
+  input: {k: __mmask8, a: __m256}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_f, a: v8f}, output: {dst: v8ul}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundepu64_pd
+  input: {a: __m512i, rounding: int}
+  output: {dst: __m512d}
+  ir: {input: {a: v8ul, rounding: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtepu64_pd
+  input: {a: __m512i}
+  output: {dst: __m512d}
+  ir: {input: {a: v8ul}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundepu64_pd
+  input: {src: __m512d, k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8ul, rounding: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtepu64_pd
+  input: {src: __m512d, k: __mmask8, a: __m512i}
+  output: {dst: __m512d}
+  ir: {input: {src: v8d, k: v8b_d, a: v8ul}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundepu64_pd
+  input: {k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_ul, a: v8ul, rounding: int32_t}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtepu64_pd
+  input: {k: __mmask8, a: __m512i}
+  output: {dst: __m512d}
+  ir: {input: {k: v8b_ul, a: v8ul}, output: {dst: v8d}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvt_roundepu64_ps
+  input: {a: __m512i, rounding: int}
+  output: {dst: __m256}
+  ir: {input: {a: v8ul, rounding: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_cvtepu64_ps
+  input: {a: __m512i}
+  output: {dst: __m256}
+  ir: {input: {a: v8ul}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvt_roundepu64_ps
+  input: {src: __m256, k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8ul, rounding: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_cvtepu64_ps
+  input: {src: __m256, k: __mmask8, a: __m512i}
+  output: {dst: __m256}
+  ir: {input: {src: v8f, k: v8b_f, a: v8ul}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvt_roundepu64_ps
+  input: {k: __mmask8, a: __m512i, rounding: int}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_ul, a: v8ul, rounding: int32_t}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_cvtepu64_ps
+  input: {k: __mmask8, a: __m512i}
+  output: {dst: __m256}
+  ir: {input: {k: v8b_ul, a: v8ul}, output: {dst: v8f}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mask_mullo_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8l, b: v8l}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_maskz_mullo_epi64
+  input: {k: __mmask8, a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_l, a: v8l, b: v8l}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _mm512_mullo_epi64
+  input: {a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, b: v8l}, output: {dst: v8l}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kadd_mask8
+  input: {a: __mmask8, b: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kadd_mask16
+  input: {a: __mmask16, b: __mmask16}
+  output: {k: __mmask16}
+  ir: {input: {a: v16b_bALL, b: v16b_bALL}, output: {k: v16b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kand_mask8
+  input: {a: __mmask8, b: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kandn_mask8
+  input: {a: __mmask8, b: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _knot_mask8
+  input: {a: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kor_mask8
+  input: {a: __mmask8, b: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kxnor_mask8
+  input: {a: __mmask8, b: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kxor_mask8
+  input: {a: __mmask8, b: __mmask8}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kshiftli_mask8
+  input: {a: __mmask8, count: unsigned int}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, count: uint32_t}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kshiftri_mask8
+  input: {a: __mmask8, count: unsigned int}
+  output: {k: __mmask8}
+  ir: {input: {a: v8b_bALL, count: uint32_t}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kortest_mask8_u8
+  input: {a: __mmask8, b: __mmask8, all_ones: unsigned char*}
+  output: {dst: unsigned char}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL, all_ones: ptr}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kortestz_mask8_u8
+  input: {a: __mmask8, b: __mmask8}
+  output: {dst: unsigned char}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _kortestc_mask8_u8
+  input: {a: __mmask8, b: __mmask8}
+  output: {dst: unsigned char}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _ktest_mask8_u8
+  input: {a: __mmask8, b: __mmask8, and_not: unsigned char*}
+  output: {dst: unsigned char}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL, and_not: ptr}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _ktestz_mask8_u8
+  input: {a: __mmask8, b: __mmask8}
+  output: {dst: unsigned char}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _ktestc_mask8_u8
+  input: {a: __mmask8, b: __mmask8}
+  output: {dst: unsigned char}
+  ir: {input: {a: v8b_bALL, b: v8b_bALL}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _ktest_mask16_u8
+  input: {a: __mmask16, b: __mmask16, and_not: unsigned char*}
+  output: {dst: unsigned char}
+  ir: {input: {a: v16b_bALL, b: v16b_bALL, and_not: ptr}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _ktestz_mask16_u8
+  input: {a: __mmask16, b: __mmask16}
+  output: {dst: unsigned char}
+  ir: {input: {a: v16b_bALL, b: v16b_bALL}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _ktestc_mask16_u8
+  input: {a: __mmask16, b: __mmask16}
+  output: {dst: unsigned char}
+  ir: {input: {a: v16b_bALL, b: v16b_bALL}, output: {dst: uint8_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _cvtmask8_u32
+  input: {a: __mmask8}
+  output: {dst: unsigned int}
+  ir: {input: {a: v8b_bALL}, output: {dst: uint32_t}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _cvtu32_mask8
+  input: {a: unsigned int}
+  output: {k: __mmask8}
+  ir: {input: {a: uint32_t}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _load_mask8
+  input: {mem_addr: __mmask8*}
+  output: {k: __mmask8}
+  ir: {input: {mem_addr: ptr}, output: {k: v8b_bALL}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>
+- name: _store_mask8
+  input: {mem_addr: __mmask8*, a: __mmask8}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v8b_bALL}, output: {}}
+  flags: [AVX512DQ]
+  include: <immintrin.h>

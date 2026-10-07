@@ -1,0 +1,144 @@
+- name: _mm512_maskz_gf2p8mul_epi8
+  input: {k: __mmask64, a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v64b_c, a: v64c, b: v64c}, output: {dst: v64c}}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_mask_gf2p8mul_epi8
+  input: {src: __m512i, k: __mmask64, a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v64c, k: v64b_c, a: v64c, b: v64c}, output: {dst: v64c}}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_gf2p8mul_epi8
+  input: {a: __m512i, b: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v64c, b: v64c}, output: {dst: v64c}}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_maskz_gf2p8affine_epi64_epi8
+  input: {k: __mmask64, x: __m512i, A: __m512i, b: int}
+  output: {dst: __m512i}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_mask_gf2p8affine_epi64_epi8
+  input: {src: __m512i, k: __mmask64, x: __m512i, A: __m512i, b: int}
+  output: {dst: __m512i}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_gf2p8affine_epi64_epi8
+  input: {x: __m512i, A: __m512i, b: int}
+  output: {dst: __m512i}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_maskz_gf2p8affineinv_epi64_epi8
+  input: {k: __mmask64, x: __m512i, A: __m512i, b: int}
+  output: {dst: __m512i}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_mask_gf2p8affineinv_epi64_epi8
+  input: {src: __m512i, k: __mmask64, x: __m512i, A: __m512i, b: int}
+  output: {dst: __m512i}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_gf2p8affineinv_epi64_epi8
+  input: {x: __m512i, A: __m512i, b: int}
+  output: {dst: __m512i}
+  flags: [GFNI, AVX512F]
+  include: <immintrin.h>
+- name: _mm256_maskz_gf2p8mul_epi8
+  input: {k: __mmask32, a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v32b_c, a: v32c, b: v32c}, output: {dst: v32c}}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_gf2p8mul_epi8
+  input: {src: __m256i, k: __mmask32, a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v32c, k: v32b_c, a: v32c, b: v32c}, output: {dst: v32c}}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_gf2p8mul_epi8
+  input: {a: __m256i, b: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v32c, b: v32c}, output: {dst: v32c}}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_gf2p8mul_epi8
+  input: {k: __mmask16, a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v16b_c, a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_gf2p8mul_epi8
+  input: {src: __m128i, k: __mmask16, a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v16c, k: v16b_c, a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_gf2p8mul_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_gf2p8affine_epi64_epi8
+  input: {k: __mmask32, x: __m256i, A: __m256i, b: int}
+  output: {dst: __m256i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_gf2p8affine_epi64_epi8
+  input: {src: __m256i, k: __mmask32, x: __m256i, A: __m256i, b: int}
+  output: {dst: __m256i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_gf2p8affine_epi64_epi8
+  input: {x: __m256i, A: __m256i, b: int}
+  output: {dst: __m256i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_gf2p8affine_epi64_epi8
+  input: {k: __mmask16, x: __m128i, A: __m128i, b: int}
+  output: {dst: __m128i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_gf2p8affine_epi64_epi8
+  input: {src: __m128i, k: __mmask16, x: __m128i, A: __m128i, b: int}
+  output: {dst: __m128i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_gf2p8affine_epi64_epi8
+  input: {x: __m128i, A: __m128i, b: int}
+  output: {dst: __m128i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_gf2p8affineinv_epi64_epi8
+  input: {k: __mmask32, x: __m256i, A: __m256i, b: int}
+  output: {dst: __m256i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_gf2p8affineinv_epi64_epi8
+  input: {src: __m256i, k: __mmask32, x: __m256i, A: __m256i, b: int}
+  output: {dst: __m256i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_gf2p8affineinv_epi64_epi8
+  input: {x: __m256i, A: __m256i, b: int}
+  output: {dst: __m256i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_gf2p8affineinv_epi64_epi8
+  input: {k: __mmask16, x: __m128i, A: __m128i, b: int}
+  output: {dst: __m128i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_gf2p8affineinv_epi64_epi8
+  input: {src: __m128i, k: __mmask16, x: __m128i, A: __m128i, b: int}
+  output: {dst: __m128i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_gf2p8affineinv_epi64_epi8
+  input: {x: __m128i, A: __m128i, b: int}
+  output: {dst: __m128i}
+  flags: [GFNI, AVX512VL]
+  include: <immintrin.h>

@@ -1,0 +1,56 @@
+# res = sum(vec[*])
+primitive: HADD
+input: [vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_reduce_add_{dtype_suffix}(vec);'
+
+  # tmp0 = shuffle(vec,[1,0,3,2]); s0 = vec+tmp0; tmp1 = shuffle(s0,[2,3,0,1]); res = (s0+tmp1)[0]
+  - isa: x86
+    nto1: true
+    blocked_arches: [a64fx]
+    direct: |-
+      hadd_tmp0 = _mm_shuffle_epi32(vec, 177);
+      hadd_s0 = _mm_add_epi32(vec, hadd_tmp0);
+      hadd_tmp1 = _mm_shuffle_epi32(hadd_s0, 78);
+      hadd_s1 = _mm_add_epi32(hadd_s0, hadd_tmp1);
+      res = _mm_cvtsi128_si32(hadd_s1);
+
+  - isa: arm
+    direct: 'vaddv{neon_widths}_{dtype_suffix}(vec);'
+
+  - isa: arm
+    direct: 'svaddv_{dtype_suffix}(svptrue_b{elem_bits}(), vec);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: '__builtin_reduce_add(vec);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: 'tsl::hadd<{simd_vec}>(vec);'
+
+---
+# res = sum(vec[i] for active k[i])
+primitive: HADD_MASKED
+input: [k, vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_reduce_add_{dtype_suffix}(k, vec);'
+
+  - isa: arm
+    direct: 'svaddv_{dtype_suffix}(k, vec);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', vec: '{v}', res: '{s}'}
+    direct: '__builtin_reduce_add(k ? vec : ({v}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', vec: '{v}', res: '{s}'}
+    direct: 'tsl::hadd_mask<{simd_vec}>(k, vec);'

@@ -1,0 +1,10 @@
+name: sve_sort_clang_512
+mode: single_file
+source_path: experiments/width-flexible/sve_sort/sources/sortSVE.hpp
+source_isa: arm
+target_isa: clang_builtins
+primitive_set: pivot
+sve_assumed_bits: 512
+args: ["-I", "experiments/width-flexible/sve_sort/sources"]
+output_dir: experiments/width-flexible/sve_sort/translated/clang_builtins_512
+output_name: sortSVE.hpp

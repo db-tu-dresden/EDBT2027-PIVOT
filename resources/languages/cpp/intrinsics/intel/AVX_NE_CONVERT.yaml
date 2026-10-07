@@ -1,0 +1,92 @@
+- name: _mm256_bcstnebf16_ps
+  input: {__A: const __bf16*}
+  output: {dst: __m256}
+  ir: {input: {__A: ptr}, output: {dst: v8f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_bcstnesh_ps
+  input: {__A: const _Float16*}
+  output: {dst: __m256}
+  ir: {input: {__A: ptr}, output: {dst: v8f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_cvtneebf16_ps
+  input: {__A: const __m256bh*}
+  output: {dst: __m256}
+  ir: {input: {__A: ptr}, output: {dst: v8f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_cvtneeph_ps
+  input: {__A: const __m256h*}
+  output: {dst: __m256}
+  ir: {input: {__A: ptr}, output: {dst: v8f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_cvtneobf16_ps
+  input: {__A: const __m256bh*}
+  output: {dst: __m256}
+  ir: {input: {__A: ptr}, output: {dst: v8f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_cvtneoph_ps
+  input: {__A: const __m256h*}
+  output: {dst: __m256}
+  ir: {input: {__A: ptr}, output: {dst: v8f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_cvtneps_avx_pbh
+  input: {__A: __m256}
+  output: {dst: __m128bh}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_bcstnebf16_ps
+  input: {__A: const __bf16*}
+  output: {dst: __m128}
+  ir: {input: {__A: ptr}, output: {dst: v4f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_bcstnesh_ps
+  input: {__A: const _Float16*}
+  output: {dst: __m128}
+  ir: {input: {__A: ptr}, output: {dst: v4f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_cvtneebf16_ps
+  input: {__A: const __m128bh*}
+  output: {dst: __m128}
+  ir: {input: {__A: ptr}, output: {dst: v4f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_cvtneeph_ps
+  input: {__A: const __m128h*}
+  output: {dst: __m128}
+  ir: {input: {__A: ptr}, output: {dst: v4f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_cvtneobf16_ps
+  input: {__A: const __m128bh*}
+  output: {dst: __m128}
+  ir: {input: {__A: ptr}, output: {dst: v4f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_cvtneoph_ps
+  input: {__A: const __m128h*}
+  output: {dst: __m128}
+  ir: {input: {__A: ptr}, output: {dst: v4f}}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_cvtneps_avx_pbh
+  input: {__A: __m128}
+  output: {dst: __m128bh}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm256_cvtneps_pbh
+  input: {__A: __m256}
+  output: {dst: __m128bh}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>
+- name: _mm_cvtneps_pbh
+  input: {__A: __m128}
+  output: {dst: __m128bh}
+  flags: [AVX_NE_CONVERT]
+  include: <immintrin.h>

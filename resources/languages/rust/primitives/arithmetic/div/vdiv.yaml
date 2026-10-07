@@ -1,0 +1,49 @@
+primitive: VDIV
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_div_{dtype_suffix}(a, b);'
+
+  # Neon
+  - isa: arm
+    dtype: 'float{16, 32, 64}'
+    direct: vdiv{neon_widths}_{dtype_suffix}(a, b);
+
+  # SVE
+  - isa: arm
+    dtype: 'float{16, 32, 64}'
+    direct: svdiv_{dtype_suffix}_m(svptrue_b{elem_bits}(), a, b);
+
+  - isa: arm
+    dtype: '{int, uint}{32, 64}'
+    direct: svdiv_{dtype_suffix}_m(svptrue_b{elem_bits}(), a, b);
+
+  - isa: arm
+    dtype: 'float{16, 32, 64}'
+    direct: svdiv_{dtype_suffix}_x(svptrue_b{elem_bits}(), a, b);
+
+  - isa: arm
+    dtype: '{int, uint}{32, 64}'
+    direct: svdiv_{dtype_suffix}_x(svptrue_b{elem_bits}(), a, b);
+
+  - isa: arm
+    dtype: 'float{16, 32, 64}'
+    direct: svdiv_{dtype_suffix}_z(svptrue_b{elem_bits}(), a, b);
+
+  - isa: arm
+    dtype: '{int, uint}{32, 64}'
+    direct: svdiv_{dtype_suffix}_z(svptrue_b{elem_bits}(), a, b);
+
+  # Clang
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a / b;'
+
+  # core_simd — elementwise operator (float only: integer division by a zero lane panics)
+  - isa: core_simd
+    dtype: float
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a / b;'

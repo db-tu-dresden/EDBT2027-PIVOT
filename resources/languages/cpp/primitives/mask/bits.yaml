@@ -1,0 +1,47 @@
+# res = bitmap of mask k: bit i = lane i (the integer an x86 __mmaskN is)
+primitive: MASK_BITS
+input: [k]
+output: res
+definitions:
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', res: uint64_t}
+    direct:
+      - 'using Vec = {simd_k};'
+      - 'auto const _bits = [](auto _m) -> uint64_t {'
+      - '  if constexpr (std::is_integral_v<decltype(tsl::to_integral<Vec>(_m))>) {'
+      - '    return (uint64_t)tsl::to_integral<Vec>(_m);'
+      - '  } else {'
+      - '    auto const _lanes = tsl::to_array<Vec>(tsl::to_vector<Vec>(_m));'
+      - '    uint64_t _r = 0;'
+      - '    for (std::size_t _i = 0; _i < Vec::vector_element_count; ++_i) _r |= (uint64_t)(_lanes[_i] != 0) << _i;'
+      - '    return _r;'
+      - '  }'
+      - '};'
+      - 'return _bits(k);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}{32}'
+    signature: {k: '{vbool}{512}', res: uint16_t}
+    direct:
+      - '#if defined(__ARM_FEATURE_SVE_BITS) && __ARM_FEATURE_SVE_BITS >= 512'
+      - 'return (uint16_t)__builtin_reduce_or(__builtin_convertvector(k, {vuint}) << ({vuint}){0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});'
+      - '#else'
+      - 'return __builtin_bit_cast(uint16_t, k);'
+      - '#endif'
+
+---
+# res[i] = (bits >> i) & 1
+primitive: MASK_FROM_BITS
+input: [bits]
+output: res
+definitions:
+  - isa: clang_builtins
+    dtype: '{int, uint, float}{32}'
+    signature: {bits: uint16_t, res: '{vbool}{512}'}
+    direct:
+      - '#if defined(__ARM_FEATURE_SVE_BITS) && __ARM_FEATURE_SVE_BITS >= 512'
+      - 'return __builtin_convertvector((((({vuint})(uint32_t)bits) >> ({vuint}){0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}) & 1) != 0, {vbool});'
+      - '#else'
+      - 'return __builtin_bit_cast({vbool}, bits);'
+      - '#endif'

@@ -1,0 +1,900 @@
+- name: _mm256_maskz_shrdv_epi64
+  input: {k: __mmask8, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4l, b: v4l, c: v4l}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shrdv_epi64
+  input: {a: __m256i, k: __mmask8, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, k: v4b_l, b: v4l, c: v4l}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shrdv_epi64
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, b: v4l, c: v4l}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shrdv_epi64
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2l, b: v2l, c: v2l}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shrdv_epi64
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, k: v2b_l, b: v2l, c: v2l}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shrdv_epi64
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l, c: v2l}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shrdv_epi32
+  input: {k: __mmask8, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_i, a: v8i, b: v8i, c: v8i}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shrdv_epi32
+  input: {a: __m256i, k: __mmask8, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v8i, k: v8b_i, b: v8i, c: v8i}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shrdv_epi32
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v8i, b: v8i, c: v8i}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shrdv_epi32
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v4b_i, a: v4i, b: v4i, c: v4i}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shrdv_epi32
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, k: v4b_i, b: v4i, c: v4i}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shrdv_epi32
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i, c: v4i}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shrdv_epi16
+  input: {k: __mmask16, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, a: v16s, b: v16s, c: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shrdv_epi16
+  input: {a: __m256i, k: __mmask16, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v16s, k: v16b_s, b: v16s, c: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shrdv_epi16
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v16s, b: v16s, c: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shrdv_epi16
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, a: v8s, b: v8s, c: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shrdv_epi16
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, k: v8b_s, b: v8s, c: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shrdv_epi16
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s, c: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shrdi_epi64
+  input: {k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4l, b: v4l, imm8: int32_t}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shrdi_epi64
+  input: {src: __m256i, k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4l, b: v4l, imm8: int32_t}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shrdi_epi64
+  input: {a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, b: v4l, imm8: int32_t}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shrdi_epi64
+  input: {k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2l, b: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shrdi_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v2l, b: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shrdi_epi64
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shrdi_epi32
+  input: {k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_i, a: v8i, b: v8i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shrdi_epi32
+  input: {src: __m256i, k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v8i, k: v8b_i, a: v8i, b: v8i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shrdi_epi32
+  input: {a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v8i, b: v8i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shrdi_epi32
+  input: {k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v4b_i, a: v4i, b: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shrdi_epi32
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v4i, k: v4b_i, a: v4i, b: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shrdi_epi32
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shrdi_epi16
+  input: {k: __mmask16, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, a: v16s, b: v16s, imm8: int32_t}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shrdi_epi16
+  input: {src: __m256i, k: __mmask16, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v16s, k: v16b_s, a: v16s, b: v16s, imm8: int32_t}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shrdi_epi16
+  input: {a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v16s, b: v16s, imm8: int32_t}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shrdi_epi16
+  input: {k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shrdi_epi16
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v8s, k: v8b_s, a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shrdi_epi16
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shldv_epi64
+  input: {k: __mmask8, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4l, b: v4l, c: v4l}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shldv_epi64
+  input: {a: __m256i, k: __mmask8, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, k: v4b_l, b: v4l, c: v4l}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shldv_epi64
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, b: v4l, c: v4l}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shldv_epi64
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2l, b: v2l, c: v2l}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shldv_epi64
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, k: v2b_l, b: v2l, c: v2l}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shldv_epi64
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l, c: v2l}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shldv_epi32
+  input: {k: __mmask8, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_i, a: v8i, b: v8i, c: v8i}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shldv_epi32
+  input: {a: __m256i, k: __mmask8, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v8i, k: v8b_i, b: v8i, c: v8i}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shldv_epi32
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v8i, b: v8i, c: v8i}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shldv_epi32
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v4b_i, a: v4i, b: v4i, c: v4i}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shldv_epi32
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, k: v4b_i, b: v4i, c: v4i}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shldv_epi32
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i, c: v4i}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shldv_epi16
+  input: {k: __mmask16, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, a: v16s, b: v16s, c: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shldv_epi16
+  input: {a: __m256i, k: __mmask16, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v16s, k: v16b_s, b: v16s, c: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shldv_epi16
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v16s, b: v16s, c: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shldv_epi16
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, a: v8s, b: v8s, c: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shldv_epi16
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, k: v8b_s, b: v8s, c: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shldv_epi16
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s, c: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shldi_epi64
+  input: {k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v4b_l, a: v4l, b: v4l, imm8: int32_t}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shldi_epi64
+  input: {src: __m256i, k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v4l, k: v4b_l, a: v4l, b: v4l, imm8: int32_t}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shldi_epi64
+  input: {a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v4l, b: v4l, imm8: int32_t}, output: {dst: v4l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shldi_epi64
+  input: {k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v2b_l, a: v2l, b: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shldi_epi64
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v2l, k: v2b_l, a: v2l, b: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shldi_epi64
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shldi_epi32
+  input: {k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_i, a: v8i, b: v8i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shldi_epi32
+  input: {src: __m256i, k: __mmask8, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v8i, k: v8b_i, a: v8i, b: v8i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shldi_epi32
+  input: {a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v8i, b: v8i, imm8: int32_t}, output: {dst: v8i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shldi_epi32
+  input: {k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v4b_i, a: v4i, b: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shldi_epi32
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v4i, k: v4b_i, a: v4i, b: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shldi_epi32
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_shldi_epi16
+  input: {k: __mmask16, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, a: v16s, b: v16s, imm8: int32_t}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_shldi_epi16
+  input: {src: __m256i, k: __mmask16, a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {src: v16s, k: v16b_s, a: v16s, b: v16s, imm8: int32_t}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_shldi_epi16
+  input: {a: __m256i, b: __m256i, imm8: int}
+  output: {dst: __m256i}
+  ir: {input: {a: v16s, b: v16s, imm8: int32_t}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_shldi_epi16
+  input: {k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_shldi_epi16
+  input: {src: __m128i, k: __mmask8, a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {src: v8s, k: v8b_s, a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_shldi_epi16
+  input: {a: __m128i, b: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_expandloadu_epi16
+  input: {k: __mmask16, mem_addr: const void*}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, mem_addr: ptr}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_expandloadu_epi16
+  input: {src: __m256i, k: __mmask16, mem_addr: const void*}
+  output: {dst: __m256i}
+  ir: {input: {src: v16s, k: v16b_s, mem_addr: ptr}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_expandloadu_epi16
+  input: {k: __mmask8, mem_addr: const void*}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, mem_addr: ptr}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_expandloadu_epi16
+  input: {src: __m128i, k: __mmask8, mem_addr: const void*}
+  output: {dst: __m128i}
+  ir: {input: {src: v8s, k: v8b_s, mem_addr: ptr}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_expandloadu_epi8
+  input: {k: __mmask32, mem_addr: const void*}
+  output: {dst: __m256i}
+  ir: {input: {k: v32b_c, mem_addr: ptr}, output: {dst: v32c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_expandloadu_epi8
+  input: {src: __m256i, k: __mmask32, mem_addr: const void*}
+  output: {dst: __m256i}
+  ir: {input: {src: v32c, k: v32b_c, mem_addr: ptr}, output: {dst: v32c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_expandloadu_epi8
+  input: {k: __mmask16, mem_addr: const void*}
+  output: {dst: __m128i}
+  ir: {input: {k: v16b_c, mem_addr: ptr}, output: {dst: v16c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_expandloadu_epi8
+  input: {src: __m128i, k: __mmask16, mem_addr: const void*}
+  output: {dst: __m128i}
+  ir: {input: {src: v16c, k: v16b_c, mem_addr: ptr}, output: {dst: v16c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_expand_epi16
+  input: {k: __mmask16, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, a: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_expand_epi16
+  input: {src: __m256i, k: __mmask16, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v16s, k: v16b_s, a: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_expand_epi16
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, a: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_expand_epi16
+  input: {src: __m128i, k: __mmask8, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v8s, k: v8b_s, a: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_expand_epi8
+  input: {k: __mmask32, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v32b_c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_expand_epi8
+  input: {src: __m256i, k: __mmask32, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v32c, k: v32b_c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_expand_epi8
+  input: {k: __mmask16, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v16b_c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_expand_epi8
+  input: {src: __m128i, k: __mmask16, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v16c, k: v16b_c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_compress_epi16
+  input: {k: __mmask16, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v16b_s, a: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_compress_epi16
+  input: {src: __m256i, k: __mmask16, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v16s, k: v16b_s, a: v16s}, output: {dst: v16s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_compress_epi16
+  input: {k: __mmask8, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_s, a: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_compress_epi16
+  input: {src: __m128i, k: __mmask8, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v8s, k: v8b_s, a: v8s}, output: {dst: v8s}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_compress_epi8
+  input: {k: __mmask32, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v32b_c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_compress_epi8
+  input: {src: __m256i, k: __mmask32, a: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {src: v32c, k: v32b_c, a: v32c}, output: {dst: v32c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_compress_epi8
+  input: {k: __mmask16, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v16b_c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_compress_epi8
+  input: {src: __m128i, k: __mmask16, a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {src: v16c, k: v16b_c, a: v16c}, output: {dst: v16c}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_compressstoreu_epi16
+  input: {base_addr: void*, k: __mmask16, a: __m256i}
+  output: {}
+  ir: {input: {base_addr: ptr, k: v16b_s, a: v16s}, output: {}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_compressstoreu_epi16
+  input: {base_addr: void*, k: __mmask8, a: __m128i}
+  output: {}
+  ir: {input: {base_addr: ptr, k: v8b_s, a: v8s}, output: {}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_compressstoreu_epi8
+  input: {base_addr: void*, k: __mmask32, a: __m256i}
+  output: {}
+  ir: {input: {base_addr: ptr, k: v32b_c, a: v32c}, output: {}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_compressstoreu_epi8
+  input: {base_addr: void*, k: __mmask16, a: __m128i}
+  output: {}
+  ir: {input: {base_addr: ptr, k: v16b_c, a: v16c}, output: {}}
+  flags: [AVX512_VBMI2, AVX512VL]
+  include: <immintrin.h>
+- name: _mm512_maskz_shrdv_epi64
+  input: {k: __mmask8, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_l, a: v8l, b: v8l, c: v8l}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shrdv_epi64
+  input: {a: __m512i, k: __mmask8, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, k: v8b_l, b: v8l, c: v8l}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shrdv_epi64
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, b: v8l, c: v8l}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shrdv_epi32
+  input: {k: __mmask16, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_i, a: v16i, b: v16i, c: v16i}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shrdv_epi32
+  input: {a: __m512i, k: __mmask16, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v16i, k: v16b_i, b: v16i, c: v16i}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shrdv_epi32
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v16i, b: v16i, c: v16i}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shrdv_epi16
+  input: {k: __mmask32, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, a: v32s, b: v32s, c: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shrdv_epi16
+  input: {a: __m512i, k: __mmask32, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v32s, k: v32b_s, b: v32s, c: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shrdv_epi16
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v32s, b: v32s, c: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shrdi_epi64
+  input: {k: __mmask8, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_l, a: v8l, b: v8l, imm8: int32_t}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shrdi_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8l, b: v8l, imm8: int32_t}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shrdi_epi64
+  input: {a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, b: v8l, imm8: int32_t}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shrdi_epi32
+  input: {k: __mmask16, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_i, a: v16i, b: v16i, imm8: int32_t}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shrdi_epi32
+  input: {src: __m512i, k: __mmask16, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v16i, k: v16b_i, a: v16i, b: v16i, imm8: int32_t}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shrdi_epi32
+  input: {a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v16i, b: v16i, imm8: int32_t}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shrdi_epi16
+  input: {k: __mmask32, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, a: v32s, b: v32s, imm8: int32_t}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shrdi_epi16
+  input: {src: __m512i, k: __mmask32, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v32s, k: v32b_s, a: v32s, b: v32s, imm8: int32_t}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shrdi_epi16
+  input: {a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v32s, b: v32s, imm8: int32_t}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shldv_epi64
+  input: {k: __mmask8, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_l, a: v8l, b: v8l, c: v8l}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shldv_epi64
+  input: {a: __m512i, k: __mmask8, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, k: v8b_l, b: v8l, c: v8l}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shldv_epi64
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, b: v8l, c: v8l}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shldv_epi32
+  input: {k: __mmask16, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_i, a: v16i, b: v16i, c: v16i}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shldv_epi32
+  input: {a: __m512i, k: __mmask16, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v16i, k: v16b_i, b: v16i, c: v16i}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shldv_epi32
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v16i, b: v16i, c: v16i}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shldv_epi16
+  input: {k: __mmask32, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, a: v32s, b: v32s, c: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shldv_epi16
+  input: {a: __m512i, k: __mmask32, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v32s, k: v32b_s, b: v32s, c: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shldv_epi16
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v32s, b: v32s, c: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shldi_epi64
+  input: {k: __mmask8, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_l, a: v8l, b: v8l, imm8: int32_t}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shldi_epi64
+  input: {src: __m512i, k: __mmask8, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v8l, k: v8b_l, a: v8l, b: v8l, imm8: int32_t}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shldi_epi64
+  input: {a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v8l, b: v8l, imm8: int32_t}, output: {dst: v8l}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shldi_epi32
+  input: {k: __mmask16, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v16b_i, a: v16i, b: v16i, imm8: int32_t}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shldi_epi32
+  input: {src: __m512i, k: __mmask16, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v16i, k: v16b_i, a: v16i, b: v16i, imm8: int32_t}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shldi_epi32
+  input: {a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v16i, b: v16i, imm8: int32_t}, output: {dst: v16i}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_shldi_epi16
+  input: {k: __mmask32, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, a: v32s, b: v32s, imm8: int32_t}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_shldi_epi16
+  input: {src: __m512i, k: __mmask32, a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {src: v32s, k: v32b_s, a: v32s, b: v32s, imm8: int32_t}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_shldi_epi16
+  input: {a: __m512i, b: __m512i, imm8: int}
+  output: {dst: __m512i}
+  ir: {input: {a: v32s, b: v32s, imm8: int32_t}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_expandloadu_epi16
+  input: {k: __mmask32, mem_addr: const void*}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, mem_addr: ptr}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_expandloadu_epi16
+  input: {src: __m512i, k: __mmask32, mem_addr: const void*}
+  output: {dst: __m512i}
+  ir: {input: {src: v32s, k: v32b_s, mem_addr: ptr}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_expandloadu_epi8
+  input: {k: __mmask64, mem_addr: const void*}
+  output: {dst: __m512i}
+  ir: {input: {k: v64b_c, mem_addr: ptr}, output: {dst: v64c}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_expandloadu_epi8
+  input: {src: __m512i, k: __mmask64, mem_addr: const void*}
+  output: {dst: __m512i}
+  ir: {input: {src: v64c, k: v64b_c, mem_addr: ptr}, output: {dst: v64c}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_expand_epi16
+  input: {k: __mmask32, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, a: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_expand_epi16
+  input: {src: __m512i, k: __mmask32, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v32s, k: v32b_s, a: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_expand_epi8
+  input: {k: __mmask64, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v64b_c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_expand_epi8
+  input: {src: __m512i, k: __mmask64, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v64c, k: v64b_c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_compress_epi16
+  input: {k: __mmask32, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v32b_s, a: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_compress_epi16
+  input: {src: __m512i, k: __mmask32, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v32s, k: v32b_s, a: v32s}, output: {dst: v32s}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_maskz_compress_epi8
+  input: {k: __mmask64, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v64b_c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_compress_epi8
+  input: {src: __m512i, k: __mmask64, a: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {src: v64c, k: v64b_c, a: v64c}, output: {dst: v64c}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_compressstoreu_epi16
+  input: {base_addr: void*, k: __mmask32, a: __m512i}
+  output: {}
+  ir: {input: {base_addr: ptr, k: v32b_s, a: v32s}, output: {}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>
+- name: _mm512_mask_compressstoreu_epi8
+  input: {base_addr: void*, k: __mmask64, a: __m512i}
+  output: {}
+  ir: {input: {base_addr: ptr, k: v64b_c, a: v64c}, output: {}}
+  flags: [AVX512_VBMI2]
+  include: <immintrin.h>

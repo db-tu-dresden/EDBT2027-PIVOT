@@ -1,0 +1,33 @@
+primitive: VLT
+input: [a, b]   # res[i] := a[i] < b[i]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: '{int, uint}'
+    direct: '_mm_cmplt_{dtype_suffix}_mask(a, b);'
+
+  - isa: x86
+    dtype: '{int, uint}'
+    direct: '_mm256_cmplt_{dtype_suffix}_mask(a, b);'
+
+  - isa: x86
+    dtype: '{int, uint, float}'
+    direct: '_mm512_cmplt_{dtype_suffix}_mask(a, b);'
+
+  - isa: x86
+    dtype: 'float'
+    direct: '_mm512_cmp_{dtype_suffix}_mask(a, b, _CMP_LT_OQ);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a < b;'
+
+  # core_simd — SimdPartialOrd -> Mask
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a.simd_lt(b);'

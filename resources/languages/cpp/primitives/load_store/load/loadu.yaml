@@ -1,0 +1,64 @@
+# res[i] = ptr[i]
+primitive: LOADU
+input: [ptr]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_loadu_{dtype_suffix}(ptr);'
+
+  - isa: arm
+    direct: 'vld1{neon_widths}_{dtype_suffix}(ptr);'
+
+  - isa: arm
+    direct: 'svld1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'const void*', res: '{v}'}
+    direct: 'return ({ {v} __ld; __builtin_memcpy(&__ld, ptr, sizeof(__ld)); __ld; });'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'const void*', res: '{v}'}
+    direct: 'tsl::load<{simd_res}, false>((typename {simd_res}::base_type const*)ptr);'
+
+---
+# res[i] = k[i] ? ptr[i] : src[i]
+primitive: LOADU_MERGE
+input: [src, k, ptr]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_loadu_{dtype_suffix}(src, k, ptr);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', ptr: 'const void*', res: '{v}'}
+    direct: '__builtin_masked_load(k, (const {s}*)ptr, src);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', ptr: 'const void*', res: '{v}'}
+    direct: 'tsl::load_mask<{simd_res}, false>(k, (typename {simd_res}::base_type const*)ptr, src);'
+
+---
+# res[i] = k[i] ? ptr[i] : 0
+primitive: LOADU_ZERO
+input: [k, ptr]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_loadu_{dtype_suffix}(k, ptr);'
+
+  - isa: arm
+    direct: 'svld1_{dtype_suffix}(k, ptr);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', ptr: 'const void*', res: '{v}'}
+    direct: '__builtin_masked_load(k, (const {s}*)ptr, ({v}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', ptr: 'const void*', res: '{v}'}
+    direct: 'tsl::load_maskz<{simd_res}, false>(k, (typename {simd_res}::base_type const*)ptr);'

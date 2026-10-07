@@ -1,0 +1,11 @@
+- name: _tile_dpfp16ps
+  input: {dst: constexpr int, a: constexpr int, b: constexpr int}
+  output: {}
+  ir: {input: {dst: int32_t, a: int32_t, b: int32_t}, output: {}}
+  flags: [AMX-FP16]
+  include: <immintrin.h>
+- name: __tile_dpfp16ps
+  input: {dst: __tile1024i*, src0: __tile1024i, src1: __tile1024i}
+  output: {}
+  flags: [AMX-FP16]
+  include: <immintrin.h>

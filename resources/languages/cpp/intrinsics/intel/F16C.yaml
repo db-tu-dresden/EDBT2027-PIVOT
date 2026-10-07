@@ -1,0 +1,24 @@
+- name: _mm256_cvtph_ps
+  input: {a: __m128i}
+  output: {dst: __m256}
+  ir: {input: {a: blob128}, output: {dst: v8f}}
+  flags: [F16C]
+  include: <immintrin.h>
+- name: _mm256_cvtps_ph
+  input: {a: __m256, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8f, imm8: int32_t}, output: {dst: blob128}}
+  flags: [F16C]
+  include: <immintrin.h>
+- name: _mm_cvtph_ps
+  input: {a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {a: blob128}, output: {dst: v4f}}
+  flags: [F16C]
+  include: <immintrin.h>
+- name: _mm_cvtps_ph
+  input: {a: __m128, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f, imm8: int32_t}, output: {dst: blob128}}
+  flags: [F16C]
+  include: <immintrin.h>

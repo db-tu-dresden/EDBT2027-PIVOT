@@ -1,0 +1,12 @@
+arch,method,width,driver,run,label,selectivity,bpts,btps,round,seed,start
+graviton3,simde,128,main_shuffle,5,"shuffle_offset",100.00,0.071651,0.071651,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"shuffle_byte",100.00,0.910037,0.910037,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"flush_byte",100.00,1543.385340,1543.385340,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"shuffle_short",100.00,0.704624,0.704624,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"flush_short",100.00,1663.350254,1663.350254,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"shuffle_int",100.00,0.559101,0.559101,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"flush_int",100.00,1987.539212,1987.539212,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"shuffle_long",100.00,0.431743,0.431743,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"flush_long",100.00,2774.928217,2774.928217,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"shuffle_char",100.00,0.032222,0.032222,5,5,2026-10-06T10:56:43+00:00
+graviton3,simde,128,main_shuffle,5,"flush_char",100.00,1677.692840,1677.692840,5,5,2026-10-06T10:56:43+00:00

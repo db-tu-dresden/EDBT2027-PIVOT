@@ -1,0 +1,51 @@
+primitive: CVTEPU32
+input: [a]   # res := zero-extend uint32 -> int64
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    direct: '_mm_cvtepu32_epi64(a);'
+
+  - isa: x86
+    direct: '_mm256_cvtepu32_epi64(a);'
+
+  - isa: x86
+    direct: '_mm512_cvtepu32_epi64(a);'
+
+  # Clang — zero-extend uint32 -> int64 (unsigned source => zero fill).  Three
+  # width shapes matching the x86 variants: _mm_ takes the low 2 lanes of a 128-bit
+  # input (128-bit out); _mm256_ widens all 4 (256-bit out); _mm512_ widens all 8
+  # (512-bit out).  The graph types the input as v4ui/v8ui, so the signature does
+  # too.
+  - isa: clang_builtins
+    signature: {a: v4ui, res: v2l}
+    direct: '__builtin_convertvector(__builtin_shufflevector((v4ui)a,(v4ui)a,0,1), v2l);'
+
+  - isa: clang_builtins
+    signature: {a: v4ui, res: v4l}
+    direct: '__builtin_convertvector((v4ui)a, v4l);'
+
+  - isa: clang_builtins
+    signature: {a: v8ui, res: v8l}
+    direct: '__builtin_convertvector((v8ui)a, v8l);'
+
+  # core_simd — Simd::cast is elementwise `as`: it zero-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  # `resize` first takes the leading 2 lanes — the result register holds
+  # fewer, wider lanes than the source.
+  - isa: core_simd
+    signature: {a: v4ui, res: v2l}
+    direct: 'a.resize::<2>(0).cast();'
+
+  # core_simd — Simd::cast is elementwise `as`: it zero-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  - isa: core_simd
+    signature: {a: v4ui, res: v4l}
+    direct: 'a.cast();'
+
+  # core_simd — Simd::cast is elementwise `as`: it zero-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  - isa: core_simd
+    signature: {a: v8ui, res: v8l}
+    direct: 'a.cast();'

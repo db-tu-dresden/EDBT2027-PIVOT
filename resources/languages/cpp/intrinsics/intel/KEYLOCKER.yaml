@@ -1,0 +1,42 @@
+- name: _mm_aesdec128kl_u8
+  input: {__odata: __m128i*, __idata: __m128i, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: blob128, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>
+- name: _mm_aesdec256kl_u8
+  input: {__odata: __m128i*, __idata: __m128i, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: blob128, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>
+- name: _mm_aesenc128kl_u8
+  input: {__odata: __m128i*, __idata: __m128i, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: blob128, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>
+- name: _mm_aesenc256kl_u8
+  input: {__odata: __m128i*, __idata: __m128i, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: blob128, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>
+- name: _mm_encodekey128_u32
+  input: {__htype: unsigned int, __key: __m128i, __h: void*}
+  output: {dst: unsigned int}
+  ir: {input: {__htype: uint32_t, __key: blob128, __h: ptr}, output: {dst: uint32_t}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>
+- name: _mm_encodekey256_u32
+  input: {__htype: unsigned int, __key_lo: __m128i, __key_hi: __m128i, __h: void*}
+  output: {dst: unsigned int}
+  ir: {input: {__htype: uint32_t, __key_lo: blob128, __key_hi: blob128, __h: ptr}, output: {dst: uint32_t}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>
+- name: _mm_loadiwkey
+  input: {__ctl: unsigned int, __intkey: __m128i, __enkey_lo: __m128i, __enkey_hi: __m128i}
+  output: {}
+  ir: {input: {__ctl: uint32_t, __intkey: blob128, __enkey_lo: blob128, __enkey_hi: blob128}, output: {}}
+  flags: [KEYLOCKER]
+  include: <immintrin.h>

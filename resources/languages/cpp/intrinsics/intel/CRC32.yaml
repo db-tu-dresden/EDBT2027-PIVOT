@@ -1,0 +1,24 @@
+- name: _mm_crc32_u8
+  input: {crc: unsigned int, v: unsigned char}
+  output: {dst: unsigned int}
+  ir: {input: {crc: uint32_t, v: uint8_t}, output: {dst: uint32_t}}
+  flags: [CRC32]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u16
+  input: {crc: unsigned int, v: unsigned short}
+  output: {dst: unsigned int}
+  ir: {input: {crc: uint32_t, v: uint16_t}, output: {dst: uint32_t}}
+  flags: [CRC32]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u32
+  input: {crc: unsigned int, v: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {crc: uint32_t, v: uint32_t}, output: {dst: uint32_t}}
+  flags: [CRC32]
+  include: <nmmintrin.h>
+- name: _mm_crc32_u64
+  input: {crc: unsigned __int64, v: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {crc: uint64_t, v: uint64_t}, output: {dst: uint64_t}}
+  flags: [CRC32]
+  include: <nmmintrin.h>

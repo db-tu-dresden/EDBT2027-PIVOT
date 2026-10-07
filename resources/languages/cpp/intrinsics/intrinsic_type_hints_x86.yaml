@@ -1,0 +1,99 @@
+# Positional type hint mappings for x86 multi-dtype intrinsics.
+#
+# Pattern tokens (expanded by scripts/annotate_ir/hint_registry.py):
+#   {x86_widths}  → (?:256|512)?
+#   {hint}        → any dtype-hint token (epi*/epu*, ps/pd/ss/sd, f32x*/f64x*, i32/i64, si*)
+#   (N)           → only match intrinsics with exactly N arguments
+#
+# THN: N-th hint left-to-right in the name (1-indexed).
+# Positions: ret = return value, argN = N-th argument (0-indexed).
+# First matching pattern wins.
+
+hints:
+
+  # Converts
+  - pattern: '_mm{x86_widths}_mask_cvt{hint}_{hint}(3)'
+    ret: TH2
+    arg0: TH2
+    arg2: TH1
+  - pattern: '_mm{x86_widths}_maskz_cvt{hint}_{hint}(2)'
+    ret: TH2
+    arg1: TH1
+  - pattern: '_mm{x86_widths}_cvt{hint}_{hint}(1)'
+    ret: TH2
+    arg0: TH1
+
+  # Signed-saturating narrows (cvts{src}_{dst}, verb "cvts"): same positional
+  # layout as plain cvt — {hint} cannot consume the leading 's', so the cvt
+  # patterns above miss these.
+  - pattern: '_mm{x86_widths}_mask_cvts{hint}_{hint}(3)'
+    ret: TH2
+    arg0: TH2
+    arg2: TH1
+  - pattern: '_mm{x86_widths}_maskz_cvts{hint}_{hint}(2)'
+    ret: TH2
+    arg1: TH1
+  - pattern: '_mm{x86_widths}_cvts{hint}_{hint}(1)'
+    ret: TH2
+    arg0: TH1
+
+  # Unsigned-saturating narrows (cvtus{src}_{dst}, verb "cvtus"): same positional
+  # layout. NB the name spells the output suffix as epi{N} (signed) though the op
+  # unsigned-saturates; the CONVERT_DOWN_U primitive carries the unsigned dest.
+  - pattern: '_mm{x86_widths}_mask_cvtus{hint}_{hint}(3)'
+    ret: TH2
+    arg0: TH2
+    arg2: TH1
+  - pattern: '_mm{x86_widths}_maskz_cvtus{hint}_{hint}(2)'
+    ret: TH2
+    arg1: TH1
+  - pattern: '_mm{x86_widths}_cvtus{hint}_{hint}(1)'
+    ret: TH2
+    arg0: TH1
+
+  # Gather: 512-bit unmasked first, its arg layout differs from 128/256-bit
+  - pattern: '_mm512_{hint}gather_{hint}'
+    ret: TH2
+    arg0: TH1
+
+  # Gather
+  - pattern: '_mm{x86_widths}_{hint}gather_{hint}'
+    ret: TH2
+    arg1: TH1
+  - pattern: '_mm{x86_widths}_mask_{hint}gather_{hint}'
+    ret: TH2
+    arg0: TH2
+    arg2: TH1
+  - pattern: '_mm{x86_widths}_mmask_{hint}gather_{hint}'
+    ret: TH2
+    arg0: TH2
+    arg2: TH1
+
+  # Lo-gather
+  - pattern: '_mm512_{hint}logather_{hint}'
+    ret: TH2
+    arg0: TH1
+  - pattern: '_mm512_mask_{hint}logather_{hint}'
+    ret: TH2
+    arg0: TH2
+    arg2: TH1
+
+  # Scatter
+  - pattern: '_mm{x86_widths}_{hint}scatter_{hint}'
+    arg1: TH1
+    arg2: TH2
+  - pattern: '_mm{x86_widths}_mask_{hint}scatter_{hint}'
+    arg2: TH1
+    arg3: TH2
+
+  # Lo-scatter
+  - pattern: '_mm512_{hint}loscatter_{hint}'
+    arg1: TH1
+    arg2: TH2
+  - pattern: '_mm512_mask_{hint}loscatter_{hint}'
+    arg2: TH1
+    arg3: TH2
+
+  # Broadcast
+  - pattern: '_mm{x86_widths}_broadcast_{hint}'
+    ret: TH1

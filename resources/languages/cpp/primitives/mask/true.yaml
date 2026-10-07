@@ -1,0 +1,17 @@
+# res = all-true mask (every lane active)
+primitive: MASK_TRUE
+input: []
+output: res
+definitions:
+  - isa: arm
+    direct: 'svptrue_b{elem_bits}();'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {res: '{vbool}'}
+    direct: '~({vbool})0;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {res: '{vbool}'}
+    direct: 'tsl::mask_true<{simd_res}>();'

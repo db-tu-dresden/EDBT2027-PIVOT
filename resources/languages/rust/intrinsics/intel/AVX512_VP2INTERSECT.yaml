@@ -1,0 +1,36 @@
+- name: _mm512_2intersect_epi32
+  input: {a: __m512i, b: __m512i, k1: __mmask16*, k2: __mmask16*}
+  output: {}
+  ir: {input: {a: v16i, b: v16i, k1: ptr, k2: ptr}, output: {}}
+  flags: [AVX512_VP2INTERSECT, AVX512F]
+  include: <immintrin.h>
+- name: _mm512_2intersect_epi64
+  input: {a: __m512i, b: __m512i, k1: __mmask8*, k2: __mmask8*}
+  output: {}
+  ir: {input: {a: v8l, b: v8l, k1: ptr, k2: ptr}, output: {}}
+  flags: [AVX512_VP2INTERSECT, AVX512F]
+  include: <immintrin.h>
+- name: _mm_2intersect_epi32
+  input: {a: __m128i, b: __m128i, k1: __mmask8*, k2: __mmask8*}
+  output: {}
+  ir: {input: {a: v4i, b: v4i, k1: ptr, k2: ptr}, output: {}}
+  flags: [AVX512_VP2INTERSECT, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_2intersect_epi32
+  input: {a: __m256i, b: __m256i, k1: __mmask8*, k2: __mmask8*}
+  output: {}
+  ir: {input: {a: v8i, b: v8i, k1: ptr, k2: ptr}, output: {}}
+  flags: [AVX512_VP2INTERSECT, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_2intersect_epi64
+  input: {a: __m128i, b: __m128i, k1: __mmask8*, k2: __mmask8*}
+  output: {}
+  ir: {input: {a: v2l, b: v2l, k1: ptr, k2: ptr}, output: {}}
+  flags: [AVX512_VP2INTERSECT, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_2intersect_epi64
+  input: {a: __m256i, b: __m256i, k1: __mmask8*, k2: __mmask8*}
+  output: {}
+  ir: {input: {a: v4l, b: v4l, k1: ptr, k2: ptr}, output: {}}
+  flags: [AVX512_VP2INTERSECT, AVX512VL]
+  include: <immintrin.h>

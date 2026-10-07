@@ -1,0 +1,86 @@
+% ns per key of the multiply-shift hash, a panel per machine with its own log axis, a group per
+% vector width, a bar per variant. Drawn from the tables that plot.py writes to data/: per
+% machine its widths, its axis range, and one table per variant with the group and position in
+% it of each bar.
+\documentclass[9pt]{amsart}
+\usepackage{pivotfig}
+
+% Every width group gets the same width, and every panel the same height.
+\pgfmathsetlengthmacro{\hashSlot}{29pt}
+\pgfmathsetlengthmacro{\hashHeight}{40pt}
+\pgfmathsetlengthmacro{\hashBar}{0.26*\hashSlot}
+% Distance between bars, in group widths.
+\def\hashStep{0.28}
+\pgfplotsset{
+  hash panel/.style={
+    log origin=infty, clip=false, scale only axis, x=\hashSlot, xmin=-0.5, xmax=2.5,
+    height=\hashHeight,
+    axis lines*=left, axis line style={gray1, line width=0.4pt},
+    xtick={0,1,2}, xtick align=outside, major tick length=2pt,
+    xticklabels from table={#1}{width},
+    ytick={0.125,0.25,0.5,1,2,4,8,16,32},
+    yticklabel={\pgfmathparse{2^round(\tick/ln(2))}\pgfmathprintnumber[fixed, precision=3]{\pgfmathresult}},
+    tick style={gray1, line width=0.4pt}, ymajorgrids,
+    major grid style={gray1!25, line width=0.2pt},
+    ticklabel style={font=\footnotesize, text=gray1},
+    ybar, bar width=\hashBar,
+  },
+  hash left/.style={ylabel={ns per key}, ylabel style={font=\footnotesize, text=gray1}},
+}
+\tikzset{
+  hash native/.style={draw=blue1, fill=blue2, line width=0.5pt},
+  hash tsl_vla/.style={draw=orange1, fill=orange2, line width=0.5pt},
+  hash simde/.style={draw=teal1, fill=teal2, line width=0.5pt},
+  hash simde-portable/.style={draw=magenta1, fill=magenta2, line width=0.5pt},
+}
+% Reads a machine's axis range into \hashYmin and \hashYmax.
+\newcommand{\hashRange}[1]{%
+  \pgfplotstableread[col sep=comma]{data/#1-range.csv}\hashRangeTable
+  \pgfplotstablegetelem{0}{min}\of\hashRangeTable \edef\hashYmin{\pgfplotsretval}%
+  \pgfplotstablegetelem{0}{max}\of\hashRangeTable \edef\hashYmax{\pgfplotsretval}}
+% Draws one machine's bars of one variant, in the given style.
+\newcommand{\hashBars}[3]{% machine, variant, style
+  \IfFileExists{data/#1-#2.csv}{%
+    \addplot[hash #3, bar shift=0pt] table[col sep=comma, y=ns,
+      x expr={\thisrow{group} + \thisrow{k}*\hashStep}] {data/#1-#2.csv};}{}}
+% Draws one panel: the bars of every variant and the title.
+\newcommand{\hashPanel}[3]{% machine, SIMDe style, title
+  \hashBars{#1}{native}{native}
+  \hashBars{#1}{tsl_vla}{tsl_vla}
+  \hashBars{#1}{simde}{#2}
+  \node[font=\footnotesize, text=gray1, anchor=base] at ([yshift=5pt]rel axis cs:0.5,1) {#3};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\pgfplotstableread[col sep=comma]{data/a64fx-widths.csv}\hashAfx
+\pgfplotstableread[col sep=comma]{data/spr-widths.csv}\hashSpr
+\pgfplotstableread[col sep=comma]{data/zen4-widths.csv}\hashZen
+\pgfplotstableread[col sep=comma]{data/x100-widths.csv}\hashRvv
+\hashRange{a64fx}
+\begin{axis}[ymode=log, ymin=\hashYmin, ymax=\hashYmax, hash panel=\hashAfx, hash left, name=afx]
+  \hashPanel{a64fx}{simde-portable}{Fujitsu A64FX}
+\end{axis}
+\hashRange{spr}
+\begin{axis}[ymode=log, ymin=\hashYmin, ymax=\hashYmax, hash panel=\hashSpr, name=spr, at={($(afx.north east)+(24pt,0)$)}, anchor=north west]
+  \hashPanel{spr}{simde}{Intel Sapphire Rapids}
+\end{axis}
+\hashRange{zen4}
+\begin{axis}[ymode=log, ymin=\hashYmin, ymax=\hashYmax, hash panel=\hashZen, hash left, name=zen, at={($(afx.south west)+(0,-26pt)$)},
+    anchor=north west]
+  \hashPanel{zen4}{simde}{AMD Zen 4}
+\end{axis}
+\hashRange{x100}
+\begin{axis}[ymode=log, ymin=\hashYmin, ymax=\hashYmax, hash panel=\hashRvv, name=rvv, at={($(zen.north east)+(24pt,0)$)}, anchor=north west]
+  \hashPanel{x100}{simde-portable}{SpacemiT X100}
+\end{axis}
+\matrix[anchor=north, yshift=-6pt, column sep=3pt, row sep=4pt,
+    nodes={font=\footnotesize, text=gray1, inner sep=0pt, anchor=base west}]
+    at (current bounding box.south) {
+  \draw[hash native] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {hand-written}; &[8pt]
+  \draw[hash tsl_vla] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {PIVOT (TSL)}; &[8pt]
+  \draw[hash simde] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {SIMDe}; &[8pt]
+  \draw[hash simde-portable] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {SIMDe portable}; \\
+};
+\end{tikzpicture}
+\end{document}

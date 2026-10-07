@@ -1,0 +1,31 @@
+primitive: VMAX
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    dtype: '{int, uint, float}'
+    direct: '_mm{x86_widths}_max_{dtype_suffix}(a, b);'
+
+  # Neon
+  - isa: arm
+    dtype: 'float{16, 32, 64}'
+    direct: vmax{neon_widths}_{dtype_suffix}(a, b);
+
+  - isa: arm
+    dtype: '{int, uint}{8, 16, 32}'
+    direct: vmax{neon_widths}_{dtype_suffix}(a, b);
+
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'svmax_{dtype_suffix}_x(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a > b ? a : b;'
+
+  # core_simd — SimdOrd::simd_max / SimdFloat::simd_max
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a.simd_max(b);'

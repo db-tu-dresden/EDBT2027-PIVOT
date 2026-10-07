@@ -1,0 +1,1428 @@
+- name: _mm_loadu_si64
+  input: {mem_addr: void const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <immintrin.h>
+- name: _mm_loadu_si16
+  input: {mem_addr: void const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <immintrin.h>
+- name: _mm_loadu_si32
+  input: {mem_addr: void const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_loadl_epi64
+  input: {mem_addr: __m128i const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_load_si128
+  input: {mem_addr: __m128i const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_loadu_si128
+  input: {mem_addr: __m128i const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_load_pd
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_load1_pd
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_load_pd1
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_loadr_pd
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_loadu_pd
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_load_sd
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_loadh_pd
+  input: {a: __m128d, mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_loadl_pd
+  input: {a: __m128d, mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storeu_si16
+  input: {mem_addr: void*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: blob128}, output: {}}
+  flags: [SSE2]
+  include: <immintrin.h>
+- name: _mm_storeu_si64
+  input: {mem_addr: void*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: blob128}, output: {}}
+  flags: [SSE2]
+  include: <immintrin.h>
+- name: _mm_storeu_si32
+  input: {mem_addr: void*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: blob128}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_maskmoveu_si128
+  input: {a: __m128i, mask: __m128i, mem_addr: char*}
+  output: {}
+  ir: {input: {a: blob128, mask: blob128, mem_addr: ptr}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_store_si128
+  input: {mem_addr: __m128i*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: blob128}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storeu_si128
+  input: {mem_addr: __m128i*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: blob128}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storel_epi64
+  input: {mem_addr: __m128i*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2l}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_stream_si128
+  input: {mem_addr: void*, a: __m128i}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: blob128}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_stream_si32
+  input: {mem_addr: void*, a: int}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: int32_t}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_stream_si64
+  input: {mem_addr: void*, a: __int64}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: int64_t}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_stream_pd
+  input: {mem_addr: void*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_store_sd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_store1_pd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_store_pd1
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_store_pd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storeu_pd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storer_pd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storeh_pd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_storel_pd
+  input: {mem_addr: double*, a: __m128d}
+  output: {}
+  ir: {input: {mem_addr: ptr, a: v2d}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_si64
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_adds_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_adds_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_adds_epu8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc}, output: {dst: v16uc}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_adds_epu16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us, b: v8us}, output: {dst: v8us}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_madd_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mulhi_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mulhi_epu16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us, b: v8us}, output: {dst: v8us}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mullo_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mul_su32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mul_epu32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4ui, b: v4ui}, output: {dst: v4ui}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sad_epu8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc}, output: {dst: v16uc}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_si64
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_subs_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_subs_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_subs_epu8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc}, output: {dst: v16uc}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_subs_epu16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us, b: v8us}, output: {dst: v8us}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_add_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_div_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_div_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mul_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mul_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sub_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_avg_epu8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc}, output: {dst: v16uc}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_avg_epu16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8us, b: v8us}, output: {dst: v8us}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_max_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_max_epu8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc}, output: {dst: v16uc}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_min_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_min_epu8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16uc, b: v16uc}, output: {dst: v16uc}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_max_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_max_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_min_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_min_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_slli_si128
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, imm8: int32_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_bslli_si128
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, imm8: int32_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_bsrli_si128
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, imm8: int32_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_slli_epi16
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sll_epi16
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, count: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_slli_epi32
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sll_epi32
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, count: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_slli_epi64
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sll_epi64
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, count: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srai_epi16
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sra_epi16
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, count: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srai_epi32
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sra_epi32
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, count: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srli_si128
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, imm8: int32_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srli_epi16
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srl_epi16
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, count: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srli_epi32
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srl_epi32
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, count: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srli_epi64
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, imm8: int32_t}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_srl_epi64
+  input: {a: __m128i, count: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, count: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_and_si128
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, b: blob128}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_andnot_si128
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, b: blob128}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_or_si128
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, b: blob128}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_xor_si128
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: blob128, b: blob128}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_and_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_andnot_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_or_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_xor_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpeq_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpeq_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpeq_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpgt_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpgt_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpgt_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmplt_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmplt_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmplt_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpeq_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmplt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmple_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpgt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpge_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpord_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpunord_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpneq_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpnlt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpnle_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpngt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpnge_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpeq_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmplt_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmple_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpgt_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpge_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpord_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpunord_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpneq_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpnlt_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpnle_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpngt_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cmpnge_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_comieq_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_comilt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_comile_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_comigt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_comige_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_comineq_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_ucomieq_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_ucomilt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_ucomile_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_ucomigt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_ucomige_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_ucomineq_sd
+  input: {a: __m128d, b: __m128d}
+  output: {k: int}
+  ir: {input: {a: v2d, b: v2d}, output: {k: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtepi32_pd
+  input: {a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {a: v4i}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi32_sd
+  input: {a: __m128d, b: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: int32_t}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi64_sd
+  input: {a: __m128d, b: __int64}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: int64_t}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi64x_sd
+  input: {a: __m128d, b: __int64}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: int64_t}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtepi32_ps
+  input: {a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {a: v4i}, output: {dst: v4f}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtpi32_pd
+  input: {a: __m64}
+  output: {dst: __m128d}
+  ir: {input: {a: blob64}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi32_si128
+  input: {a: int}
+  output: {dst: __m128i}
+  ir: {input: {a: int32_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi64_si128
+  input: {a: __int64}
+  output: {dst: __m128i}
+  ir: {input: {a: int64_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi64x_si128
+  input: {a: __int64}
+  output: {dst: __m128i}
+  ir: {input: {a: int64_t}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi128_si32
+  input: {a: __m128i}
+  output: {dst: int}
+  ir: {input: {a: blob128}, output: {dst: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi128_si64
+  input: {a: __m128i}
+  output: {dst: __int64}
+  ir: {input: {a: blob128}, output: {dst: int64_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsi128_si64x
+  input: {a: __m128i}
+  output: {dst: __int64}
+  ir: {input: {a: blob128}, output: {dst: int64_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtpd_ps
+  input: {a: __m128d}
+  output: {dst: __m128}
+  ir: {input: {a: v2d}, output: {dst: v4f}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtps_pd
+  input: {a: __m128}
+  output: {dst: __m128d}
+  ir: {input: {a: v4f}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtpd_epi32
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsd_si32
+  input: {a: __m128d}
+  output: {dst: int}
+  ir: {input: {a: v2d}, output: {dst: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsd_si64
+  input: {a: __m128d}
+  output: {dst: __int64}
+  ir: {input: {a: v2d}, output: {dst: int64_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsd_si64x
+  input: {a: __m128d}
+  output: {dst: __int64}
+  ir: {input: {a: v2d}, output: {dst: int64_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsd_ss
+  input: {a: __m128, b: __m128d}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v2d}, output: {dst: v4f}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtsd_f64
+  input: {a: __m128d}
+  output: {dst: double}
+  ir: {input: {a: v2d}, output: {dst: double}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtss_sd
+  input: {a: __m128d, b: __m128}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v4f}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvttpd_epi32
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvttsd_si32
+  input: {a: __m128d}
+  output: {dst: int}
+  ir: {input: {a: v2d}, output: {dst: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvttsd_si64
+  input: {a: __m128d}
+  output: {dst: __int64}
+  ir: {input: {a: v2d}, output: {dst: int64_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvttsd_si64x
+  input: {a: __m128d}
+  output: {dst: __int64}
+  ir: {input: {a: v2d}, output: {dst: int64_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtps_epi32
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvttps_epi32
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvtpd_pi32
+  input: {a: __m128d}
+  output: {dst: __m64}
+  ir: {input: {a: v2d}, output: {dst: blob64}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_cvttpd_pi32
+  input: {a: __m128d}
+  output: {dst: __m64}
+  ir: {input: {a: v2d}, output: {dst: blob64}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_epi64
+  input: {e1: __m64, e0: __m64}
+  output: {dst: __m128i}
+  ir: {input: {e1: v1l, e0: v1l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_epi64x
+  input: {e1: __int64, e0: __int64}
+  output: {dst: __m128i}
+  ir: {input: {e1: int64_t, e0: int64_t}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_epi32
+  input: {e3: int, e2: int, e1: int, e0: int}
+  output: {dst: __m128i}
+  ir: {input: {e3: int32_t, e2: int32_t, e1: int32_t, e0: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_epi16
+  input: {e7: short, e6: short, e5: short, e4: short, e3: short, e2: short, e1: short, e0: short}
+  output: {dst: __m128i}
+  ir: {input: {e7: int16_t, e6: int16_t, e5: int16_t, e4: int16_t, e3: int16_t, e2: int16_t, e1: int16_t, e0: int16_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_epi8
+  input: {e15: char, e14: char, e13: char, e12: char, e11: char, e10: char, e9: char, e8: char, e7: char, e6: char, e5: char, e4: char, e3: char, e2: char, e1: char, e0: char}
+  output: {dst: __m128i}
+  ir: {input: {e15: int8_t, e14: int8_t, e13: int8_t, e12: int8_t, e11: int8_t, e10: int8_t, e9: int8_t, e8: int8_t, e7: int8_t, e6: int8_t, e5: int8_t, e4: int8_t, e3: int8_t, e2: int8_t, e1: int8_t, e0: int8_t}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set1_epi64
+  input: {a: __m64}
+  output: {dst: __m128i}
+  ir: {input: {a: v1l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set1_epi64x
+  input: {a: __int64}
+  output: {dst: __m128i}
+  ir: {input: {a: int64_t}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set1_epi32
+  input: {a: int}
+  output: {dst: __m128i}
+  ir: {input: {a: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set1_epi16
+  input: {a: short}
+  output: {dst: __m128i}
+  ir: {input: {a: int16_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set1_epi8
+  input: {a: char}
+  output: {dst: __m128i}
+  ir: {input: {a: int8_t}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setr_epi64
+  input: {e1: __m64, e0: __m64}
+  output: {dst: __m128i}
+  ir: {input: {e1: v1l, e0: v1l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setr_epi32
+  input: {e3: int, e2: int, e1: int, e0: int}
+  output: {dst: __m128i}
+  ir: {input: {e3: int32_t, e2: int32_t, e1: int32_t, e0: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setr_epi16
+  input: {e7: short, e6: short, e5: short, e4: short, e3: short, e2: short, e1: short, e0: short}
+  output: {dst: __m128i}
+  ir: {input: {e7: int16_t, e6: int16_t, e5: int16_t, e4: int16_t, e3: int16_t, e2: int16_t, e1: int16_t, e0: int16_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setr_epi8
+  input: {e15: char, e14: char, e13: char, e12: char, e11: char, e10: char, e9: char, e8: char, e7: char, e6: char, e5: char, e4: char, e3: char, e2: char, e1: char, e0: char}
+  output: {dst: __m128i}
+  ir: {input: {e15: int8_t, e14: int8_t, e13: int8_t, e12: int8_t, e11: int8_t, e10: int8_t, e9: int8_t, e8: int8_t, e7: int8_t, e6: int8_t, e5: int8_t, e4: int8_t, e3: int8_t, e2: int8_t, e1: int8_t, e0: int8_t}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setzero_si128
+  input: {}
+  output: {dst: __m128i}
+  ir: {input: {}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_sd
+  input: {a: double}
+  output: {dst: __m128d}
+  ir: {input: {a: double}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set1_pd
+  input: {a: double}
+  output: {dst: __m128d}
+  ir: {input: {a: double}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_pd1
+  input: {a: double}
+  output: {dst: __m128d}
+  ir: {input: {a: double}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_set_pd
+  input: {e1: double, e0: double}
+  output: {dst: __m128d}
+  ir: {input: {e1: double, e0: double}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setr_pd
+  input: {e1: double, e0: double}
+  output: {dst: __m128d}
+  ir: {input: {e1: double, e0: double}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_setzero_pd
+  input: {}
+  output: {dst: __m128d}
+  ir: {input: {}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_movepi64_pi64
+  input: {a: __m128i}
+  output: {dst: __m64}
+  ir: {input: {a: v2l}, output: {dst: v1l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_packs_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_packs_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_packus_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_movemask_epi8
+  input: {a: __m128i}
+  output: {dst: int}
+  ir: {input: {a: v16c}, output: {dst: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_movemask_pd
+  input: {a: __m128d}
+  output: {dst: int}
+  ir: {input: {a: v2d}, output: {dst: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_movpi64_epi64
+  input: {a: __m64}
+  output: {dst: __m128i}
+  ir: {input: {a: v1l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_move_epi64
+  input: {a: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_move_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_extract_epi16
+  input: {a: __m128i, imm8: int}
+  output: {dst: int}
+  ir: {input: {a: v8s, imm8: int32_t}, output: {dst: int32_t}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_insert_epi16
+  input: {a: __m128i, i: int, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, i: int32_t, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_shuffle_epi32
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, imm8: int32_t}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_shufflehi_epi16
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_shufflelo_epi16
+  input: {a: __m128i, imm8: int}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, imm8: int32_t}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpackhi_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpackhi_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpackhi_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpackhi_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpacklo_epi8
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v16c, b: v16c}, output: {dst: v16c}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpacklo_epi16
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v8s, b: v8s}, output: {dst: v8s}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpacklo_epi32
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v4i, b: v4i}, output: {dst: v4i}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpacklo_epi64
+  input: {a: __m128i, b: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2l, b: v2l}, output: {dst: v2l}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpackhi_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_unpacklo_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_shuffle_pd
+  input: {a: __m128d, b: __m128d, imm8: int}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, imm8: int32_t}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sqrt_sd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_sqrt_pd
+  input: {a: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_castpd_ps
+  input: {a: __m128d}
+  output: {dst: __m128}
+  ir: {input: {a: v2d}, output: {dst: v4f}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_castpd_si128
+  input: {a: __m128d}
+  output: {dst: __m128i}
+  ir: {input: {a: v2d}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_castps_pd
+  input: {a: __m128}
+  output: {dst: __m128d}
+  ir: {input: {a: v4f}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_castps_si128
+  input: {a: __m128}
+  output: {dst: __m128i}
+  ir: {input: {a: v4f}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_castsi128_pd
+  input: {a: __m128i}
+  output: {dst: __m128d}
+  ir: {input: {a: blob128}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_castsi128_ps
+  input: {a: __m128i}
+  output: {dst: __m128}
+  ir: {input: {a: blob128}, output: {dst: v4f}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_clflush
+  input: {p: void const*}
+  output: {}
+  ir: {input: {p: ptr}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_lfence
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_mfence
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_pause
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_undefined_pd
+  input: {}
+  output: {dst: __m128d}
+  ir: {input: {}, output: {dst: v2d}}
+  flags: [SSE2]
+  include: <emmintrin.h>
+- name: _mm_undefined_si128
+  input: {}
+  output: {dst: __m128i}
+  ir: {input: {}, output: {dst: blob128}}
+  flags: [SSE2]
+  include: <emmintrin.h>

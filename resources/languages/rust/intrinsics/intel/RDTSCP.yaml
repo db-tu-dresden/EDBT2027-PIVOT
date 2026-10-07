@@ -1,0 +1,6 @@
+- name: __rdtscp
+  input: {mem_addr: unsigned int *}
+  output: {dst: unsigned __int64}
+  ir: {input: {mem_addr: ptr}, output: {dst: uint64_t}}
+  flags: [RDTSCP]
+  include: <immintrin.h>

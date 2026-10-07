@@ -1,0 +1,60 @@
+# res = pack lanes of data where k[i], toward low lanes, zero-fill
+primitive: COMPRESS
+input: [k, data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_compress_{dtype_suffix}(k, data);'
+
+  - isa: arm
+    direct: 'svcompact_{dtype_suffix}(k, data);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', data: '{v}', res: '{v}'}
+    direct:
+      - '{s} _tmp[sizeof({v}) / sizeof({s})] = {0};'
+      - '__builtin_masked_compress_store(k, data, _tmp);'
+      - 'return *({v}*)_tmp;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'tsl::compress<{simd_res}>(k, data);'
+
+---
+# res = pack lanes of a where k to the front; upper lanes keep src
+primitive: COMPRESS_MERGE
+input: [src, k, a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_compress_{dtype_suffix}(src, k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', res: '{v}'}
+    direct:
+      - '{s} _tmp[16];'
+      - '*({v}*)_tmp = src;'
+      - '__builtin_masked_compress_store(k, a, _tmp);'
+      - 'return *({v}*)_tmp;'
+
+---
+# store lanes of v where m, consecutively from ptr
+primitive: COMPRESS_STORE
+input: [ptr, m, v]
+output:
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_compressstoreu_{dtype_suffix}(ptr, m, v);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', m: '{vbool}', v: '{v}'}
+    direct: '__builtin_masked_compress_store(m, v, ({s}*)ptr);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'void*', m: '{vbool}', v: '{v}'}
+    direct: 'tsl::compress_store<{simd_v}, true>(m, (typename {simd_v}::base_type*)ptr, v);'

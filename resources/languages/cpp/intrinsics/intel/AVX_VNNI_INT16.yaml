@@ -1,0 +1,72 @@
+- name: _mm256_dpwsud_epi32
+  input: {__W: __m256i, __A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__W: v8i, __A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm256_dpwsuds_epi32
+  input: {__W: __m256i, __A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__W: v8i, __A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm256_dpwusd_epi32
+  input: {__W: __m256i, __A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__W: v8i, __A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm256_dpwusds_epi32
+  input: {__W: __m256i, __A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__W: v8i, __A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm256_dpwuud_epi32
+  input: {__W: __m256i, __A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__W: v8i, __A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm256_dpwuuds_epi32
+  input: {__W: __m256i, __A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__W: v8i, __A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm_dpwsud_epi32
+  input: {__W: __m128i, __A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__W: v4i, __A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm_dpwsuds_epi32
+  input: {__W: __m128i, __A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__W: v4i, __A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm_dpwusd_epi32
+  input: {__W: __m128i, __A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__W: v4i, __A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm_dpwusds_epi32
+  input: {__W: __m128i, __A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__W: v4i, __A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm_dpwuud_epi32
+  input: {__W: __m128i, __A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__W: v4i, __A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>
+- name: _mm_dpwuuds_epi32
+  input: {__W: __m128i, __A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__W: v4i, __A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [AVX_VNNI_INT16]
+  include: <immintrin.h>

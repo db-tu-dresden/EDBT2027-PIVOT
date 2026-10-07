@@ -1,0 +1,55 @@
+# res[i] = bitmask over j<i of (data[j] == data[i])
+primitive: CONFLICT
+input: [data]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_conflict_{dtype_suffix}(data);'
+
+  - isa: clang_builtins
+    signature: {data: v16i, res: v16i}
+    direct: |-
+      #if defined(__AVX512CD__)
+      return __builtin_ia32_vpconflictsi_512(data);
+      #elif defined(__ARM_FEATURE_SVE) && __ARM_FEATURE_SVE_BITS == 512
+      typedef svint32_t  __sv  __attribute__((arm_sve_vector_bits(512)));
+      const svbool_t __pg = svptrue_b32();
+      __sv __d = (__sv)data, __lane = svindex_s32(0, 1), __res = svdup_n_s32(0);
+      for (int _j = 0; _j < 16; _j++) {
+        svbool_t __eq = svcmpeq_s32(__pg, __d, svtbl_s32(__d, svdup_n_u32((uint32_t)_j)));
+        svbool_t __gt = svcmpgt_n_s32(__pg, __lane, _j);
+        __res = svorr_s32_m(svand_b_z(__pg, __eq, __gt), __res, svdup_n_s32(1 << _j));
+      }
+      return (v16i)__res;
+      #elif defined(__ARM_NEON)
+      uint8x16x4_t __t;
+      __t.val[0] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(data, data, 0,1,2,3));
+      __t.val[1] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(data, data, 4,5,6,7));
+      __t.val[2] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(data, data, 8,9,10,11));
+      __t.val[3] = vreinterpretq_u8_s32((int32x4_t)__builtin_shufflevector(data, data, 12,13,14,15));
+      const uint8x16_t __seq = {0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3};
+      const v16i __lane = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+      v16i __res = 0;
+      for (int _j = 0; _j < 16; _j++) {
+        v4i __b4 = (v4i)vreinterpretq_s32_u8(vqtbl4q_u8(__t, vaddq_u8(vdupq_n_u8((uint8_t)(_j << 2)), __seq)));
+        v16i __b = __builtin_shufflevector(__b4, __b4, 0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3);
+        __res |= ((data == __b) & (__lane > _j)) & (1 << _j);
+      }
+      return __res;
+      #else
+      v16i res;
+      res[0] = 0;
+      for (int _i = 1; _i < 16; _i++) {
+        int32_t _mask = 0;
+        for (int _j = 0; _j < _i; _j++) {
+          if (data[_j] == data[_i]) _mask |= (1 << _j);
+        }
+        res[_i] = _mask;
+      }
+      return res;
+      #endif
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {data: '{v}', res: '{v}'}
+    direct: 'tsl::conflict<{simd_res}>(data);'

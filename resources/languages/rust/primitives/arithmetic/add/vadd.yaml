@@ -1,0 +1,26 @@
+primitive: VADD
+input: [a, b]
+output: res
+definitions:
+  - 'isa': 'x86'
+    'dtype': '{int, float}'
+    'direct': '_mm{x86_widths}_add_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'vadd{neon_widths}_{dtype_suffix}(a, b);'
+
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'svadd_{dtype_suffix}_x(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a + b;'
+
+  # core_simd — elementwise operator
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{v}'}
+    direct: 'a + b;'

@@ -1,0 +1,6 @@
+- name: _rdtsc
+  input: {}
+  output: {dst: __int64}
+  ir: {input: {}, output: {dst: int64_t}}
+  flags: [TSC]
+  include: <immintrin.h>

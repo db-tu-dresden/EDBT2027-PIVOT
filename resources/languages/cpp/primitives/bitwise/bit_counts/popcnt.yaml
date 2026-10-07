@@ -1,0 +1,40 @@
+primitive: POPCNT
+input: [data]
+output: res
+# res[i] = popcount(data[i])
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_popcnt_{dtype_suffix}(data);'
+
+  - isa: arm
+    direct: 'vcnt{neon_widths}_{dtype_suffix}(data);'
+
+  - isa: arm
+    direct: 'svcnt_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {data: '{v}', res: '{v}'}
+    direct: '__builtin_elementwise_popcount(data);'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {data: '{v}', res: '{v}'}
+    direct: 'tsl::popcnt<{simd_res}>(data);'
+
+  # scalar GPR form: res = popcount(data)
+  - isa: x86
+    direct: '_mm_popcnt_u32(data);'
+
+  - isa: x86
+    direct: '_mm_popcnt_u64(data);'
+
+  - isa: clang_builtins
+    dtype: uint32
+    signature: {data: uint32_t, res: int32_t}
+    direct: '__builtin_popcount(data);'
+
+  - isa: clang_builtins
+    dtype: uint64
+    signature: {data: uint64_t, res: int64_t}
+    direct: '(int64_t)__builtin_popcountll((unsigned long long)data);'

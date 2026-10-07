@@ -1,0 +1,6 @@
+- name: _movdir64b
+  input: {dst: void*, src: const void*}
+  output: {}
+  ir: {input: {dst: ptr, src: ptr}, output: {}}
+  flags: [MOVDIR64B]
+  include: <immintrin.h>

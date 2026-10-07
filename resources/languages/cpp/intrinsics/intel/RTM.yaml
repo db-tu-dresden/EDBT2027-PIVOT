@@ -1,0 +1,23 @@
+- name: _xabort
+  input: {imm8: const unsigned int}
+  output: {}
+  flags: [RTM]
+  include: <immintrin.h>
+- name: _xbegin
+  input: {}
+  output: {k: unsigned int}
+  ir: {input: {}, output: {k: uint32_t}}
+  flags: [RTM]
+  include: <immintrin.h>
+- name: _xend
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [RTM]
+  include: <immintrin.h>
+- name: _xtest
+  input: {}
+  output: {dst: unsigned char}
+  ir: {input: {}, output: {dst: uint8_t}}
+  flags: [RTM]
+  include: <immintrin.h>

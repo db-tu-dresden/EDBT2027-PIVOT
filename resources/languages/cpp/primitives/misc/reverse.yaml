@@ -1,0 +1,21 @@
+# res[i] = a[N-1-i]
+primitive: REVERSE
+input: [a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svrev_{dtype_suffix}(a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', res: '{v}'}
+    direct:
+      - '{v} _r;'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - 'for (int _i = 0; _i < _n; _i++) _r[_i] = a[_n - 1 - _i];'
+      - 'return _r;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: 'tsl::reverse<{simd_res}>(a);'

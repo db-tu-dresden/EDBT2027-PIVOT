@@ -1,0 +1,12 @@
+- name: _addcarryx_u32
+  input: {c_in: unsigned char, a: unsigned int, b: unsigned int, out: unsigned int *}
+  output: {dst: unsigned char}
+  ir: {input: {c_in: uint8_t, a: uint32_t, b: uint32_t, out: ptr}, output: {dst: uint8_t}}
+  flags: [ADX]
+  include: <immintrin.h>
+- name: _addcarryx_u64
+  input: {c_in: unsigned char, a: unsigned __int64, b: unsigned __int64, out: unsigned __int64 *}
+  output: {dst: unsigned char}
+  ir: {input: {c_in: uint8_t, a: uint64_t, b: uint64_t, out: ptr}, output: {dst: uint8_t}}
+  flags: [ADX]
+  include: <immintrin.h>

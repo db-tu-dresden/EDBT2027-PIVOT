@@ -1,0 +1,76 @@
+# Pseudo-intrinsics: preprocessor macros that are graph nodes like intrinsics.
+#
+# A `fold:` expression makes an entry an immediate constructor: a call (or bare
+# name, for the zero-argument predicates below) with constant arguments folds to
+# its integer value. The frontends fold them for pattern matching, and the
+# clang_builtins backend defines the zero-argument ones again once the SIMD header
+# is gone (see IntrinsicRegistry.nullary_fold_constants).
+
+- name: _MM_SHUFFLE
+  input: {z: int, y: int, x: int, w: int}
+  output: {dst: int}
+  flags: [SSE]
+  include: <xmmintrin.h>
+  fold: '(z << 6) | (y << 4) | (x << 2) | w'
+  operation: |
+    dst[1:0] := w[1:0]
+    dst[3:2] := x[1:0]
+    dst[5:4] := y[1:0]
+    dst[7:6] := z[1:0]
+    dst[31:8] := 0
+
+- name: _MM_SHUFFLE2
+  input: {x: int, y: int}
+  output: {dst: int}
+  flags: [SSE2]
+  include: <emmintrin.h>
+  fold: '(x << 1) | y'
+  operation: |
+    dst[0] := y[0]
+    dst[1] := x[0]
+
+# Float comparison predicates (avxintrin.h): the immediate fed into
+# _mm512_cmp_*_mask. Folded to their value, they select a pattern by comparison.
+- {name: _CMP_EQ_OQ,    output: {dst: int}, flags: [AVX], fold: '0x00'}
+- {name: _CMP_LT_OS,    output: {dst: int}, flags: [AVX], fold: '0x01'}
+- {name: _CMP_LE_OS,    output: {dst: int}, flags: [AVX], fold: '0x02'}
+- {name: _CMP_UNORD_Q,  output: {dst: int}, flags: [AVX], fold: '0x03'}
+- {name: _CMP_NEQ_UQ,   output: {dst: int}, flags: [AVX], fold: '0x04'}
+- {name: _CMP_NLT_US,   output: {dst: int}, flags: [AVX], fold: '0x05'}
+- {name: _CMP_NLE_US,   output: {dst: int}, flags: [AVX], fold: '0x06'}
+- {name: _CMP_ORD_Q,    output: {dst: int}, flags: [AVX], fold: '0x07'}
+- {name: _CMP_EQ_UQ,    output: {dst: int}, flags: [AVX], fold: '0x08'}
+- {name: _CMP_NGE_US,   output: {dst: int}, flags: [AVX], fold: '0x09'}
+- {name: _CMP_NGT_US,   output: {dst: int}, flags: [AVX], fold: '0x0a'}
+- {name: _CMP_FALSE_OQ, output: {dst: int}, flags: [AVX], fold: '0x0b'}
+- {name: _CMP_NEQ_OQ,   output: {dst: int}, flags: [AVX], fold: '0x0c'}
+- {name: _CMP_GE_OS,    output: {dst: int}, flags: [AVX], fold: '0x0d'}
+- {name: _CMP_GT_OS,    output: {dst: int}, flags: [AVX], fold: '0x0e'}
+- {name: _CMP_TRUE_UQ,  output: {dst: int}, flags: [AVX], fold: '0x0f'}
+- {name: _CMP_EQ_OS,    output: {dst: int}, flags: [AVX], fold: '0x10'}
+- {name: _CMP_LT_OQ,    output: {dst: int}, flags: [AVX], fold: '0x11'}
+- {name: _CMP_LE_OQ,    output: {dst: int}, flags: [AVX], fold: '0x12'}
+- {name: _CMP_UNORD_S,  output: {dst: int}, flags: [AVX], fold: '0x13'}
+- {name: _CMP_NEQ_US,   output: {dst: int}, flags: [AVX], fold: '0x14'}
+- {name: _CMP_NLT_UQ,   output: {dst: int}, flags: [AVX], fold: '0x15'}
+- {name: _CMP_NLE_UQ,   output: {dst: int}, flags: [AVX], fold: '0x16'}
+- {name: _CMP_ORD_S,    output: {dst: int}, flags: [AVX], fold: '0x17'}
+- {name: _CMP_EQ_US,    output: {dst: int}, flags: [AVX], fold: '0x18'}
+- {name: _CMP_NGE_UQ,   output: {dst: int}, flags: [AVX], fold: '0x19'}
+- {name: _CMP_NGT_UQ,   output: {dst: int}, flags: [AVX], fold: '0x1a'}
+- {name: _CMP_FALSE_OS, output: {dst: int}, flags: [AVX], fold: '0x1b'}
+- {name: _CMP_NEQ_OS,   output: {dst: int}, flags: [AVX], fold: '0x1c'}
+- {name: _CMP_GE_OQ,    output: {dst: int}, flags: [AVX], fold: '0x1d'}
+- {name: _CMP_GT_OQ,    output: {dst: int}, flags: [AVX], fold: '0x1e'}
+- {name: _CMP_TRUE_US,  output: {dst: int}, flags: [AVX], fold: '0x1f'}
+
+# Integer comparison predicates (avx512fintrin.h): the immediate fed into
+# _mm512_cmp_ep[iu]*_mask.
+- {name: _MM_CMPINT_EQ,    output: {dst: int}, flags: [AVX512F], fold: '0'}
+- {name: _MM_CMPINT_LT,    output: {dst: int}, flags: [AVX512F], fold: '1'}
+- {name: _MM_CMPINT_LE,    output: {dst: int}, flags: [AVX512F], fold: '2'}
+- {name: _MM_CMPINT_FALSE, output: {dst: int}, flags: [AVX512F], fold: '3'}
+- {name: _MM_CMPINT_NE,    output: {dst: int}, flags: [AVX512F], fold: '4'}
+- {name: _MM_CMPINT_NLT,   output: {dst: int}, flags: [AVX512F], fold: '5'}
+- {name: _MM_CMPINT_NLE,   output: {dst: int}, flags: [AVX512F], fold: '6'}
+- {name: _MM_CMPINT_TRUE,  output: {dst: int}, flags: [AVX512F], fold: '7'}

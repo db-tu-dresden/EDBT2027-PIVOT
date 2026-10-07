@@ -1,0 +1,58 @@
+# res = ~a
+primitive: INV
+input: [a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'vmvn{neon_widths}_{dtype_suffix}(a);'
+
+  - isa: arm
+    direct: 'svnot_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: '~a;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: 'tsl::inv<{simd_res}>(a);'
+
+---
+# res[i] = k[i] ? ~data[i] : data[i]
+primitive: INV_MERGE
+input: [k, data]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svnot_{dtype_suffix}_m(data, k, data);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'k ? ~data : data;'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'tsl::inv_mask<{simd_res}>(k, data);'
+
+---
+# res[i] = k[i] ? ~data[i] : 0
+primitive: INV_ZERO
+input: [k, data]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svnot_{dtype_suffix}_z(k, data);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'k ? ~data : ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', data: '{v}', res: '{v}'}
+    direct: 'tsl::inv_maskz<{simd_res}>(k, data);'

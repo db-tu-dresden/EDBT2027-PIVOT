@@ -1,0 +1,41 @@
+primitive: LOADU
+input: [ptr]
+output: res
+# Unaligned load; the aligned variant is LOAD (load.yaml).
+definitions:
+
+  # x86 - unaligned
+  - 'isa': 'x86'
+    'dtype': '{int, float}'
+    'direct': '_mm{x86_widths}_loadu_{dtype_suffix}(ptr);'
+
+  - 'isa': 'x86'
+    'direct': '_mm_loadu_si128(ptr);'
+
+  - 'isa': 'x86'
+    'direct': '_mm256_loadu_si256(ptr);'
+
+  - 'isa': 'x86'
+    'direct': '_mm512_loadu_si512(ptr);'
+
+  # Neon (alignment-agnostic)
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'vld1{neon_widths}_{dtype_suffix}(ptr);'
+
+  # SVE (alignment-agnostic)
+  - isa: arm
+    dtype: '{int, uint, float}'
+    direct: 'svld1_{dtype_suffix}(svptrue_b{elem_bits}(), ptr);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    # Type-agnostic load (void const*); unaligned access via memcpy.
+    signature: {ptr: 'const void*', res: '{v}'}
+    direct: 'return ({ {v} __ld; __builtin_memcpy(&__ld, ptr, sizeof(__ld)); __ld; });'
+
+  # core_simd — unaligned load (Simd<T, N> is over-aligned, so `read` would fault)
+  - isa: core_simd
+    dtype: '{int, uint, float}'
+    signature: {ptr: 'const_ptr', res: '{v}'}
+    direct: 'unsafe { (ptr as *const {simd_res}).read_unaligned() };'

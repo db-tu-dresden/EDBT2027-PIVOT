@@ -1,0 +1,75 @@
+% pivot's speedup over SIMDe on VIP's join: a panel per machine on one shared axis, in it a group
+% per vector width and a bar per kernel, named by its build/probe payload columns. Drawn from the
+% tables that plot.py writes to data/: one per machine and kernel with the group and position in
+% it of each bar, and the range of all speedups.
+\documentclass[9pt]{amsart}
+\usepackage{pivotfig}
+
+\pgfplotstableread[col sep=comma]{data/range.csv}\jaRange
+% One y range for both panels, always including 1, with some room beyond the bars.
+\pgfplotstablegetelem{0}{min}\of\jaRange \pgfmathsetmacro{\jaYmin}{min(\pgfplotsretval,1)/1.25}
+\pgfplotstablegetelem{0}{max}\of\jaRange \pgfmathsetmacro{\jaYmax}{max(\pgfplotsretval,1)*1.25}
+
+\pgfmathsetlengthmacro{\jaSlot}{32pt}
+\pgfmathsetlengthmacro{\jaHeight}{60pt}
+\pgfmathsetlengthmacro{\jaBar}{5pt}
+% Distance between bars, in group widths.
+\def\jaStep{0.17}
+\pgfplotsset{
+  ja panel/.style={
+    log origin=0, clip=false, scale only axis, x=\jaSlot, xmin=-0.5, xmax=2.5,
+    ymin=\jaYmin, ymax=\jaYmax, height=\jaHeight,
+    axis lines*=left, axis line style={gray1, line width=0.4pt},
+    xtick={0,1,2}, xticklabels={128 bit, 256 bit, 512 bit}, xtick style={draw=none},
+    ytick={0.5,1,2,4,8}, major tick length=2pt,
+    yticklabel={\pgfmathparse{exp(\tick)}\pgfmathprintnumber[fixed]{\pgfmathresult}},
+    ytick style={gray1, line width=0.4pt}, ymajorgrids,
+    major grid style={gray1!25, line width=0.2pt},
+    ticklabel style={font=\footnotesize, text=gray1},
+    ybar, bar width=\jaBar,
+  },
+  ja left/.style={ylabel={speedup over SIMDe}, ylabel style={font=\footnotesize, text=gray1}},
+  ja right/.style={yticklabels={}},
+}
+\tikzset{
+  ja 1-1/.style={draw=blue1, fill=blue2, line width=0.4pt},
+  ja 1-3/.style={draw=teal1, fill=teal2, line width=0.4pt},
+  ja 3-1/.style={draw=orange1, fill=orange2, line width=0.4pt},
+  ja 3-3/.style={draw=violet1, fill=violet2, line width=0.4pt},
+}
+% Draws the bars of one kernel, if it ran on this machine.
+\newcommand{\jaBars}[2]{% arch, kernel
+  \IfFileExists{data/#1-#2.csv}{%
+    \addplot[ja #2, bar shift=0pt] table[col sep=comma, y=speedup,
+      x expr={\thisrow{group} + \thisrow{k}*\jaStep}] {data/#1-#2.csv};}{}}
+% Draws one panel: the bars, the line at 1 and the title.
+\newcommand{\jaPanel}[2]{% arch, title
+  \jaBars{#1}{1-1}
+  \jaBars{#1}{1-3}
+  \jaBars{#1}{3-1}
+  \jaBars{#1}{3-3}
+  \draw[gray1, line width=0.4pt] ({rel axis cs:0,0}|-{axis cs:0,1}) -- ({rel axis cs:1,0}|-{axis cs:0,1});
+  \node[font=\footnotesize, text=gray1, anchor=base] at ([yshift=6pt]rel axis cs:0.5,1) {#2};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[ymode=log, ja panel, ja left, name=spr]
+  \jaPanel{sapphirerapids}{Intel Sapphire Rapids}
+\end{axis}
+\begin{axis}[ymode=log, ja panel, ja right, name=afx, at={($(spr.north east)+(8pt,0)$)},
+    anchor=north west]
+  \jaPanel{a64fx}{Fujitsu A64FX}
+\end{axis}
+\coordinate (legend) at ($(spr.south west)!0.5!(afx.south east)$);
+\matrix[anchor=north, yshift=-4pt, column sep=3pt,
+    nodes={font=\footnotesize, text=gray1, inner sep=0pt, anchor=base west}]
+    at (legend |- current bounding box.south) {
+  \node {payload columns (build/probe)}; &[6pt]
+  \draw[ja 1-1] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {1/1}; &[8pt]
+  \draw[ja 1-3] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {1/3}; &[8pt]
+  \draw[ja 3-1] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {3/1}; &[8pt]
+  \draw[ja 3-3] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {3/3}; \\
+};
+\end{tikzpicture}
+\end{document}

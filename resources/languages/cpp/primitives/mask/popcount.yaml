@@ -1,0 +1,57 @@
+# res = popcount(a)
+primitive: MASK_POPCNT
+input: [a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svcntp_b{elem_bits}(svptrue_b{elem_bits}(), a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{vbool}', res: uint64_t}
+    direct: 'return (uint64_t)__builtin_reduce_add(__builtin_convertvector(a, {v}));'
+
+  - isa: clang_builtins
+    dtype: float
+    signature: {a: '{vbool}', res: uint64_t}
+    direct:
+      - '{v} _ia = __builtin_convertvector(a, {v});'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - 'uint64_t _c = 0;'
+      - 'for (int _i = 0; _i < _n; _i++) _c += _ia[_i] ? 1 : 0;'
+      - 'return _c;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', res: uint64_t}
+    direct: 'tsl::mask_population_count<{simd_a}>(a);'
+
+---
+# res = popcount(k & a)
+primitive: MASK_POPCNT_MASKED
+input: [k, a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svcntp_b{elem_bits}(k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', a: '{vbool}', res: uint64_t}
+    direct: 'return (uint64_t)__builtin_reduce_add(__builtin_convertvector(k & a, {v}));'
+
+  - isa: clang_builtins
+    dtype: float
+    signature: {k: '{vbool}', a: '{vbool}', res: uint64_t}
+    direct:
+      - '{vbool} _m = k & a;'
+      - '{v} _im = __builtin_convertvector(_m, {v});'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - 'uint64_t _c = 0;'
+      - 'for (int _i = 0; _i < _n; _i++) _c += _im[_i] ? 1 : 0;'
+      - 'return _c;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{vbool}', res: uint64_t}
+    direct: 'tsl::mask_population_count<{simd_k}>(tsl::mask_binary_and<{simd_k}>(k, a));'

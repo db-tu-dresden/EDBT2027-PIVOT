@@ -1,0 +1,6 @@
+- name: _invpcid
+  input: {type: unsigned int, descriptor: void*}
+  output: {}
+  ir: {input: {type: uint32_t, descriptor: ptr}, output: {}}
+  flags: [INVPCID]
+  include: <immintrin.h>

@@ -1,0 +1,13 @@
+machine,arch,march,width,example,category,direction,variant,regime,nops,inner,per_op_bytes,ns_per_op,checksum
+db-intel,spr,-march=sapphirerapids,128,neon_clz_u64_128,clz,arm->x86,clang_1to1,cache,16384,3814,32,0.3997,0x0000000000103639
+db-intel,spr,-march=sapphirerapids,128,neon_clz_u64_128,clz,arm->x86,clang_1to1,dram,33554432,1,32,2.3708,0x0000000081fea5c4
+db-intel,spr,-march=sapphirerapids,128,neon_clz_u64_128,clz,arm->x86,clang_nto1,cache,16384,3814,32,0.2715,0x0000000000103639
+db-intel,spr,-march=sapphirerapids,128,neon_clz_u64_128,clz,arm->x86,clang_nto1,dram,33554432,1,32,2.2068,0x0000000081fea5c4
+db-intel,spr,-march=sapphirerapids,128,neon_mul_u64_128,multiply,arm->x86,clang_1to1,cache,10922,3814,48,0.6336,0x9e39e2150a8ec3f4
+db-intel,spr,-march=sapphirerapids,128,neon_mul_u64_128,multiply,arm->x86,clang_1to1,dram,22369621,1,48,4.1694,0x9433473fd6fe0cec
+db-intel,spr,-march=sapphirerapids,128,neon_mul_u64_128,multiply,arm->x86,clang_nto1,cache,10922,3814,48,0.4734,0x9e39e2150a8ec3f4
+db-intel,spr,-march=sapphirerapids,128,neon_mul_u64_128,multiply,arm->x86,clang_nto1,dram,22369621,1,48,3.9509,0x9433473fd6fe0cec
+db-intel,spr,-march=sapphirerapids,128,neon_popcount_u32_128,popcount,arm->x86,clang_1to1,cache,16384,3814,32,0.9968,0x00080036000801bf
+db-intel,spr,-march=sapphirerapids,128,neon_popcount_u32_128,popcount,arm->x86,clang_1to1,dram,33554432,1,32,2.6554,0x40000dc1400019be
+db-intel,spr,-march=sapphirerapids,128,neon_popcount_u32_128,popcount,arm->x86,clang_nto1,cache,16384,3814,32,0.2632,0x00080036000801bf
+db-intel,spr,-march=sapphirerapids,128,neon_popcount_u32_128,popcount,arm->x86,clang_nto1,dram,33554432,1,32,2.2193,0x40000dc1400019be

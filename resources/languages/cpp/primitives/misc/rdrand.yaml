@@ -1,0 +1,24 @@
+# res = success flag; writes a random value to *val
+primitive: RDRAND
+input: [val]
+output: res
+definitions:
+  - isa: x86
+    direct: '_rdrand64_step(val);'
+
+  - isa: clang_builtins
+    dtype: uint64
+    signature: {val: 'unsigned long long*', res: int32_t}
+    direct: |-
+      #if defined(__RDRND__)
+      return __builtin_ia32_rdrand64_step((unsigned long long *)val);
+      #else
+      static _Thread_local uint64_t _rdrand_state = 0;
+      if (_rdrand_state == 0)
+        _rdrand_state = 0x9E3779B97F4A7C15ull ^ (uint64_t)(__UINTPTR_TYPE__)val;
+      _rdrand_state ^= _rdrand_state >> 12;
+      _rdrand_state ^= _rdrand_state << 25;
+      _rdrand_state ^= _rdrand_state >> 27;
+      *val = _rdrand_state * 0x2545F4914F6CDD1Dull;
+      return 1;
+      #endif

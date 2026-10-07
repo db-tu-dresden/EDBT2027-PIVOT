@@ -1,0 +1,192 @@
+- name: _mm_fmadd_pd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmadd_pd
+  input: {a: __m256d, b: __m256d, c: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, c: v4d}, output: {dst: v4d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmadd_ps
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmadd_ps
+  input: {a: __m256, b: __m256, c: __m256}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, c: v8f}, output: {dst: v8f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmadd_sd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmadd_ss
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmaddsub_pd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmaddsub_pd
+  input: {a: __m256d, b: __m256d, c: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, c: v4d}, output: {dst: v4d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmaddsub_ps
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmaddsub_ps
+  input: {a: __m256, b: __m256, c: __m256}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, c: v8f}, output: {dst: v8f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmsub_pd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmsub_pd
+  input: {a: __m256d, b: __m256d, c: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, c: v4d}, output: {dst: v4d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmsub_ps
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmsub_ps
+  input: {a: __m256, b: __m256, c: __m256}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, c: v8f}, output: {dst: v8f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmsub_sd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmsub_ss
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmsubadd_pd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmsubadd_pd
+  input: {a: __m256d, b: __m256d, c: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, c: v4d}, output: {dst: v4d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fmsubadd_ps
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fmsubadd_ps
+  input: {a: __m256, b: __m256, c: __m256}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, c: v8f}, output: {dst: v8f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmadd_pd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fnmadd_pd
+  input: {a: __m256d, b: __m256d, c: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, c: v4d}, output: {dst: v4d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmadd_ps
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fnmadd_ps
+  input: {a: __m256, b: __m256, c: __m256}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, c: v8f}, output: {dst: v8f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmadd_sd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmadd_ss
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmsub_pd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fnmsub_pd
+  input: {a: __m256d, b: __m256d, c: __m256d}
+  output: {dst: __m256d}
+  ir: {input: {a: v4d, b: v4d, c: v4d}, output: {dst: v4d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmsub_ps
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm256_fnmsub_ps
+  input: {a: __m256, b: __m256, c: __m256}
+  output: {dst: __m256}
+  ir: {input: {a: v8f, b: v8f, c: v8f}, output: {dst: v8f}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmsub_sd
+  input: {a: __m128d, b: __m128d, c: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d, c: v2d}, output: {dst: v2d}}
+  flags: [FMA]
+  include: <immintrin.h>
+- name: _mm_fnmsub_ss
+  input: {a: __m128, b: __m128, c: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f, c: v4f}, output: {dst: v4f}}
+  flags: [FMA]
+  include: <immintrin.h>

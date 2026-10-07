@@ -1,0 +1,80 @@
+# res[i] = k[i] ? a[j++] : 0
+primitive: EXPAND
+input: [k, a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_expand_{dtype_suffix}(k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', res: '{v}'}
+    direct:
+      - '{s} _tmp[16];'
+      - '*({v}*)_tmp = a;'
+      - 'return __builtin_masked_expand_load(k, _tmp, ({v}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', res: '{v}'}
+    direct: 'tsl::expand<{simd_res}>(k, tsl::set1<{simd_res}>(0), a);'
+
+---
+# res[i] = k[i] ? a[j++] : src[i]
+primitive: EXPAND_MERGE
+input: [src, k, a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_expand_{dtype_suffix}(src, k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', res: '{v}'}
+    direct:
+      - '{s} _tmp[16];'
+      - '*({v}*)_tmp = a;'
+      - 'return __builtin_masked_expand_load(k, _tmp, src);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', res: '{v}'}
+    direct: 'tsl::expand<{simd_res}>(k, src, a);'
+
+---
+# res[i] = k[i] ? *ptr++ : 0
+primitive: EXPAND_LOAD
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_maskz_expandloadu_{dtype_suffix}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: 'const void*', res: '{v}'}
+    direct: '__builtin_masked_expand_load(a, (const {s}*)b, ({v}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: 'const void*', res: '{v}'}
+    direct: 'tsl::expand_load<{simd_res}, true>(a, (const {s}*)b);'
+
+---
+# res[i] = k[i] ? *ptr++ : src[i]
+primitive: EXPAND_LOAD_MERGE
+input: [a, b, c]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_expandloadu_{dtype_suffix}(a, b, c);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{vbool}', c: 'const void*', res: '{v}'}
+    direct: '__builtin_masked_expand_load(b, (const {s}*)c, a);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{vbool}', c: 'const void*', res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(b, tsl::expand_load<{simd_res}, true>(b, (const {s}*)c), a);'

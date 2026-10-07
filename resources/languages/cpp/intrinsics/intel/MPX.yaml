@@ -1,0 +1,57 @@
+- name: _bnd_set_ptr_bounds
+  input: {srcmem: const void *, size: size_t}
+  output: {}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_narrow_ptr_bounds
+  input: {q: const void *, r: const void *, size: size_t}
+  output: {}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_copy_ptr_bounds
+  input: {q: const void *, r: const void *}
+  output: {}
+  ir: {input: {q: ptr, r: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_init_ptr_bounds
+  input: {q: const void *}
+  output: {}
+  ir: {input: {q: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_store_ptr_bounds
+  input: {ptr_addr: const void **, ptr_val: const void *}
+  output: {}
+  ir: {input: {ptr_addr: ptr, ptr_val: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_chk_ptr_lbounds
+  input: {q: const void *}
+  output: {}
+  ir: {input: {q: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_chk_ptr_ubounds
+  input: {q: const void *}
+  output: {}
+  ir: {input: {q: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_chk_ptr_bounds
+  input: {q: const void *, size: size_t}
+  output: {}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_get_ptr_lbound
+  input: {q: const void *}
+  output: {}
+  ir: {input: {q: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>
+- name: _bnd_get_ptr_ubound
+  input: {q: const void *}
+  output: {}
+  ir: {input: {q: ptr}, output: {}}
+  flags: [MPX]
+  include: <immintrin.h>

@@ -1,0 +1,66 @@
+- name: _mm_addsub_ps
+  input: {a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_addsub_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_hadd_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_hadd_ps
+  input: {a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_hsub_pd
+  input: {a: __m128d, b: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d, b: v2d}, output: {dst: v2d}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_hsub_ps
+  input: {a: __m128, b: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f, b: v4f}, output: {dst: v4f}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_lddqu_si128
+  input: {mem_addr: __m128i const*}
+  output: {dst: __m128i}
+  ir: {input: {mem_addr: ptr}, output: {dst: blob128}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_loaddup_pd
+  input: {mem_addr: double const*}
+  output: {dst: __m128d}
+  ir: {input: {mem_addr: ptr}, output: {dst: v2d}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_movedup_pd
+  input: {a: __m128d}
+  output: {dst: __m128d}
+  ir: {input: {a: v2d}, output: {dst: v2d}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_movehdup_ps
+  input: {a: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f}, output: {dst: v4f}}
+  flags: [SSE3]
+  include: <pmmintrin.h>
+- name: _mm_moveldup_ps
+  input: {a: __m128}
+  output: {dst: __m128}
+  ir: {input: {a: v4f}, output: {dst: v4f}}
+  flags: [SSE3]
+  include: <pmmintrin.h>

@@ -1,0 +1,353 @@
+# *(base_ptr + index[i] * scale) = a[i]
+primitive: SCATTER
+input: [base_ptr, index, a, scale]
+output:
+definitions:
+  - isa: x86
+    dtype: '{int, float}{32, 64}'
+    direct: '_mm{x86_widths}_i32scatter_{dtype_suffix}(base_ptr, index, a, scale);'
+
+  - isa: clang_builtins
+    dtype: int32
+    signature: {base_ptr: 'void*', index: v16i, a: v16i, scale: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: __builtin_ia32_scattersiv16si(base_ptr, (unsigned short)-1, index, a, 1); return;
+      case 2: __builtin_ia32_scattersiv16si(base_ptr, (unsigned short)-1, index, a, 2); return;
+      case 4: __builtin_ia32_scattersiv16si(base_ptr, (unsigned short)-1, index, a, 4); return;
+      case 8: __builtin_ia32_scattersiv16si(base_ptr, (unsigned short)-1, index, a, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 16; __i++) *(int *)((char *)base_ptr + (long)index[__i] * scale) = a[__i];
+
+  - isa: clang_builtins
+    dtype: float32
+    signature: {base_ptr: 'void*', index: v16i, a: v16f, scale: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: __builtin_ia32_scattersiv16sf(base_ptr, (unsigned short)-1, index, a, 1); return;
+      case 2: __builtin_ia32_scattersiv16sf(base_ptr, (unsigned short)-1, index, a, 2); return;
+      case 4: __builtin_ia32_scattersiv16sf(base_ptr, (unsigned short)-1, index, a, 4); return;
+      case 8: __builtin_ia32_scattersiv16sf(base_ptr, (unsigned short)-1, index, a, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 16; __i++) *(float *)((char *)base_ptr + (long)index[__i] * scale) = a[__i];
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {base_ptr: 'void*', index: v8i, a: v8l, scale: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: __builtin_ia32_scattersiv8di(base_ptr, (unsigned char)-1, index, a, 1); return;
+      case 2: __builtin_ia32_scattersiv8di(base_ptr, (unsigned char)-1, index, a, 2); return;
+      case 4: __builtin_ia32_scattersiv8di(base_ptr, (unsigned char)-1, index, a, 4); return;
+      case 8: __builtin_ia32_scattersiv8di(base_ptr, (unsigned char)-1, index, a, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) *(long long *)((char *)base_ptr + (long)index[__i] * scale) = a[__i];
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {base_ptr: 'void*', index: v8i, a: v8d, scale: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: __builtin_ia32_scattersiv8df(base_ptr, (unsigned char)-1, index, a, 1); return;
+      case 2: __builtin_ia32_scattersiv8df(base_ptr, (unsigned char)-1, index, a, 2); return;
+      case 4: __builtin_ia32_scattersiv8df(base_ptr, (unsigned char)-1, index, a, 4); return;
+      case 8: __builtin_ia32_scattersiv8df(base_ptr, (unsigned char)-1, index, a, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) *(double *)((char *)base_ptr + (long)index[__i] * scale) = a[__i];
+
+  - isa: tsl
+    signature: {base_ptr: void*, index: v16i, a: v16i, scale: imm32}
+    direct: 'tsl::scatter<{simd_a}, {simd_index}, scale>((typename {simd_a}::base_type *)base_ptr, index, a);'
+  - isa: tsl
+    signature: {base_ptr: void*, index: v16i, a: v16f, scale: imm32}
+    direct: 'tsl::scatter<{simd_a}, {simd_index}, scale>((typename {simd_a}::base_type *)base_ptr, index, a);'
+  - isa: tsl
+    signature: {base_ptr: void*, index: v8i, a: v8l, scale: imm32}
+    direct: 'tsl::scatter<{simd_a}, {simd_index}, scale>((typename {simd_a}::base_type *)base_ptr, index, a);'
+  - isa: tsl
+    signature: {base_ptr: void*, index: v8i, a: v8d, scale: imm32}
+    direct: 'tsl::scatter<{simd_a}, {simd_index}, scale>((typename {simd_a}::base_type *)base_ptr, index, a);'
+
+---
+# if b[i]: *((char*)a + c[i] * e) = d[i]   (a=base, b=k, c=index i32, d=values, e=scale)
+primitive: SCATTER_MASKED
+input: [a, b, c, d, e]
+output:
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}{32, 64}'
+    direct: '_mm{x86_widths}_mask_i32scatter_{dtype_suffix}(a, b, c, d, e);'
+
+  - isa: clang_builtins
+    dtype: int32
+    signature: {a: 'void*', b: v16b_i, c: v16i, d: v16i, e: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned short __k = __builtin_bit_cast(unsigned short, b);
+      switch (e) {
+      case 1: __builtin_ia32_scattersiv16si(a, __k, c, d, 1); return;
+      case 2: __builtin_ia32_scattersiv16si(a, __k, c, d, 2); return;
+      case 4: __builtin_ia32_scattersiv16si(a, __k, c, d, 4); return;
+      case 8: __builtin_ia32_scattersiv16si(a, __k, c, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 16; __i++) if (b[__i]) *(int *)((char *)a + (long)c[__i] * e) = d[__i];
+
+  - isa: clang_builtins
+    dtype: float32
+    signature: {a: 'void*', b: v16b_f, c: v16i, d: v16f, e: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned short __k = __builtin_bit_cast(unsigned short, b);
+      switch (e) {
+      case 1: __builtin_ia32_scattersiv16sf(a, __k, c, d, 1); return;
+      case 2: __builtin_ia32_scattersiv16sf(a, __k, c, d, 2); return;
+      case 4: __builtin_ia32_scattersiv16sf(a, __k, c, d, 4); return;
+      case 8: __builtin_ia32_scattersiv16sf(a, __k, c, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 16; __i++) if (b[__i]) *(float *)((char *)a + (long)c[__i] * e) = d[__i];
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: 'void*', b: v8b_l, c: v8i, d: v8l, e: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: __builtin_ia32_scattersiv8di(a, __k, c, d, 1); return;
+      case 2: __builtin_ia32_scattersiv8di(a, __k, c, d, 2); return;
+      case 4: __builtin_ia32_scattersiv8di(a, __k, c, d, 4); return;
+      case 8: __builtin_ia32_scattersiv8di(a, __k, c, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) *(long long *)((char *)a + (long)c[__i] * e) = d[__i];
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: 'void*', b: v8b_d, c: v8i, d: v8d, e: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: __builtin_ia32_scattersiv8df(a, __k, c, d, 1); return;
+      case 2: __builtin_ia32_scattersiv8df(a, __k, c, d, 2); return;
+      case 4: __builtin_ia32_scattersiv8df(a, __k, c, d, 4); return;
+      case 8: __builtin_ia32_scattersiv8df(a, __k, c, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) *(double *)((char *)a + (long)c[__i] * e) = d[__i];
+
+  - isa: tsl
+    signature: {a: void*, b: v16b_i, c: v16i, d: v16i, e: imm32}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_c}, e>(b, (typename {simd_d}::base_type *)a, c, d);'
+  - isa: tsl
+    signature: {a: void*, b: v16b_f, c: v16i, d: v16f, e: imm32}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_c}, e>(b, (typename {simd_d}::base_type *)a, c, d);'
+  - isa: tsl
+    signature: {a: void*, b: v8b_l, c: v8i, d: v8l, e: imm32}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_c}, e>(b, (typename {simd_d}::base_type *)a, c, d);'
+  - isa: tsl
+    signature: {a: void*, b: v8b_d, c: v8i, d: v8d, e: imm32}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_c}, e>(b, (typename {simd_d}::base_type *)a, c, d);'
+
+---
+# *((char*)a + b[i] * d) = c[i]   (a=base, b=index i64, c=values, d=scale)
+primitive: SCATTER_I64
+input: [a, b, c, d]
+output:
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}{32, 64}'
+    direct: '_mm{x86_widths}_i64scatter_{dtype_suffix}(a, b, c, d);'
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: 'void*', b: v8l, c: v8l, d: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (d) {
+      case 1: __builtin_ia32_scatterdiv8di(a, (unsigned char)-1, b, c, 1); return;
+      case 2: __builtin_ia32_scatterdiv8di(a, (unsigned char)-1, b, c, 2); return;
+      case 4: __builtin_ia32_scatterdiv8di(a, (unsigned char)-1, b, c, 4); return;
+      case 8: __builtin_ia32_scatterdiv8di(a, (unsigned char)-1, b, c, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) *(long long *)((char *)a + (long)b[__i] * d) = c[__i];
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: 'void*', b: v8l, c: v8d, d: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (d) {
+      case 1: __builtin_ia32_scatterdiv8df(a, (unsigned char)-1, b, c, 1); return;
+      case 2: __builtin_ia32_scatterdiv8df(a, (unsigned char)-1, b, c, 2); return;
+      case 4: __builtin_ia32_scatterdiv8df(a, (unsigned char)-1, b, c, 4); return;
+      case 8: __builtin_ia32_scatterdiv8df(a, (unsigned char)-1, b, c, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) *(double *)((char *)a + (long)b[__i] * d) = c[__i];
+
+  - isa: tsl
+    signature: {a: void*, b: v8l, c: v8l, d: imm32}
+    direct: 'tsl::scatter<{simd_c}, {simd_b}, d>((typename {simd_c}::base_type *)a, b, c);'
+  - isa: tsl
+    signature: {a: void*, b: v8l, c: v8d, d: imm32}
+    direct: 'tsl::scatter<{simd_c}, {simd_b}, d>((typename {simd_c}::base_type *)a, b, c);'
+
+---
+# if b[i]: *((char*)a + c[i] * e) = d[i]   (a=base, b=k, c=index i64, d=values, e=scale)
+primitive: SCATTER_I64_MASKED
+input: [a, b, c, d, e]
+output:
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}{32, 64}'
+    direct: '_mm{x86_widths}_mask_i64scatter_{dtype_suffix}(a, b, c, d, e);'
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: 'void*', b: v8b_l, c: v8l, d: v8l, e: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: __builtin_ia32_scatterdiv8di(a, __k, c, d, 1); return;
+      case 2: __builtin_ia32_scatterdiv8di(a, __k, c, d, 2); return;
+      case 4: __builtin_ia32_scatterdiv8di(a, __k, c, d, 4); return;
+      case 8: __builtin_ia32_scatterdiv8di(a, __k, c, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) *(long long *)((char *)a + (long)c[__i] * e) = d[__i];
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: 'void*', b: v8b_d, c: v8l, d: v8d, e: imm32}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: __builtin_ia32_scatterdiv8df(a, __k, c, d, 1); return;
+      case 2: __builtin_ia32_scatterdiv8df(a, __k, c, d, 2); return;
+      case 4: __builtin_ia32_scatterdiv8df(a, __k, c, d, 4); return;
+      case 8: __builtin_ia32_scatterdiv8df(a, __k, c, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) *(double *)((char *)a + (long)c[__i] * e) = d[__i];
+
+  - isa: tsl
+    signature: {a: void*, b: v8b_l, c: v8l, d: v8l, e: imm32}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_c}, e>(b, (typename {simd_d}::base_type *)a, c, d);'
+  - isa: tsl
+    signature: {a: void*, b: v8b_d, c: v8l, d: v8d, e: imm32}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_c}, e>(b, (typename {simd_d}::base_type *)a, c, d);'
+
+---
+# *((char*)a + b[i] * d) = c[i]   (a=base, b=index low 8 i32 of __m512i, c=values, d=scale)
+primitive: SCATTER_I32LO
+input: [a, b, c, d]
+output:
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}{64}'
+    direct: '_mm512_i32loscatter_{dtype_suffix}(a, b, c, d);'
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: 'void*', b: 'v16i', c: 'v8l', d: imm32}
+    direct: |-
+      v8i _idx = __builtin_shufflevector(b, b, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      switch (d) {
+      case 1: __builtin_ia32_scattersiv8di(a, (unsigned char)-1, _idx, c, 1); return;
+      case 2: __builtin_ia32_scattersiv8di(a, (unsigned char)-1, _idx, c, 2); return;
+      case 4: __builtin_ia32_scattersiv8di(a, (unsigned char)-1, _idx, c, 4); return;
+      case 8: __builtin_ia32_scattersiv8di(a, (unsigned char)-1, _idx, c, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) *(long long *)((char *)a + (long)_idx[__i] * d) = c[__i];
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: 'void*', b: 'v16i', c: 'v8d', d: imm32}
+    direct: |-
+      v8i _idx = __builtin_shufflevector(b, b, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      switch (d) {
+      case 1: __builtin_ia32_scattersiv8df(a, (unsigned char)-1, _idx, c, 1); return;
+      case 2: __builtin_ia32_scattersiv8df(a, (unsigned char)-1, _idx, c, 2); return;
+      case 4: __builtin_ia32_scattersiv8df(a, (unsigned char)-1, _idx, c, 4); return;
+      case 8: __builtin_ia32_scattersiv8df(a, (unsigned char)-1, _idx, c, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) *(double *)((char *)a + (long)_idx[__i] * d) = c[__i];
+
+  - isa: tsl
+    signature: {a: void*, b: v16i, c: v8l, d: imm32, idx64: v8l}
+    direct: 'tsl::scatter<{simd_c}, {simd_idx64}, d>((typename {simd_c}::base_type *)a, tsl::convert_up<{simd_b}, {simd_idx64}, 0>(b), c);'
+  - isa: tsl
+    signature: {a: void*, b: v16i, c: v8d, d: imm32, idx64: v8l}
+    direct: 'tsl::scatter<{simd_c}, {simd_idx64}, d>((typename {simd_c}::base_type *)a, tsl::convert_up<{simd_b}, {simd_idx64}, 0>(b), c);'
+
+---
+# if b[i]: *((char*)a + c[i] * e) = d[i]   (a=base, b=k, c=index low 8 i32, d=values, e=scale)
+primitive: SCATTER_I32LO_MASKED
+input: [a, b, c, d, e]
+output:
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}{64}'
+    direct: '_mm512_mask_i32loscatter_{dtype_suffix}(a, b, c, d, e);'
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: 'void*', b: 'v8b_l', c: 'v16i', d: 'v8l', e: imm32}
+    direct: |-
+      v8i _idx = __builtin_shufflevector(c, c, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: __builtin_ia32_scattersiv8di(a, __k, _idx, d, 1); return;
+      case 2: __builtin_ia32_scattersiv8di(a, __k, _idx, d, 2); return;
+      case 4: __builtin_ia32_scattersiv8di(a, __k, _idx, d, 4); return;
+      case 8: __builtin_ia32_scattersiv8di(a, __k, _idx, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) *(long long *)((char *)a + (long)_idx[__i] * e) = d[__i];
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: 'void*', b: 'v8b_d', c: 'v16i', d: 'v8d', e: imm32}
+    direct: |-
+      v8i _idx = __builtin_shufflevector(c, c, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: __builtin_ia32_scattersiv8df(a, __k, _idx, d, 1); return;
+      case 2: __builtin_ia32_scattersiv8df(a, __k, _idx, d, 2); return;
+      case 4: __builtin_ia32_scattersiv8df(a, __k, _idx, d, 4); return;
+      case 8: __builtin_ia32_scattersiv8df(a, __k, _idx, d, 8); return;
+      }
+      #endif
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) *(double *)((char *)a + (long)_idx[__i] * e) = d[__i];
+
+  - isa: tsl
+    signature: {a: void*, b: v8b_l, c: v16i, d: v8l, e: imm32, idx64: v8l}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_idx64}, e>(b, (typename {simd_d}::base_type *)a, tsl::convert_up<{simd_c}, {simd_idx64}, 0>(c), d);'
+  - isa: tsl
+    signature: {a: void*, b: v8b_d, c: v16i, d: v8d, e: imm32, idx64: v8l}
+    direct: 'tsl::scatter_maskz<{simd_d}, {simd_idx64}, e>(b, (typename {simd_d}::base_type *)a, tsl::convert_up<{simd_c}, {simd_idx64}, 0>(c), d);'

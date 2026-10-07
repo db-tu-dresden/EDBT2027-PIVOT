@@ -1,0 +1,744 @@
+- name: _m_from_int64
+  input: {a: __int64}
+  output: {dst: __m64}
+  ir: {input: {a: int64_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_to_int64
+  input: {a: __m64}
+  output: {dst: __int64}
+  ir: {input: {a: blob64}, output: {dst: int64_t}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_from_int
+  input: {a: int}
+  output: {dst: __m64}
+  ir: {input: {a: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_to_int
+  input: {a: __m64}
+  output: {dst: int}
+  ir: {input: {a: blob64}, output: {dst: int32_t}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cvtsi32_si64
+  input: {a: int}
+  output: {dst: __m64}
+  ir: {input: {a: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cvtsi64_si32
+  input: {a: __m64}
+  output: {dst: int}
+  ir: {input: {a: blob64}, output: {dst: int32_t}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cvtm64_si64
+  input: {a: __m64}
+  output: {dst: __int64}
+  ir: {input: {a: blob64}, output: {dst: int64_t}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cvtsi64_m64
+  input: {a: __int64}
+  output: {dst: __m64}
+  ir: {input: {a: int64_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_packsswb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_packssdw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_packuswb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_packs_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_packs_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_packs_pu16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_punpckhbw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_punpckhwd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_punpckhdq
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_punpcklbw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_punpcklwd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_punpckldq
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_unpackhi_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_unpackhi_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_unpackhi_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_unpacklo_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_unpacklo_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_unpacklo_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddsb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddsw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddusb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_paddusw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubsb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubsw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubusb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psubusw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pmaddwd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pmulhw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pmullw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_add_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_add_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_add_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_adds_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_adds_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_adds_pu8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_adds_pu16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sub_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sub_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sub_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_subs_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_subs_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_subs_pu8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_subs_pu16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_madd_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_mulhi_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_mullo_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psllw
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psllwi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pslld
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pslldi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psllq
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psllqi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psraw
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrawi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrad
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psradi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrlw
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrlwi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrld
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrldi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrlq
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_psrlqi
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sll_pi16
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_slli_pi16
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sll_pi32
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_slli_pi32
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sll_si64
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_slli_si64
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sra_pi16
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srai_pi16
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_sra_pi32
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srai_pi32
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srl_pi16
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srli_pi16
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srl_pi32
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srli_pi32
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srl_si64
+  input: {a: __m64, count: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, count: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_srli_si64
+  input: {a: __m64, imm8: int}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, imm8: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pand
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pandn
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_por
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pxor
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_and_si64
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_andnot_si64
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_or_si64
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_xor_si64
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pcmpeqb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pcmpeqw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pcmpeqd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pcmpgtb
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pcmpgtw
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_pcmpgtd
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cmpeq_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cmpeq_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cmpeq_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cmpgt_pi8
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cmpgt_pi16
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_cmpgt_pi32
+  input: {a: __m64, b: __m64}
+  output: {dst: __m64}
+  ir: {input: {a: blob64, b: blob64}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_setzero_si64
+  input: {}
+  output: {dst: __m64}
+  ir: {input: {}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_set_pi32
+  input: {e1: int, e0: int}
+  output: {dst: __m64}
+  ir: {input: {e1: int32_t, e0: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_set_pi16
+  input: {e3: short, e2: short, e1: short, e0: short}
+  output: {dst: __m64}
+  ir: {input: {e3: int16_t, e2: int16_t, e1: int16_t, e0: int16_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_set_pi8
+  input: {e7: char, e6: char, e5: char, e4: char, e3: char, e2: char, e1: char, e0: char}
+  output: {dst: __m64}
+  ir: {input: {e7: int8_t, e6: int8_t, e5: int8_t, e4: int8_t, e3: int8_t, e2: int8_t, e1: int8_t, e0: int8_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_set1_pi32
+  input: {a: int}
+  output: {dst: __m64}
+  ir: {input: {a: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_set1_pi16
+  input: {a: short}
+  output: {dst: __m64}
+  ir: {input: {a: int16_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_set1_pi8
+  input: {a: char}
+  output: {dst: __m64}
+  ir: {input: {a: int8_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_setr_pi32
+  input: {e1: int, e0: int}
+  output: {dst: __m64}
+  ir: {input: {e1: int32_t, e0: int32_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_setr_pi16
+  input: {e3: short, e2: short, e1: short, e0: short}
+  output: {dst: __m64}
+  ir: {input: {e3: int16_t, e2: int16_t, e1: int16_t, e0: int16_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_setr_pi8
+  input: {e7: char, e6: char, e5: char, e4: char, e3: char, e2: char, e1: char, e0: char}
+  output: {dst: __m64}
+  ir: {input: {e7: int8_t, e6: int8_t, e5: int8_t, e4: int8_t, e3: int8_t, e2: int8_t, e1: int8_t, e0: int8_t}, output: {dst: blob64}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _m_empty
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [MMX]
+  include: <mmintrin.h>
+- name: _mm_empty
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [MMX]
+  include: <mmintrin.h>

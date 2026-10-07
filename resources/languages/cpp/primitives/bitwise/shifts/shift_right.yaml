@@ -1,0 +1,159 @@
+# res[i] = data[i] >> imm  (sign-extend)
+primitive: SHRA_IMM
+input: [data, imm]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_srai_{dtype_suffix}(data, imm);'
+
+  - isa: arm
+    dtype: int
+    direct: 'vshr{neon_widths}_n_{dtype_suffix}(data, imm);'
+
+  - isa: arm
+    direct: 'svasr_n_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data, imm);'
+
+  - isa: clang_builtins
+    dtype: int
+    signature: {data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'data >> imm;'
+
+  - isa: tsl
+    dtype: int
+    signature: {data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, true>(data, imm);'
+
+---
+# res[i] = data[i] >> imm  (zero-fill)
+primitive: SHRL_IMM
+input: [data, imm]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_srli_{dtype_suffix}(data, imm);'
+
+  - isa: arm
+    dtype: uint
+    direct: 'vshr{neon_widths}_n_{dtype_suffix}(data, imm);'
+
+  - isa: arm
+    direct: 'svlsr_n_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data, imm);'
+
+  # Runtime scalar count, as in shift_left.yaml.
+  - isa: clang_builtins
+    dtype: int
+    signature: {data: '{v}', imm: int32_t, res: '{v}'}
+    direct: '({v})((unsigned)(imm) < {elem_bits} ? (({vuint})data >> ((imm) & ({elem_bits} - 1))) : ({vuint}){0});'
+
+  - isa: tsl
+    dtype: int
+    signature: {data: '{v}', imm: int32_t, res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, false>(data, imm);'
+
+---
+# res[i] = data[i] >> shift[i]  (sign-extend)
+primitive: SHRA
+input: [data, shift]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_srav_{dtype_suffix}(data, shift);'
+
+  - isa: arm
+    direct: 'svasr_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data, shift);'
+
+  - isa: clang_builtins
+    dtype: 'int'
+    signature: {data: '{v}', shift: '{v}', res: '{v}'}
+    direct: '({v})((({vuint})shift < {elem_bits}) ? (data >> (({vuint})shift & ({elem_bits} - 1))) : (data >> ({elem_bits} - 1)));'
+
+  - isa: tsl
+    dtype: 'int'
+    signature: {data: '{v}', shift: '{v}', res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, true>(data, shift);'
+
+---
+# res[i] = data[i] >> shift[i]  (zero-fill)
+primitive: SHRL
+input: [data, shift]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_srlv_{dtype_suffix}(data, shift);'
+
+  - isa: arm
+    direct: 'svlsr_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data, shift);'
+
+  - isa: clang_builtins
+    dtype: 'int'
+    signature: {data: '{v}', shift: '{v}', res: '{v}'}
+    direct: '({v})((({vuint})shift < {elem_bits}) ? (({vuint})data >> (({vuint})shift & ({elem_bits} - 1))) : ({vuint}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {data: '{v}', shift: '{v}', res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, false>(data, shift);'
+
+---
+# res[i] = data[i] >> count[0]   (uniform logical shift by the low lane of count)
+primitive: SHRL_UNIF
+input: [data, count]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{16, 32, 64}'
+    direct: '_mm{x86_widths}_srl_{dtype_suffix}(data, count);'
+
+  # logical (unsigned) shift; branchless & -(count<width) mask matches x86's
+  # shift>=width -> 0 (a ternary would emit a branch).
+  - isa: clang_builtins
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v4i', res: '{v}'}
+    direct: '({v})((({vuint})data >> ((count[0]) & ({elem_bits} - 1))) & ({s})(-(long long)((unsigned long)(count[0]) < {elem_bits})));'
+
+  - isa: clang_builtins
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v2l', res: '{v}'}
+    direct: '({v})((({vuint})data >> ((count[0]) & ({elem_bits} - 1))) & ({s})(-(long long)((unsigned long)(count[0]) < {elem_bits})));'
+
+  - isa: tsl
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v4i', res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, false>(data, tsl::extract_value_at<{simd_count}>(count, 0));'
+
+  - isa: tsl
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v2l', res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, false>(data, tsl::extract_value_at<{simd_count}>(count, 0));'
+
+---
+# res[i] = data[i] >> count[0]   (uniform arithmetic shift by the low lane of count)
+primitive: SHRA_UNIF
+input: [data, count]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{16, 32, 64}'
+    direct: '_mm{x86_widths}_sra_{dtype_suffix}(data, count);'
+
+  # signed >> is already arithmetic (sign-extending); x86 sra saturates an
+  # out-of-range count to (width-1), i.e. an all-sign fill (not zero).
+  - isa: clang_builtins
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v4i', res: '{v}'}
+    direct: '({v})((unsigned long)(count[0]) < {elem_bits} ? (data >> ((count[0]) & ({elem_bits} - 1))) : (data >> ({elem_bits} - 1)));'
+
+  - isa: clang_builtins
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v2l', res: '{v}'}
+    direct: '({v})((unsigned long)(count[0]) < {elem_bits} ? (data >> ((count[0]) & ({elem_bits} - 1))) : (data >> ({elem_bits} - 1)));'
+
+  - isa: tsl
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v4i', res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, true>(data, tsl::extract_value_at<{simd_count}>(count, 0));'
+
+  - isa: tsl
+    dtype: 'int{16, 32, 64}'
+    signature: {data: '{v}', count: 'v2l', res: '{v}'}
+    direct: 'tsl::shift_right<{simd_res}, true>(data, tsl::extract_value_at<{simd_count}>(count, 0));'

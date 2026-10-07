@@ -1,0 +1,27 @@
+name: cpp
+# Implementations are importable dotted paths.
+frontend: pivot.frontend.cpp_frontend.CppFrontend
+syntax: pivot.lang.syntax.CxxSyntax
+locator: pivot.passes.preprocessing.locators.CppLocator
+extensions: [.c, .cpp, .cc, .cxx, .h, .hpp, .hh, .hxx]
+header_extensions: [.h, .hpp, .hh, .hxx]
+intrinsics_dir: resources/languages/cpp/intrinsics
+primitives_dir: resources/languages/cpp/primitives
+graphs_yaml_dir: resources/languages/cpp/graphs/yaml
+graphs_base_dir: resources/languages/cpp/graphs
+# `source_backends` expand a source-arch family into pattern graphs;
+# `target_backends` emit replacement code.
+source_backends:
+  x86: pivot.isa.source_family_expander.X86_EXPANDER
+  arm: pivot.isa.source_family_expander.ARM_EXPANDER
+target_backends:
+  clang_builtins: pivot.backend.clang_builtins_emitter.ClangBuiltinsEmitter
+  # TSL v2, spelled per run by `tsl_policy` (generic | fixed | clang_fixed) and
+  # `tsl_width_mode` (vla: one compile-time width knob; samewidth: `fixed<N>`).
+  tsl: pivot.backend.cxx_tsl_emitter.CxxTSLEmitter
+passes:
+  - return_normalization
+  - unnesting
+  - argument_normalization
+  - translation
+  - nesting

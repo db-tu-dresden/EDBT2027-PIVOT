@@ -1,0 +1,23 @@
+primitive: CVTTPS_EPI32
+input: [a]   # res := truncate-toward-zero(float a)  ->  int32
+output: res
+definitions:
+
+  # x86 (truncating float -> int32)
+  - isa: x86
+    dtype: int32
+    direct: '_mm256_cvttps_epi32(a);'
+
+  # Clang builtins: __builtin_convertvector truncates float -> int toward zero.
+  - isa: clang_builtins
+    dtype: int32
+    signature: {a: v8f, res: v8i}
+    direct: '__builtin_convertvector(a, v8i);'
+
+  # core_simd — Simd::cast is elementwise `as`: it truncates float to int toward
+  # zero like cvtt, but saturates on overflow (NaN -> 0) where x86 yields INT_MIN.
+  # The result type is inferred from the helper's return type.
+  - isa: core_simd
+    dtype: int32
+    signature: {a: v8f, res: v8i}
+    direct: 'a.cast();'

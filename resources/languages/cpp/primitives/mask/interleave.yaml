@@ -1,0 +1,23 @@
+# res = interleave_lo(a, b): res[2i]=a[i], res[2i+1]=b[i]
+primitive: MASK_INTERLEAVE_LO
+input: [a, b]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svzip1_b{elem_bits}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct:
+      - '{v} _ia = __builtin_convertvector(a, {v});'
+      - '{v} _ib = __builtin_convertvector(b, {v});'
+      - 'int _n = sizeof({v}) / sizeof({s});'
+      - '{v} _r;'
+      - 'for (int _i = 0; _i < _n / 2; _i++) { _r[2 * _i] = _ia[_i]; _r[2 * _i + 1] = _ib[_i]; }'
+      - 'return __builtin_convertvector(_r, {vbool});'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_interleave_lo<{simd_res}>(a, b);'

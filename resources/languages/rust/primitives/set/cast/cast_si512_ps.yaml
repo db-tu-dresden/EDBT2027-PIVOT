@@ -1,0 +1,18 @@
+primitive: CAST_SI512_PS
+input: [a]   # res := reinterpret 512-bit integer register as float32
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    direct: '_mm512_castsi512_ps(a);'
+
+  # Clang
+  - isa: clang_builtins
+    signature: {a: v16i, res: v16f}
+    direct: '(v16f)a;'
+
+  # core_simd — same-size bit reinterpret
+  - isa: core_simd
+    signature: {a: v16i, res: v16f}
+    direct: 'unsafe { core::mem::transmute::<{simd_a}, {simd_res}>(a) };'

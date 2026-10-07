@@ -1,0 +1,50 @@
+# res = a != b
+primitive: NEQ
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_cmpneq_{dtype_suffix}_mask(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_cmp_{dtype_suffix}_mask(a, b, _CMP_NEQ_OQ);'
+
+  - isa: arm
+    direct: 'svcmpne_{dtype_suffix}(svptrue_b{elem_bits}(), a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'a != b;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'tsl::nequal<{simd_a}>(a, b);'
+
+---
+# res = k ? (a != b) : 0
+primitive: NEQ_ZERO
+input: [k, a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_cmpneq_{dtype_suffix}_mask(k, a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm{x86_widths}_mask_cmp_{dtype_suffix}_mask(k, a, b, _CMP_NEQ_OQ);'
+
+  - isa: arm
+    direct: 'svcmpne_{dtype_suffix}(k, a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'k ? (a != b) : false;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{v}', b: '{v}', res: '{vbool}'}
+    direct: 'tsl::nequal_maskz<{simd_a}>(k, a, b);'

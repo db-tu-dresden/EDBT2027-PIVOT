@@ -1,0 +1,24 @@
+- name: _mm_aesdecwide128kl_u8
+  input: {__odata: __m128i*, __idata: const __m128i*, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: ptr, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER_WIDE]
+  include: <immintrin.h>
+- name: _mm_aesdecwide256kl_u8
+  input: {__odata: __m128i*, __idata: const __m128i*, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: ptr, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER_WIDE]
+  include: <immintrin.h>
+- name: _mm_aesencwide128kl_u8
+  input: {__odata: __m128i*, __idata: const __m128i*, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: ptr, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER_WIDE]
+  include: <immintrin.h>
+- name: _mm_aesencwide256kl_u8
+  input: {__odata: __m128i*, __idata: const __m128i*, __h: const void*}
+  output: {dst: unsigned char}
+  ir: {input: {__odata: ptr, __idata: ptr, __h: ptr}, output: {dst: uint8_t}}
+  flags: [KEYLOCKER_WIDE]
+  include: <immintrin.h>

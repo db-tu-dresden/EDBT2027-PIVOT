@@ -1,0 +1,24 @@
+- name: _mm256_sm4key4_epi32
+  input: {__A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [SM4, AVX]
+  include: <immintrin.h>
+- name: _mm256_sm4rnds4_epi32
+  input: {__A: __m256i, __B: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {__A: v8i, __B: v8i}, output: {dst: v8i}}
+  flags: [SM4, AVX]
+  include: <immintrin.h>
+- name: _mm_sm4key4_epi32
+  input: {__A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [SM4, AVX]
+  include: <immintrin.h>
+- name: _mm_sm4rnds4_epi32
+  input: {__A: __m128i, __B: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {__A: v4i, __B: v4i}, output: {dst: v4i}}
+  flags: [SM4, AVX]
+  include: <immintrin.h>

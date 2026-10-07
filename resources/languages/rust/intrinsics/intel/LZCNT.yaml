@@ -1,0 +1,12 @@
+- name: _lzcnt_u32
+  input: {a: unsigned int}
+  output: {dst: unsigned int}
+  ir: {input: {a: uint32_t}, output: {dst: uint32_t}}
+  flags: [LZCNT]
+  include: <immintrin.h>
+- name: _lzcnt_u64
+  input: {a: unsigned __int64}
+  output: {dst: unsigned __int64}
+  ir: {input: {a: uint64_t}, output: {dst: uint64_t}}
+  flags: [LZCNT]
+  include: <immintrin.h>

@@ -1,0 +1,22 @@
+primitive: CVTEPU8_MASK
+input: [src, k, a]   # res[i] := k[i] ? zero_extend(u8 a[i]) : src[i]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: 'int{16, 32, 64}'
+    direct: '_mm{x86_widths}_mask_cvtepu8_{dtype_suffix}(src, k, a);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: int32
+    signature: {src: 'v16i', k: 'v16b_i', a: 'v16uc', res: 'v16i'}
+    direct: 'k ? __builtin_convertvector((v16uc)a, v16i) : src;'
+
+  # core_simd — merge-masked zero-extend widen: k ? zero_extend(a) : src.
+  # The widened value's type is inferred from `src` (and the return type).
+  - isa: core_simd
+    dtype: int32
+    signature: {src: 'v16i', k: 'v16b_i', a: 'v16uc', res: 'v16i'}
+    direct: 'k.select(a.cast(), src);'

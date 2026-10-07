@@ -1,0 +1,108 @@
+- name: _mm256_madd52lo_epu64
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4ul, b: v4ul, c: v4ul}, output: {dst: v4ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_madd52lo_epu64
+  input: {a: __m256i, k: __mmask8, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4ul, k: v8b_ul, b: v4ul, c: v4ul}, output: {dst: v4ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_madd52lo_epu64
+  input: {k: __mmask8, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_ul, a: v4ul, b: v4ul, c: v4ul}, output: {dst: v4ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_madd52lo_epu64
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2ul, b: v2ul, c: v2ul}, output: {dst: v2ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_madd52lo_epu64
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2ul, k: v8b_ul, b: v2ul, c: v2ul}, output: {dst: v2ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_madd52lo_epu64
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_ul, a: v2ul, b: v2ul, c: v2ul}, output: {dst: v2ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_madd52hi_epu64
+  input: {a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4ul, b: v4ul, c: v4ul}, output: {dst: v4ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_mask_madd52hi_epu64
+  input: {a: __m256i, k: __mmask8, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {a: v4ul, k: v8b_ul, b: v4ul, c: v4ul}, output: {dst: v4ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm256_maskz_madd52hi_epu64
+  input: {k: __mmask8, a: __m256i, b: __m256i, c: __m256i}
+  output: {dst: __m256i}
+  ir: {input: {k: v8b_ul, a: v4ul, b: v4ul, c: v4ul}, output: {dst: v4ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_madd52hi_epu64
+  input: {a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2ul, b: v2ul, c: v2ul}, output: {dst: v2ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_mask_madd52hi_epu64
+  input: {a: __m128i, k: __mmask8, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {a: v2ul, k: v8b_ul, b: v2ul, c: v2ul}, output: {dst: v2ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm_maskz_madd52hi_epu64
+  input: {k: __mmask8, a: __m128i, b: __m128i, c: __m128i}
+  output: {dst: __m128i}
+  ir: {input: {k: v8b_ul, a: v2ul, b: v2ul, c: v2ul}, output: {dst: v2ul}}
+  flags: [AVX512IFMA52, AVX512VL]
+  include: <immintrin.h>
+- name: _mm512_madd52lo_epu64
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8ul, b: v8ul, c: v8ul}, output: {dst: v8ul}}
+  flags: [AVX512IFMA52]
+  include: <immintrin.h>
+- name: _mm512_mask_madd52lo_epu64
+  input: {a: __m512i, k: __mmask8, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8ul, k: v8b_ul, b: v8ul, c: v8ul}, output: {dst: v8ul}}
+  flags: [AVX512IFMA52]
+  include: <immintrin.h>
+- name: _mm512_maskz_madd52lo_epu64
+  input: {k: __mmask8, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_ul, a: v8ul, b: v8ul, c: v8ul}, output: {dst: v8ul}}
+  flags: [AVX512IFMA52]
+  include: <immintrin.h>
+- name: _mm512_madd52hi_epu64
+  input: {a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8ul, b: v8ul, c: v8ul}, output: {dst: v8ul}}
+  flags: [AVX512IFMA52]
+  include: <immintrin.h>
+- name: _mm512_mask_madd52hi_epu64
+  input: {a: __m512i, k: __mmask8, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {a: v8ul, k: v8b_ul, b: v8ul, c: v8ul}, output: {dst: v8ul}}
+  flags: [AVX512IFMA52]
+  include: <immintrin.h>
+- name: _mm512_maskz_madd52hi_epu64
+  input: {k: __mmask8, a: __m512i, b: __m512i, c: __m512i}
+  output: {dst: __m512i}
+  ir: {input: {k: v8b_ul, a: v8ul, b: v8ul, c: v8ul}, output: {dst: v8ul}}
+  flags: [AVX512IFMA52]
+  include: <immintrin.h>

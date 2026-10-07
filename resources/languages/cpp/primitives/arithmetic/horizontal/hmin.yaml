@@ -1,0 +1,40 @@
+# res = min(vec[*])
+primitive: HMIN
+input: [vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_reduce_min_{dtype_suffix}(vec);'
+
+  - isa: arm
+    direct: 'vminv{neon_widths}_{dtype_suffix}(vec);'
+
+  - isa: arm
+    direct: 'svminv_{dtype_suffix}(svptrue_b{elem_bits}(), vec);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: '__builtin_reduce_min(vec);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: 'tsl::hmin<{simd_vec}>(vec);'
+
+---
+# res = min(vec[i] for active k[i])
+primitive: HMIN_MASKED
+input: [k, vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_reduce_min_{dtype_suffix}(k, vec);'
+
+  - isa: arm
+    direct: 'svminv_{dtype_suffix}(k, vec);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', vec: '{v}', res: '{s}'}
+    direct: 'tsl::hmin_mask<{simd_vec}>(k, vec);'

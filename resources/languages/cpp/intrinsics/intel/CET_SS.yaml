@@ -1,0 +1,86 @@
+- name: _incsspd
+  input: {a: int}
+  output: {}
+  ir: {input: {a: int32_t}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _incsspq
+  input: {a: int}
+  output: {}
+  ir: {input: {a: int32_t}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _rdsspd_i32
+  input: {}
+  output: {dst: __int32}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _rdsspq_i64
+  input: {}
+  output: {dst: __int64}
+  ir: {input: {}, output: {dst: int64_t}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _get_ssp
+  input: {}
+  output: {dst: __int32}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _get_ssp
+  input: {}
+  output: {dst: __int64}
+  ir: {input: {}, output: {dst: int64_t}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _inc_ssp
+  input: {a: unsigned int}
+  output: {}
+  ir: {input: {a: uint32_t}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _clrssbsy
+  input: {p: void *}
+  output: {}
+  ir: {input: {p: ptr}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _rstorssp
+  input: {p: void *}
+  output: {}
+  ir: {input: {p: ptr}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _saveprevssp
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _setssbsy
+  input: {}
+  output: {}
+  ir: {input: {}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _wrssd
+  input: {val: __int32, p: void *}
+  output: {}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _wrssq
+  input: {val: __int64, p: void *}
+  output: {}
+  ir: {input: {val: int64_t, p: ptr}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _wrussd
+  input: {val: __int32, p: void *}
+  output: {}
+  flags: [CET_SS]
+  include: <immintrin.h>
+- name: _wrussq
+  input: {val: __int64, p: void *}
+  output: {}
+  ir: {input: {val: int64_t, p: ptr}, output: {}}
+  flags: [CET_SS]
+  include: <immintrin.h>

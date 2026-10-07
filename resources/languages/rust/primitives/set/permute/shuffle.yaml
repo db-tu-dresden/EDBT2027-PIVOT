@@ -1,0 +1,43 @@
+primitive: SHUFFLE
+input: [a, imm8]   # a = source register, imm8 = 4 x 2-bit index fields (after _MM_SHUFFLE fold)
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    direct: '_mm_shuffle_epi32(a, imm8);'
+
+  - isa: x86
+    direct: '_mm256_permute4x64_epi64(a, imm8);'
+
+  # Clang — 32-bit granularity: reinterpret as v4i, shuffle, cast back.
+  # Works for any element type stored in a 128-bit register because
+  # _mm_shuffle_epi32 always operates at 32-bit granularity.
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}{128}', imm8: imm32, res: '{v}{128}'}
+    direct: '({v})((v4i){((v4i)a)[imm8 & 3], ((v4i)a)[(imm8>>2) & 3], ((v4i)a)[(imm8>>4) & 3], ((v4i)a)[(imm8>>6) & 3]});'
+
+  # Clang — 64-bit granularity: reinterpret as v4l, permute, cast back.
+  # Works for any element type stored in a 256-bit register because
+  # _mm256_permute4x64_epi64 always operates at 64-bit granularity.
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}{256}', imm8: imm32, res: '{v}{256}'}
+    direct: '({v})((v4l){((v4l)a)[imm8 & 3], ((v4l)a)[(imm8>>2) & 3], ((v4l)a)[(imm8>>4) & 3], ((v4l)a)[(imm8>>6) & 3]});'
+
+  # core_simd — 32-bit granularity (mirrors the x86 form): view the
+  # register as 4 lanes of that width, permute them by imm8's 2-bit selectors
+  # (the same (imm >> 2p) & 3 encoding), view it back.
+  - isa: core_simd
+    dtype: '{int, uint}'
+    signature: {a: '{v}{128}', imm8: imm32, res: '{v}{128}'}
+    direct: 'unsafe { core::mem::transmute::<Simd<i32, 4>, {simd_res}>({ let t = core::mem::transmute::<{simd_a}, Simd<i32, 4>>(a); Simd::from_array([t[(imm8 & 3) as usize], t[((imm8 >> 2) & 3) as usize], t[((imm8 >> 4) & 3) as usize], t[((imm8 >> 6) & 3) as usize]]) }) };'
+
+  # core_simd — 64-bit granularity (mirrors the x86 form): view the
+  # register as 4 lanes of that width, permute them by imm8's 2-bit selectors
+  # (the same (imm >> 2p) & 3 encoding), view it back.
+  - isa: core_simd
+    dtype: '{int, uint}'
+    signature: {a: '{v}{256}', imm8: imm32, res: '{v}{256}'}
+    direct: 'unsafe { core::mem::transmute::<Simd<i64, 4>, {simd_res}>({ let t = core::mem::transmute::<{simd_a}, Simd<i64, 4>>(a); Simd::from_array([t[(imm8 & 3) as usize], t[((imm8 >> 2) & 3) as usize], t[((imm8 >> 4) & 3) as usize], t[((imm8 >> 6) & 3) as usize]]) }) };'

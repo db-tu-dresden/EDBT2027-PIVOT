@@ -1,0 +1,42 @@
+# res = vec[0] | vec[1] | ...
+primitive: HOR
+input: [vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_reduce_or_{dtype_suffix}(vec);'
+
+  - isa: arm
+    direct: 'svorv_{dtype_suffix}(svptrue_b{elem_bits}(), vec);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: '__builtin_reduce_or(vec);'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {vec: '{v}', res: '{s}'}
+    direct: 'tsl::hor<{simd_vec}>(vec);'
+
+---
+# res = vec[i0] | vec[i1] | ... for active k[i]
+primitive: HOR_MASKED
+input: [k, vec]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_mask_reduce_or_{dtype_suffix}(k, vec);'
+
+  - isa: arm
+    direct: 'svorv_{dtype_suffix}(k, vec);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', vec: '{v}', res: '{s}'}
+    direct: '__builtin_reduce_or(k ? vec : ({v}){0});'
+
+  - isa: tsl
+    dtype: '{int, uint}'
+    signature: {k: '{vbool}', vec: '{v}', res: '{s}'}
+    direct: 'tsl::hor_mask<{simd_vec}>(k, vec);'

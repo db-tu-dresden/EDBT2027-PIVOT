@@ -1,0 +1,58 @@
+# res = -a
+primitive: NEG
+input: [a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'vneg{neon_widths}_{dtype_suffix}(a);'
+
+  - isa: arm
+    direct: 'svneg_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), a);'
+
+  - isa: clang_builtins
+    dtype: '{int, float}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: '-a;'
+
+  - isa: tsl
+    dtype: '{int, float}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: 'tsl::neg<{simd_res}>(a);'
+
+---
+# res = k ? -a : src
+primitive: NEG_MERGE
+input: [src, k, a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svneg_{dtype_suffix}_m(src, k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', res: '{v}'}
+    direct: 'k ? -a : src;'
+
+  - isa: tsl
+    dtype: '{int, float}'
+    signature: {src: '{v}', k: '{vbool}', a: '{v}', res: '{v}'}
+    direct: 'tsl::select<{simd_res}>(k, tsl::neg<{simd_res}>(a), src);'
+
+---
+# res = k ? -a : 0
+primitive: NEG_ZERO
+input: [k, a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svneg_{dtype_suffix}_z(k, a);'
+
+  - isa: clang_builtins
+    dtype: '{int, float}'
+    signature: {k: '{vbool}', a: '{v}', res: '{v}'}
+    direct: 'k ? -a : ({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, float}'
+    signature: {k: '{vbool}', a: '{v}', res: '{v}'}
+    direct: 'tsl::mov_maskz<{simd_res}>(k, tsl::neg<{simd_res}>(a));'

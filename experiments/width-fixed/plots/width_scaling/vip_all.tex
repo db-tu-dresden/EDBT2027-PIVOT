@@ -1,0 +1,108 @@
+% pivot's speedup over each baseline, per host (rows) and vector width (columns), drawn from
+% the tables that plot_relative.py writes to data/: one per panel and baseline (absent where
+% the baseline does not exist; bar, slowest and fastest kernel), the whiskers it cut at the
+% cap, the drivers, and the range of all bars and whiskers.
+\documentclass[9pt]{amsart}
+\usepackage{pivotfig}
+
+\pgfplotstableread[col sep=comma]{data/drivers.csv}\wsDrivers
+\pgfplotstableread[col sep=comma]{data/range.csv}\wsRange
+% One y range for all panels, a little beyond the extremes.
+\pgfplotstablegetelem{0}{min}\of\wsRange \pgfmathsetmacro{\wsYmin}{\pgfplotsretval/1.25}
+\pgfplotstablegetelem{0}{max}\of\wsRange \pgfmathsetmacro{\wsYmax}{\pgfplotsretval*1.25}
+\pgfplotstablegetelem{0}{zmin}\of\wsRange \let\wsZmin\pgfplotsretval
+\pgfplotstablegetelem{0}{zmax}\of\wsRange \let\wsZmax\pgfplotsretval
+
+% Every driver gets the same slot width, and every panel the same height.
+\pgfmathsetlengthmacro{\wsSlot}{12.19pt}
+\pgfmathsetlengthmacro{\wsHeight}{31.5pt}
+\pgfmathsetlengthmacro{\wsBar}{0.4*\wsSlot}
+\pgfmathsetlengthmacro{\wsGap}{0.2pt}
+\pgfplotsset{
+  ws panel/.style={
+    log origin=0, clip=false, scale only axis, x=\wsSlot, enlarge x limits={abs=0.6},
+    ymin=\wsYmin, ymax=\wsYmax, height=\wsHeight,
+    axis lines*=left, axis line style={gray1, line width=0.4pt},
+    xtick=data, xtick align=outside, xticklabels={}, major tick length=2pt,
+    ytick={0.5,1,2,4,8}, yticklabels={},
+    tick style={gray1, line width=0.4pt}, ymajorgrids,
+    major grid style={gray1!25, line width=0.2pt},
+    ticklabel style={font=\footnotesize, text=gray1},
+    ybar=\wsGap, bar width=\wsBar,
+  },
+  ws left/.style={yticklabel={\pgfmathparse{exp(\tick)}\pgfmathprintnumber[fixed]{\pgfmathresult}},
+    ylabel={speedup}, ylabel style={font=\footnotesize, text=gray1}},
+  % Against native every bar sits at 1, so those panels zoom in on it.
+  ws zoom/.style={ymin=\wsZmin, ymax=\wsZmax, ytick={0.9,0.95,1,1.05,1.1},
+    yticklabels={0.9,,1,,1.1}},
+  ws bottom/.style={xticklabels from table={\wsDrivers}{driver},
+    xticklabel style={rotate=40, anchor=north east, inner sep=1pt, font=\scriptsize}},
+}
+\tikzset{
+  ws native/.style={draw=blue1, fill=blue2, line width=0.4pt},
+  ws simde/.style={draw=teal1, fill=teal2, line width=0.4pt},
+  ws simde-portable/.style={draw=magenta1, fill=magenta2, line width=0.4pt},
+  ws whisker/.style={gray1, line width=0.4pt},
+}
+% Draws the bars against one baseline, if it exists in this panel, with whiskers from the
+% slowest to the fastest kernel; a whisker cut at the cap carries its value.
+\newcommand{\wsBars}[3]{%
+  \IfFileExists{data/#1-#2-#3.csv}{%
+    \addplot[ws #3, error bars/.cd, y dir=both, y explicit, error bar style={ws whisker},
+        error mark options={ws whisker, rotate=90, mark size=0.9pt}]
+      table[col sep=comma, x expr=\coordindex, y=speedup,
+        y error plus expr=\thisrow{hi}-\thisrow{speedup},
+        y error minus expr=\thisrow{speedup}-\thisrow{lo}] {data/#1-#2-#3.csv};}{}%
+  \IfFileExists{data/clip-#1-#2-#3.csv}{%
+    \addplot[only marks, mark=none, nodes near coords, point meta=explicit symbolic,
+        every node near coord/.style={font=\tiny, text=gray1, rotate=90, anchor=west, inner sep=1pt}]
+      table[col sep=comma, x expr={\thisrow{x}+\thisrow{k}*(\wsBar+\wsGap)/\wsSlot}, y=y, meta=max]
+        {data/clip-#1-#2-#3.csv};}{}}
+% Draws one panel: the bars against every baseline, the line at 1, and the title.
+\newcommand{\wsPanel}[3]{%
+  \wsBars{#1}{#2}{native}
+  \wsBars{#1}{#2}{simde}
+  \wsBars{#1}{#2}{simde-portable}
+  \draw[gray1, line width=0.4pt] ({rel axis cs:0,0}|-{axis cs:0,1}) -- ({rel axis cs:1,0}|-{axis cs:0,1});
+  \node[font=\scriptsize, text=gray1, anchor=base, inner sep=0pt] at ([yshift=4pt]rel axis cs:0.5,1) {#3};
+}
+% One row: a host at the three widths, under the host's name, each panel titled by its ISA.
+\newcommand{\wsRow}[8]{% arch, name, ISA at 128/256/512, options of the first panel, of the
+  % others, and of the last
+  \begin{axis}[ymode=log, ws panel, ws left, name=#1-128, #6]
+    \wsPanel{#1}{128}{#3}
+  \end{axis}
+  \begin{axis}[ymode=log, ws panel, name=#1-256, at={($(#1-128.north east)+(4pt,0)$)},
+      anchor=north west, #7]
+    \wsPanel{#1}{256}{#4}
+  \end{axis}
+  \begin{axis}[ymode=log, ws panel, name=#1-512, at={($(#1-256.north east)+(4pt,0)$)},
+      anchor=north west, #7, #8]
+    \wsPanel{#1}{512}{#5}
+  \end{axis}
+  \node[font=\footnotesize, text=gray1, anchor=base, inner sep=0pt]
+    at ([yshift=13pt]$(#1-128.north west)!0.5!(#1-512.north east)$) {#2};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\wsRow{sapphirerapids}{Intel Sapphire Rapids}{SSE}{AVX2}{AVX-512}{}{}
+  {ws zoom, at={($(sapphirerapids-256.north east)+(20pt,0)$)}}
+\wsRow{znver4}{AMD Zen 4}{SSE}{AVX2}{AVX-512}
+  {at={($(sapphirerapids-128.south west)+(0,-22pt)$)}, anchor=north west}{}
+  {ws zoom, at={($(znver4-256.north east)+(20pt,0)$)}}
+\wsRow{a64fx}{Fujitsu A64FX}{SVE (128 bit)}{SVE (256 bit)}{SVE (512 bit)}
+  {at={($(znver4-128.south west)+(0,-22pt)$)}, anchor=north west, ws bottom}{ws bottom}
+  {at={($(a64fx-256.north east)+(20pt,0)$)}}
+\coordinate (legend) at ($(a64fx-128.south west)!0.5!(a64fx-512.south east)$);
+\matrix[anchor=north, yshift=-6pt, column sep=3pt,
+    nodes={font=\footnotesize, text=gray1, inner sep=0pt, anchor=base west}]
+    at (legend |- current bounding box.south) {
+  \draw[ws native] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {vs native}; &[8pt]
+  \draw[ws simde] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {vs SIMDe}; &[8pt]
+  \draw[ws simde-portable] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {vs SIMDe portable}; &[14pt]
+  \draw[ws whisker] (1pt,-0.6pt) -- (4pt,-0.6pt) (2.5pt,-0.6pt) -- (2.5pt,6.4pt) (1pt,6.4pt) -- (4pt,6.4pt); &
+  \node {slowest to fastest kernel (count in brackets)}; \\
+};
+\end{tikzpicture}
+\end{document}

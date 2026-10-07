@@ -1,0 +1,23 @@
+# res = {0, 0, ...}
+primitive: SET_ZERO
+input: []
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_setzero_{dtype_suffix}();'
+
+  - isa: arm
+    direct: 'vdup{neon_widths}_n_{dtype_suffix}(0);'
+
+  - isa: arm
+    direct: 'svdup_n_{dtype_suffix}(0);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {res: '{v}'}
+    direct: '({v}){0};'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {res: '{v}'}
+    direct: 'tsl::set_zero<{simd_res}>();'

@@ -1,0 +1,266 @@
+# res = a in the low lanes, upper lanes zeroed  (widen register)
+primitive: RESIZE_UP
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm512_castsi128_si512(a);'
+  - isa: x86
+    direct: '_mm512_castsi256_si512(a);'
+
+  - isa: clang_builtins
+    signature: {a: v16c, res: v64c}
+    direct: '__builtin_shufflevector(a, (v16c){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);'
+  - isa: clang_builtins
+    signature: {a: v16uc, res: v64uc}
+    direct: '__builtin_shufflevector(a, (v16uc){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);'
+  - isa: clang_builtins
+    signature: {a: v8s, res: v32s}
+    direct: '__builtin_shufflevector(a, (v8s){0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7, 8,9,10,11,12,13,14,15, 8,9,10,11,12,13,14,15, 8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v8us, res: v32us}
+    direct: '__builtin_shufflevector(a, (v8us){0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7, 8,9,10,11,12,13,14,15, 8,9,10,11,12,13,14,15, 8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v4i, res: v16i}
+    direct: '__builtin_shufflevector(a, (v4i){0,0,0,0}, 0,1,2,3, 4,5,6,7, 4,5,6,7, 4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v4ui, res: v16ui}
+    direct: '__builtin_shufflevector(a, (v4ui){0,0,0,0}, 0,1,2,3, 4,5,6,7, 4,5,6,7, 4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v2l, res: v8l}
+    direct: '__builtin_shufflevector(a, (v2l){0,0}, 0,1, 2,3, 2,3, 2,3);'
+  - isa: clang_builtins
+    signature: {a: v2ul, res: v8ul}
+    direct: '__builtin_shufflevector(a, (v2ul){0,0}, 0,1, 2,3, 2,3, 2,3);'
+  - isa: clang_builtins
+    signature: {a: v32c, res: v64c}
+    direct: '__builtin_shufflevector(a, (v32c){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31, 32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63);'
+  - isa: clang_builtins
+    signature: {a: v32uc, res: v64uc}
+    direct: '__builtin_shufflevector(a, (v32uc){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31, 32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63);'
+  - isa: clang_builtins
+    signature: {a: v16s, res: v32s}
+    direct: '__builtin_shufflevector(a, (v16s){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);'
+  - isa: clang_builtins
+    signature: {a: v16us, res: v32us}
+    direct: '__builtin_shufflevector(a, (v16us){0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);'
+  - isa: clang_builtins
+    signature: {a: v8i, res: v16i}
+    direct: '__builtin_shufflevector(a, (v8i){0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7, 8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v8ui, res: v16ui}
+    direct: '__builtin_shufflevector(a, (v8ui){0,0,0,0,0,0,0,0}, 0,1,2,3,4,5,6,7, 8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v4l, res: v8l}
+    direct: '__builtin_shufflevector(a, (v4l){0,0,0,0}, 0,1,2,3, 4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v4ul, res: v8ul}
+    direct: '__builtin_shufflevector(a, (v4ul){0,0,0,0}, 0,1,2,3, 4,5,6,7);'
+
+  - isa: tsl
+    signature: {a: v16c, res: v64c}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16uc, res: v64uc}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8s, res: v32s}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8us, res: v32us}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4i, res: v16i}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4ui, res: v16ui}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v2l, res: v8l}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v2ul, res: v8ul}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32c, res: v64c}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32uc, res: v64uc}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16s, res: v32s}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16us, res: v32us}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8i, res: v16i}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8ui, res: v16ui}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4l, res: v8l}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4ul, res: v8ul}
+    direct: 'tsl::resize_up_undef<{simd_a}, {simd_res}>(a);'
+
+---
+# res = low lanes of a  (narrow register)
+primitive: RESIZE_DOWN
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm256_castsi256_si128(a);'
+  - isa: x86
+    direct: '_mm512_castsi512_si128(a);'
+  - isa: x86
+    direct: '_mm512_castsi512_si256(a);'
+
+  - isa: clang_builtins
+    signature: {a: v32c, res: v16c}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v32uc, res: v16uc}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v16s, res: v8s}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v16us, res: v8us}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v8i, res: v4i}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v8ui, res: v4ui}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v4l, res: v2l}
+    direct: '__builtin_shufflevector(a, a, 0,1);'
+  - isa: clang_builtins
+    signature: {a: v4ul, res: v2ul}
+    direct: '__builtin_shufflevector(a, a, 0,1);'
+  - isa: clang_builtins
+    signature: {a: v64c, res: v16c}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v64uc, res: v16uc}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v32s, res: v8s}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v32us, res: v8us}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v16i, res: v4i}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v16ui, res: v4ui}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v8l, res: v2l}
+    direct: '__builtin_shufflevector(a, a, 0,1);'
+  - isa: clang_builtins
+    signature: {a: v8ul, res: v2ul}
+    direct: '__builtin_shufflevector(a, a, 0,1);'
+  - isa: clang_builtins
+    signature: {a: v64c, res: v32c}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);'
+  - isa: clang_builtins
+    signature: {a: v64uc, res: v32uc}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);'
+  - isa: clang_builtins
+    signature: {a: v32s, res: v16s}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v32us, res: v16us}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);'
+  - isa: clang_builtins
+    signature: {a: v16i, res: v8i}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v16ui, res: v8ui}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3,4,5,6,7);'
+  - isa: clang_builtins
+    signature: {a: v8l, res: v4l}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3);'
+  - isa: clang_builtins
+    signature: {a: v8ul, res: v4ul}
+    direct: '__builtin_shufflevector(a, a, 0,1,2,3);'
+
+  - isa: tsl
+    signature: {a: v32c, res: v16c}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32uc, res: v16uc}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16s, res: v8s}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16us, res: v8us}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8i, res: v4i}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8ui, res: v4ui}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4l, res: v2l}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v4ul, res: v2ul}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v64c, res: v16c}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v64uc, res: v16uc}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32s, res: v8s}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32us, res: v8us}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16i, res: v4i}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16ui, res: v4ui}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8l, res: v2l}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8ul, res: v2ul}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v64c, res: v32c}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v64uc, res: v32uc}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32s, res: v16s}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v32us, res: v16us}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16i, res: v8i}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v16ui, res: v8ui}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8l, res: v4l}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'
+  - isa: tsl
+    signature: {a: v8ul, res: v4ul}
+    direct: 'tsl::resize_down<{simd_a}, {simd_res}>(a);'

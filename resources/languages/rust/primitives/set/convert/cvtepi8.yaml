@@ -1,0 +1,48 @@
+primitive: CVTEPI8
+input: [a]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: 'int{16, 32, 64}'
+    direct: '_mm{x86_widths}_cvtepi8_{dtype_suffix}(a);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: 'int16'
+    signature: {a: 'v32c', res: 'v32s'}
+    direct: '__builtin_convertvector((v32c)a, v32s);'
+
+  - isa: clang_builtins
+    dtype: 'int32'
+    signature: {a: 'v16c', res: 'v16i'}
+    direct: '__builtin_convertvector((v16c)a, v16i);'
+
+  - isa: clang_builtins
+    dtype: 'int64'
+    signature: {a: 'v16c', res: 'v8l'}
+    direct: '__builtin_convertvector(__builtin_shufflevector((v16c)a,(v16c)a,0,1,2,3,4,5,6,7), v8l);'
+
+  # core_simd — Simd::cast is elementwise `as`: it sign-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  - isa: core_simd
+    dtype: 'int16'
+    signature: {a: 'v32c', res: 'v32s'}
+    direct: 'a.cast();'
+
+  # core_simd — Simd::cast is elementwise `as`: it sign-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  - isa: core_simd
+    dtype: 'int32'
+    signature: {a: 'v16c', res: 'v16i'}
+    direct: 'a.cast();'
+
+  # core_simd — Simd::cast is elementwise `as`: it sign-extends the source element.  The
+  # result type is inferred from the helper's return type.
+  # `resize` first takes the leading 8 lanes — the result register holds
+  # fewer, wider lanes than the source.
+  - isa: core_simd
+    dtype: 'int64'
+    signature: {a: 'v16c', res: 'v8l'}
+    direct: 'a.resize::<8>(0).cast();'

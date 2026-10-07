@@ -1,0 +1,424 @@
+# res[i] = *(base_ptr + index[i] * scale)
+primitive: GATHER
+input: [base_ptr, index, scale]
+output: res
+definitions:
+  - isa: x86
+    dtype: '{int, float}32'
+    direct: '_mm_i32gather_{dtype_suffix}(base_ptr, index, scale);'
+  - isa: x86
+    dtype: '{int, float}32'
+    direct: '_mm256_i32gather_{dtype_suffix}(base_ptr, index, scale);'
+  - isa: x86
+    dtype: '{int, float}32'
+    direct: '_mm512_i32gather_{dtype_suffix}(index, base_ptr, scale);'
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm_i32gather_{dtype_suffix}(base_ptr, index, scale);'
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm256_i32gather_{dtype_suffix}(base_ptr, index, scale);'
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm512_i32gather_{dtype_suffix}(index, base_ptr, scale);'
+
+  - isa: clang_builtins
+    dtype: int32
+    signature: {base_ptr: 'const void*', index: v16i, scale: imm32, res: v16i}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: return (v16i)__builtin_ia32_gathersiv16si((v16i){0}, base_ptr, index, (unsigned short)-1, 1);
+      case 2: return (v16i)__builtin_ia32_gathersiv16si((v16i){0}, base_ptr, index, (unsigned short)-1, 2);
+      case 4: return (v16i)__builtin_ia32_gathersiv16si((v16i){0}, base_ptr, index, (unsigned short)-1, 4);
+      case 8: return (v16i)__builtin_ia32_gathersiv16si((v16i){0}, base_ptr, index, (unsigned short)-1, 8);
+      }
+      #endif
+      v16i __r = (v16i){0};
+      for (int __i = 0; __i < 16; __i++) __r[__i] = *(const int *)((const char *)base_ptr + (long)index[__i] * scale);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: float32
+    signature: {base_ptr: 'const void*', index: v16i, scale: imm32, res: v16f}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: return (v16f)__builtin_ia32_gathersiv16sf((v16f){0}, base_ptr, index, (unsigned short)-1, 1);
+      case 2: return (v16f)__builtin_ia32_gathersiv16sf((v16f){0}, base_ptr, index, (unsigned short)-1, 2);
+      case 4: return (v16f)__builtin_ia32_gathersiv16sf((v16f){0}, base_ptr, index, (unsigned short)-1, 4);
+      case 8: return (v16f)__builtin_ia32_gathersiv16sf((v16f){0}, base_ptr, index, (unsigned short)-1, 8);
+      }
+      #endif
+      v16f __r = (v16f){0};
+      for (int __i = 0; __i < 16; __i++) __r[__i] = *(const float *)((const char *)base_ptr + (long)index[__i] * scale);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {base_ptr: 'const void*', index: v8i, scale: imm32, res: v8l}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, base_ptr, index, (unsigned char)-1, 1);
+      case 2: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, base_ptr, index, (unsigned char)-1, 2);
+      case 4: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, base_ptr, index, (unsigned char)-1, 4);
+      case 8: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, base_ptr, index, (unsigned char)-1, 8);
+      }
+      #endif
+      v8l __r = (v8l){0};
+      for (int __i = 0; __i < 8; __i++) __r[__i] = *(const long long *)((const char *)base_ptr + (long)index[__i] * scale);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {base_ptr: 'const void*', index: v8i, scale: imm32, res: v8d}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (scale) {
+      case 1: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, base_ptr, index, (unsigned char)-1, 1);
+      case 2: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, base_ptr, index, (unsigned char)-1, 2);
+      case 4: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, base_ptr, index, (unsigned char)-1, 4);
+      case 8: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, base_ptr, index, (unsigned char)-1, 8);
+      }
+      #endif
+      v8d __r = (v8d){0};
+      for (int __i = 0; __i < 8; __i++) __r[__i] = *(const double *)((const char *)base_ptr + (long)index[__i] * scale);
+      return __r;
+
+  - isa: tsl
+    signature: {base_ptr: const void*, index: v16i, scale: imm32, res: v16i}
+    direct: 'tsl::gather<{simd_res}, {simd_index}, scale>((typename {simd_res}::base_type const *)base_ptr, index);'
+  - isa: tsl
+    signature: {base_ptr: const void*, index: v16i, scale: imm32, res: v16f}
+    direct: 'tsl::gather<{simd_res}, {simd_index}, scale>((typename {simd_res}::base_type const *)base_ptr, index);'
+  - isa: tsl
+    signature: {base_ptr: const void*, index: v8i, scale: imm32, res: v8l}
+    direct: 'tsl::gather<{simd_res}, {simd_index}, scale>((typename {simd_res}::base_type const *)base_ptr, index);'
+  - isa: tsl
+    signature: {base_ptr: const void*, index: v8i, scale: imm32, res: v8d}
+    direct: 'tsl::gather<{simd_res}, {simd_index}, scale>((typename {simd_res}::base_type const *)base_ptr, index);'
+
+---
+# res[i] = b[i] ? *((char*)d + c[i] * e) : a[i]   (a=src, b=k, c=index i32, d=base, e=scale)
+primitive: GATHER_MERGE
+input: [a, b, c, d, e]
+output: res
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}32'
+    direct: '_mm{x86_widths}_mask_i32gather_{dtype_suffix}(a, b, c, d, e);'
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm{x86_widths}_mask_i32gather_{dtype_suffix}(a, b, c, d, e);'
+
+  - isa: clang_builtins
+    dtype: int32
+    signature: {a: v16i, b: v16b_i, c: v16i, d: 'const void*', e: imm32, res: v16i}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned short __k = __builtin_bit_cast(unsigned short, b);
+      switch (e) {
+      case 1: return (v16i)__builtin_ia32_gathersiv16si(a, d, c, __k, 1);
+      case 2: return (v16i)__builtin_ia32_gathersiv16si(a, d, c, __k, 2);
+      case 4: return (v16i)__builtin_ia32_gathersiv16si(a, d, c, __k, 4);
+      case 8: return (v16i)__builtin_ia32_gathersiv16si(a, d, c, __k, 8);
+      }
+      #endif
+      v16i __r = a;
+      for (int __i = 0; __i < 16; __i++) if (b[__i]) __r[__i] = *(const int *)((const char *)d + (long)c[__i] * e);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: float32
+    signature: {a: v16f, b: v16b_f, c: v16i, d: 'const void*', e: imm32, res: v16f}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned short __k = __builtin_bit_cast(unsigned short, b);
+      switch (e) {
+      case 1: return (v16f)__builtin_ia32_gathersiv16sf(a, d, c, __k, 1);
+      case 2: return (v16f)__builtin_ia32_gathersiv16sf(a, d, c, __k, 2);
+      case 4: return (v16f)__builtin_ia32_gathersiv16sf(a, d, c, __k, 4);
+      case 8: return (v16f)__builtin_ia32_gathersiv16sf(a, d, c, __k, 8);
+      }
+      #endif
+      v16f __r = a;
+      for (int __i = 0; __i < 16; __i++) if (b[__i]) __r[__i] = *(const float *)((const char *)d + (long)c[__i] * e);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: v8l, b: v8b_l, c: v8i, d: 'const void*', e: imm32, res: v8l}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: return (v8l)__builtin_ia32_gathersiv8di(a, d, c, __k, 1);
+      case 2: return (v8l)__builtin_ia32_gathersiv8di(a, d, c, __k, 2);
+      case 4: return (v8l)__builtin_ia32_gathersiv8di(a, d, c, __k, 4);
+      case 8: return (v8l)__builtin_ia32_gathersiv8di(a, d, c, __k, 8);
+      }
+      #endif
+      v8l __r = a;
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) __r[__i] = *(const long long *)((const char *)d + (long)c[__i] * e);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: v8d, b: v8b_d, c: v8i, d: 'const void*', e: imm32, res: v8d}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: return (v8d)__builtin_ia32_gathersiv8df(a, d, c, __k, 1);
+      case 2: return (v8d)__builtin_ia32_gathersiv8df(a, d, c, __k, 2);
+      case 4: return (v8d)__builtin_ia32_gathersiv8df(a, d, c, __k, 4);
+      case 8: return (v8d)__builtin_ia32_gathersiv8df(a, d, c, __k, 8);
+      }
+      #endif
+      v8d __r = a;
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) __r[__i] = *(const double *)((const char *)d + (long)c[__i] * e);
+      return __r;
+
+  - isa: tsl
+    signature: {a: v16i, b: v16b_i, c: v16i, d: const void*, e: imm32, res: v16i}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_c}, e>(b, (typename {simd_res}::base_type const *)d, c, a);'
+  - isa: tsl
+    signature: {a: v16f, b: v16b_f, c: v16i, d: const void*, e: imm32, res: v16f}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_c}, e>(b, (typename {simd_res}::base_type const *)d, c, a);'
+  - isa: tsl
+    signature: {a: v8l, b: v8b_l, c: v8i, d: const void*, e: imm32, res: v8l}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_c}, e>(b, (typename {simd_res}::base_type const *)d, c, a);'
+  - isa: tsl
+    signature: {a: v8d, b: v8b_d, c: v8i, d: const void*, e: imm32, res: v8d}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_c}, e>(b, (typename {simd_res}::base_type const *)d, c, a);'
+
+---
+# res[i] = *((char*)b + a[i] * c)   (a=index i64, b=base, c=scale)
+primitive: GATHER_I64
+input: [a, b, c]
+output: res
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}64'
+    signature: {a: '{v}{128}', b: 'const void*', c: imm32, res: '{v}{128}'}
+    direct: '_mm_i64gather_{dtype_suffix}(b, a, c);'
+  - isa: x86
+    dtype: '{int, float}64'
+    signature: {a: '{v}{256}', b: 'const void*', c: imm32, res: '{v}{256}'}
+    direct: '_mm256_i64gather_{dtype_suffix}(b, a, c);'
+  - isa: x86
+    dtype: '{int, float}64'
+    signature: {a: '{v}{512}', b: 'const void*', c: imm32, res: '{v}{512}'}
+    direct: '_mm512_i64gather_{dtype_suffix}(a, b, c);'
+  - isa: x86
+    dtype: '{int, float}32'
+    signature: {a: 'v2l', b: 'const void*', c: imm32, res: '{v}{64}'}
+    direct: '_mm_i64gather_{dtype_suffix}(b, a, c);'
+  - isa: x86
+    dtype: '{int, float}32'
+    signature: {a: 'v4l', b: 'const void*', c: imm32, res: '{v}{128}'}
+    direct: '_mm256_i64gather_{dtype_suffix}(b, a, c);'
+  - isa: x86
+    dtype: '{int, float}32'
+    signature: {a: 'v8l', b: 'const void*', c: imm32, res: '{v}{256}'}
+    direct: '_mm512_i64gather_{dtype_suffix}(a, b, c);'
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: v8l, b: 'const void*', c: imm32, res: v8l}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (c) {
+      case 1: return (v8l)__builtin_ia32_gatherdiv8di((v8l){0}, b, a, (unsigned char)-1, 1);
+      case 2: return (v8l)__builtin_ia32_gatherdiv8di((v8l){0}, b, a, (unsigned char)-1, 2);
+      case 4: return (v8l)__builtin_ia32_gatherdiv8di((v8l){0}, b, a, (unsigned char)-1, 4);
+      case 8: return (v8l)__builtin_ia32_gatherdiv8di((v8l){0}, b, a, (unsigned char)-1, 8);
+      }
+      #endif
+      v8l __r = (v8l){0};
+      for (int __i = 0; __i < 8; __i++) __r[__i] = *(const long long *)((const char *)b + (long)a[__i] * c);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: v8l, b: 'const void*', c: imm32, res: v8d}
+    direct: |-
+      #if defined(__AVX512F__)
+      switch (c) {
+      case 1: return (v8d)__builtin_ia32_gatherdiv8df((v8d){0}, b, a, (unsigned char)-1, 1);
+      case 2: return (v8d)__builtin_ia32_gatherdiv8df((v8d){0}, b, a, (unsigned char)-1, 2);
+      case 4: return (v8d)__builtin_ia32_gatherdiv8df((v8d){0}, b, a, (unsigned char)-1, 4);
+      case 8: return (v8d)__builtin_ia32_gatherdiv8df((v8d){0}, b, a, (unsigned char)-1, 8);
+      }
+      #endif
+      v8d __r = (v8d){0};
+      for (int __i = 0; __i < 8; __i++) __r[__i] = *(const double *)((const char *)b + (long)a[__i] * c);
+      return __r;
+
+  - isa: tsl
+    signature: {a: v8l, b: const void*, c: imm32, res: v8l}
+    direct: 'tsl::gather<{simd_res}, {simd_a}, c>((typename {simd_res}::base_type const *)b, a);'
+  - isa: tsl
+    signature: {a: v8l, b: const void*, c: imm32, res: v8d}
+    direct: 'tsl::gather<{simd_res}, {simd_a}, c>((typename {simd_res}::base_type const *)b, a);'
+
+---
+# res[i] = b[i] ? *((char*)d + c[i] * e) : a[i]   (a=src, b=k, c=index i64, d=base, e=scale)
+primitive: GATHER_I64_MERGE
+input: [a, b, c, d, e]
+output: res
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm{x86_widths}_mask_i64gather_{dtype_suffix}(a, b, c, d, e);'
+
+  - isa: clang_builtins
+    dtype: int64
+    signature: {a: v8l, b: v8b_l, c: v8l, d: 'const void*', e: imm32, res: v8l}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: return (v8l)__builtin_ia32_gatherdiv8di(a, d, c, __k, 1);
+      case 2: return (v8l)__builtin_ia32_gatherdiv8di(a, d, c, __k, 2);
+      case 4: return (v8l)__builtin_ia32_gatherdiv8di(a, d, c, __k, 4);
+      case 8: return (v8l)__builtin_ia32_gatherdiv8di(a, d, c, __k, 8);
+      }
+      #endif
+      v8l __r = a;
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) __r[__i] = *(const long long *)((const char *)d + (long)c[__i] * e);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: float64
+    signature: {a: v8d, b: v8b_d, c: v8l, d: 'const void*', e: imm32, res: v8d}
+    direct: |-
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: return (v8d)__builtin_ia32_gatherdiv8df(a, d, c, __k, 1);
+      case 2: return (v8d)__builtin_ia32_gatherdiv8df(a, d, c, __k, 2);
+      case 4: return (v8d)__builtin_ia32_gatherdiv8df(a, d, c, __k, 4);
+      case 8: return (v8d)__builtin_ia32_gatherdiv8df(a, d, c, __k, 8);
+      }
+      #endif
+      v8d __r = a;
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) __r[__i] = *(const double *)((const char *)d + (long)c[__i] * e);
+      return __r;
+
+  - isa: tsl
+    signature: {a: v8l, b: v8b_l, c: v8l, d: const void*, e: imm32, res: v8l}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_c}, e>(b, (typename {simd_res}::base_type const *)d, c, a);'
+  - isa: tsl
+    signature: {a: v8d, b: v8b_d, c: v8l, d: const void*, e: imm32, res: v8d}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_c}, e>(b, (typename {simd_res}::base_type const *)d, c, a);'
+
+---
+# res[i] = *((char*)b + a[i] * c)   (a=index, low 8 i32 lanes of __m512i; b=base, c=scale)
+primitive: GATHER_I32LO
+input: [a, b, c]
+output: res
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm512_i32logather_{dtype_suffix}(a, b, c);'
+
+  - isa: clang_builtins
+    dtype: 'int64'
+    signature: {a: 'v16i', b: 'const void*', c: imm32, res: 'v8l'}
+    direct: |-
+      v8i __idx = __builtin_shufflevector(a, a, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      switch (c) {
+      case 1: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, b, __idx, (unsigned char)-1, 1);
+      case 2: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, b, __idx, (unsigned char)-1, 2);
+      case 4: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, b, __idx, (unsigned char)-1, 4);
+      case 8: return (v8l)__builtin_ia32_gathersiv8di((v8l){0}, b, __idx, (unsigned char)-1, 8);
+      }
+      #endif
+      v8l __r = (v8l){0};
+      for (int __i = 0; __i < 8; __i++) __r[__i] = *(const long long *)((const char *)b + (long)__idx[__i] * c);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: 'float64'
+    signature: {a: 'v16i', b: 'const void*', c: imm32, res: 'v8d'}
+    direct: |-
+      v8i __idx = __builtin_shufflevector(a, a, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      switch (c) {
+      case 1: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, b, __idx, (unsigned char)-1, 1);
+      case 2: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, b, __idx, (unsigned char)-1, 2);
+      case 4: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, b, __idx, (unsigned char)-1, 4);
+      case 8: return (v8d)__builtin_ia32_gathersiv8df((v8d){0}, b, __idx, (unsigned char)-1, 8);
+      }
+      #endif
+      v8d __r = (v8d){0};
+      for (int __i = 0; __i < 8; __i++) __r[__i] = *(const double *)((const char *)b + (long)__idx[__i] * c);
+      return __r;
+
+  - isa: tsl
+    signature: {a: v16i, b: const void*, c: imm32, res: v8l, idx64: v8l}
+    direct: 'tsl::gather<{simd_res}, {simd_idx64}, c>((typename {simd_res}::base_type const *)b, tsl::convert_up<{simd_a}, {simd_idx64}, 0>(a));'
+  - isa: tsl
+    signature: {a: v16i, b: const void*, c: imm32, res: v8d, idx64: v8l}
+    direct: 'tsl::gather<{simd_res}, {simd_idx64}, c>((typename {simd_res}::base_type const *)b, tsl::convert_up<{simd_a}, {simd_idx64}, 0>(a));'
+
+---
+# res[i] = b[i] ? *((char*)d + c[i] * e) : a[i]   (a=src, b=k, c=index low 8 i32, d=base, e=scale)
+primitive: GATHER_I32LO_MERGE
+input: [a, b, c, d, e]
+output: res
+definitions:
+
+  - isa: x86
+    dtype: '{int, float}64'
+    direct: '_mm512_mask_i32logather_{dtype_suffix}(a, b, c, d, e);'
+
+  - isa: clang_builtins
+    dtype: 'int64'
+    signature: {a: 'v8l', b: 'v8b_l', c: 'v16i', d: 'const void*', e: imm32, res: 'v8l'}
+    direct: |-
+      v8i __idx = __builtin_shufflevector(c, c, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: return (v8l)__builtin_ia32_gathersiv8di(a, d, __idx, __k, 1);
+      case 2: return (v8l)__builtin_ia32_gathersiv8di(a, d, __idx, __k, 2);
+      case 4: return (v8l)__builtin_ia32_gathersiv8di(a, d, __idx, __k, 4);
+      case 8: return (v8l)__builtin_ia32_gathersiv8di(a, d, __idx, __k, 8);
+      }
+      #endif
+      v8l __r = a;
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) __r[__i] = *(const long long *)((const char *)d + (long)__idx[__i] * e);
+      return __r;
+
+  - isa: clang_builtins
+    dtype: 'float64'
+    signature: {a: 'v8d', b: 'v8b_d', c: 'v16i', d: 'const void*', e: imm32, res: 'v8d'}
+    direct: |-
+      v8i __idx = __builtin_shufflevector(c, c, 0, 1, 2, 3, 4, 5, 6, 7);
+      #if defined(__AVX512F__)
+      unsigned char __k = __builtin_bit_cast(unsigned char, b);
+      switch (e) {
+      case 1: return (v8d)__builtin_ia32_gathersiv8df(a, d, __idx, __k, 1);
+      case 2: return (v8d)__builtin_ia32_gathersiv8df(a, d, __idx, __k, 2);
+      case 4: return (v8d)__builtin_ia32_gathersiv8df(a, d, __idx, __k, 4);
+      case 8: return (v8d)__builtin_ia32_gathersiv8df(a, d, __idx, __k, 8);
+      }
+      #endif
+      v8d __r = a;
+      for (int __i = 0; __i < 8; __i++) if (b[__i]) __r[__i] = *(const double *)((const char *)d + (long)__idx[__i] * e);
+      return __r;
+
+  - isa: tsl
+    signature: {a: v8l, b: v8b_l, c: v16i, d: const void*, e: imm32, res: v8l, idx64: v8l}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_idx64}, e>(b, (typename {simd_res}::base_type const *)d, tsl::convert_up<{simd_c}, {simd_idx64}, 0>(c), a);'
+  - isa: tsl
+    signature: {a: v8d, b: v8b_d, c: v16i, d: const void*, e: imm32, res: v8d, idx64: v8l}
+    direct: 'tsl::gather_mask<{simd_res}, {simd_idx64}, e>(b, (typename {simd_res}::base_type const *)d, tsl::convert_up<{simd_c}, {simd_idx64}, 0>(c), a);'

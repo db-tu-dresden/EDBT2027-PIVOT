@@ -1,0 +1,19 @@
+# res[i] = rotate_left(data[i], imm)   (bitwise rotate by a compile-time count)
+primitive: ROL
+input: [data, imm]
+output: res
+definitions:
+  - isa: x86
+    dtype: 'int{32, 64}'
+    direct: '_mm{x86_widths}_rol_{dtype_suffix}(data, imm);'
+
+  # clang folds (x << imm) | (x >> (n - imm)) to vprold/vprolq for a compile-time imm.
+  - isa: clang_builtins
+    dtype: 'int{32, 64}'
+    signature: {data: '{v}', imm: imm32, res: '{v}'}
+    direct: '({v})(({vuint})data << imm | ({vuint})data >> ({elem_bits} - imm));'
+
+  - isa: tsl
+    dtype: 'int{32, 64}'
+    signature: {data: '{v}', imm: imm32, res: '{v}'}
+    direct: 'tsl::binary_or<{simd_res}>(tsl::shift_left_imm<{simd_res}, imm>(data), tsl::shift_right_imm<{simd_res}, {elem_bits} - imm, false>(data));'

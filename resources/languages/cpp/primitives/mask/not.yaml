@@ -1,0 +1,42 @@
+# res = ~a
+primitive: MASK_NOT
+input: [a]
+output: res
+definitions:
+  - isa: x86
+    direct: '_knot_{dtype_suffix}(a);'
+
+  - isa: x86
+    direct: '_mm512_knot(a);'
+
+  - isa: arm
+    direct: 'svnot_b_z(svptrue_b{elem_bits}(), a);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', res: '{vbool_all}'}
+    direct: '~a;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_not<{simd_res}>(a);'
+
+---
+# res = k ? ~a : 0
+primitive: MASK_NOT_ZERO
+input: [k, a]
+output: res
+definitions:
+  - isa: arm
+    direct: 'svnot_b_z(k, a);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {k: '{vbool_all}', a: '{vbool_all}', res: '{vbool_all}'}
+    direct: 'k & ~a;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {k: '{vbool}', a: '{vbool}', res: '{vbool}'}
+    direct: 'tsl::mask_binary_and<{simd_res}>(k, tsl::mask_binary_not<{simd_res}>(a));'

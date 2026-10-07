@@ -1,0 +1,21 @@
+primitive: VABS
+input: [a]
+output: res
+definitions:
+
+  # x86
+  - isa: x86
+    dtype: '{int, float}'
+    direct: '_mm{x86_widths}_abs_{dtype_suffix}(a);'
+
+  # Clang
+  - isa: clang_builtins
+    dtype: '{int, float}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: '__builtin_elementwise_abs(a);'
+
+  # core_simd — SimdInt::abs / SimdFloat::abs
+  - isa: core_simd
+    dtype: '{int, float}'
+    signature: {a: '{v}', res: '{v}'}
+    direct: 'a.abs();'

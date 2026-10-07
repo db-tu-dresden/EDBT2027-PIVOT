@@ -1,0 +1,11 @@
+# res = { *(int64*)ptr, 0 }
+primitive: LOADL
+input: [ptr]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_loadl_epi64(ptr);'
+
+  - isa: clang_builtins
+    signature: {ptr: 'const void*', res: v2l}
+    direct: '(v2l){*((const long*)ptr), 0L};'

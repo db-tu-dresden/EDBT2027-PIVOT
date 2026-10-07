@@ -1,0 +1,36 @@
+- name: _loadbe_i16
+  input: {ptr: void const *}
+  output: {dst: short}
+  ir: {input: {ptr: ptr}, output: {dst: int16_t}}
+  flags: [MOVBE]
+  include: <immintrin.h>
+- name: _loadbe_i32
+  input: {ptr: void const *}
+  output: {dst: int}
+  ir: {input: {ptr: ptr}, output: {dst: int32_t}}
+  flags: [MOVBE]
+  include: <immintrin.h>
+- name: _loadbe_i64
+  input: {ptr: void const *}
+  output: {dst: __int64}
+  ir: {input: {ptr: ptr}, output: {dst: int64_t}}
+  flags: [MOVBE]
+  include: <immintrin.h>
+- name: _storebe_i16
+  input: {ptr: void *, data: short}
+  output: {}
+  ir: {input: {ptr: ptr, data: int16_t}, output: {}}
+  flags: [MOVBE]
+  include: <immintrin.h>
+- name: _storebe_i32
+  input: {ptr: void *, data: int}
+  output: {}
+  ir: {input: {ptr: ptr, data: int32_t}, output: {}}
+  flags: [MOVBE]
+  include: <immintrin.h>
+- name: _storebe_i64
+  input: {ptr: void *, data: __int64}
+  output: {}
+  ir: {input: {ptr: ptr, data: int64_t}, output: {}}
+  flags: [MOVBE]
+  include: <immintrin.h>

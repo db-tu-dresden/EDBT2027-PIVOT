@@ -1,0 +1,48 @@
+primitive: LZC
+input: [data]
+output: res
+# res[i] = count_leading_zeros(data[i])
+definitions:
+  - isa: x86
+    direct: '_mm{x86_widths}_lzcnt_{dtype_suffix}(data);'
+
+  - isa: arm
+    direct: 'vclz{neon_widths}_{dtype_suffix}(data);'
+
+  - isa: arm
+    direct: 'svclz_{dtype_suffix}_{sve_gov}(svptrue_b{elem_bits}(), data);'
+
+  - isa: clang_builtins
+    dtype: 'int{32, 64}'
+    signature: {data: '{v}', res: '{v}'}
+    direct: '({v})__builtin_elementwise_clzg(({vuint})data, (({vuint})data ^ ({vuint})data) + {elem_bits});'
+
+  - isa: tsl
+    dtype: 'int{32, 64}'
+    signature: {data: '{v}', res: '{v}'}
+    direct: 'tsl::lzc<{simd_res}>(data);'
+
+  # scalar GPR form: res = count_leading_zeros(data)
+  - isa: x86
+    direct: '_lzcnt_u32(data);'
+
+  - isa: x86
+    direct: '_lzcnt_u64(data);'
+
+  - isa: clang_builtins
+    dtype: uint32
+    signature: {data: uint32_t, res: uint32_t}
+    direct: '(uint32_t)__builtin_clz((unsigned int)data);'
+
+  - isa: clang_builtins
+    dtype: uint64
+    signature: {data: uint64_t, res: uint64_t}
+    direct: '(uint64_t)__builtin_clzll((unsigned long long)data);'
+
+  - isa: tsl
+    signature: {data: uint32_t, res: uint32_t}
+    direct: 'tsl::lzc_scalar<tsl::simd<uint32_t, tsl::scalar>>(data);'
+
+  - isa: tsl
+    signature: {data: uint64_t, res: uint64_t}
+    direct: 'tsl::lzc_scalar<tsl::simd<uint64_t, tsl::scalar>>(data);'

@@ -1,0 +1,71 @@
+% Speedup of the n:1 over the 1:1 translation of VIP, per host and vector width, drawn from
+% the tables that plot.py writes to data/ (median, min and max of the per-run ratios).
+\documentclass[9pt]{amsart}
+\usepackage{pivotfig}
+
+\pgfplotstableread[col sep=comma]{data/sapphirerapids.csv}\vipSpr
+\pgfplotstableread[col sep=comma]{data/znver4.csv}\vipZen
+\pgfplotstableread[col sep=comma]{data/a64fx.csv}\vipAfx
+
+% Every kernel group gets the same slot width, and one doubling the same height.
+\pgfmathsetlengthmacro{\vipSlot}{20pt}
+\pgfmathsetlengthmacro{\vipOctave}{18pt}
+\pgfmathsetlengthmacro{\vipBar}{0.27*\vipSlot}
+\pgfmathsetlengthmacro{\vipShift}{0.29*\vipSlot}
+\pgfplotsset{
+  vip panel/.style={
+    log origin=0, clip=false, scale only axis, x=\vipSlot, enlarge x limits={abs=0.6},
+    ymin=0.8, ymax=6, height={ln(6/0.8)/ln(2)*\vipOctave},
+    axis lines*=left, axis line style={gray1, line width=0.4pt},
+    xtick=data, xtick align=outside, xticklabels from table={#1}{kernel},
+    xticklabel style={rotate=45, anchor=north east, inner sep=1pt, font=\footnotesize, text=gray1},
+    ytick={1,2,4,8}, yticklabels={},
+    tick style={gray1, line width=0.4pt}, ymajorgrids,
+    major grid style={gray1!25, line width=0.2pt},
+    yticklabel style={font=\footnotesize, text=gray1},
+    ybar, bar width=\vipBar,
+  },
+  vip left/.style={yticklabel={\pgfmathparse{exp(\tick)}\pgfmathprintnumber[fixed]{\pgfmathresult}},
+    ylabel={speedup}, ylabel style={font=\footnotesize, text=gray1}},
+}
+\tikzset{
+  vip 128/.style={draw=magenta1, fill=magenta2, line width=0.7pt},
+  vip 256/.style={draw=teal1, fill=teal2, line width=0.7pt},
+  vip 512/.style={draw=blue1, fill=blue2, line width=0.7pt},
+}
+% Draws the bars of one width, at the median over runs.
+\newcommand{\vipBars}[3]{%
+  \addplot[vip #2, bar shift=#3] table[x expr=\coordindex, y=med#2] {#1};
+}
+% Draws one panel: the three widths, the line at 1, and the title.
+\newcommand{\vipPanel}[2]{%
+  \vipBars{#1}{128}{-\vipShift}
+  \vipBars{#1}{256}{0pt}
+  \vipBars{#1}{512}{\vipShift}
+  \draw[gray1, line width=0.4pt] ({rel axis cs:0,0}|-{axis cs:0,1}) -- ({rel axis cs:1,0}|-{axis cs:0,1});
+  \node[font=\footnotesize, text=gray1, anchor=base] at ([yshift=5pt]rel axis cs:0.5,1) {#2};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[ymode=log, vip panel=\vipSpr, vip left, name=spr]
+  \vipPanel{\vipSpr}{Intel Sapphire Rapids}
+\end{axis}
+\begin{axis}[ymode=log, vip panel=\vipZen, name=zen,
+    at={($(spr.north east)+(6pt,0)$)}, anchor=north west]
+  \vipPanel{\vipZen}{AMD Zen 4}
+\end{axis}
+\begin{axis}[ymode=log, vip panel=\vipAfx, name=afx,
+    at={($(zen.north east)+(6pt,0)$)}, anchor=north west]
+  \vipPanel{\vipAfx}{Fujitsu A64FX}
+\end{axis}
+\coordinate (legend) at ($(spr.south west)!0.5!(afx.south east)$);
+\matrix[anchor=north, yshift=-6pt, column sep=2pt,
+    nodes={font=\footnotesize, text=gray1, inner sep=0pt, anchor=base west}]
+    at (legend |- current bounding box.south) {
+  \draw[vip 128] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {SSE/SVE (128 bit)}; &[5pt]
+  \draw[vip 256] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {AVX2/SVE (256 bit)}; &[5pt]
+  \draw[vip 512] (0pt,-0.6pt) rectangle (5pt,4.4pt); & \node {AVX-512/SVE (512 bit)}; \\
+};
+\end{tikzpicture}
+\end{document}

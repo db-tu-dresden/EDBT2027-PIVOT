@@ -1,0 +1,80 @@
+# res = ((a | b) == all-ones)
+primitive: MASK_ORTEST_ALLONES
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_kortestc_{dtype_suffix}_u8(a, b);'
+
+  - isa: x86
+    direct: '_mm512_kortestc(a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: int32_t}
+    direct: '(int32_t)__builtin_reduce_and(a | b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: int32_t}
+    direct: 'tsl::to_integral<{simd_a}>(tsl::mask_binary_or<{simd_a}>(a, b)) == tsl::to_integral<{simd_a}>(tsl::mask_true<{simd_a}>());'
+
+---
+# res = ((a | b) == 0)
+primitive: MASK_ORTEST_ZERO
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_kortestz_{dtype_suffix}_u8(a, b);'
+
+  - isa: x86
+    direct: '_mm512_kortestz(a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: int32_t}
+    direct: '!__builtin_reduce_or(a | b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: int32_t}
+    direct: 'tsl::to_integral<{simd_a}>(tsl::mask_binary_or<{simd_a}>(a, b)) == 0;'
+
+---
+# res = ((a & b) == 0)
+primitive: MASK_ANDTEST_ZERO
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_ktestz_{dtype_suffix}_u8(a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: int32_t}
+    direct: '!__builtin_reduce_or(a & b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: int32_t}
+    direct: 'tsl::to_integral<{simd_a}>(tsl::mask_binary_and<{simd_a}>(a, b)) == 0;'
+
+---
+# res = ((~a & b) == 0)
+primitive: MASK_ANDNOTTEST_ZERO
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_ktestc_{dtype_suffix}_u8(a, b);'
+
+  - isa: clang_builtins
+    dtype: bool
+    signature: {a: '{vbool_all}', b: '{vbool_all}', res: int32_t}
+    direct: '!__builtin_reduce_or(~a & b);'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {a: '{vbool}', b: '{vbool}', res: int32_t}
+    direct: 'tsl::to_integral<{simd_a}>(tsl::mask_binary_and<{simd_a}>(tsl::mask_binary_not<{simd_a}>(a), b)) == 0;'

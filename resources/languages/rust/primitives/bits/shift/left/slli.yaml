@@ -1,0 +1,22 @@
+primitive: VSLLI
+input: [a, imm]
+output: res
+definitions:
+
+  # x86
+  - 'isa': 'x86'
+    'dtype': 'int{16, 32, 64}'
+    'direct': '_mm{x86_widths}_slli_{dtype_suffix}(a, imm);'
+
+  # Clang — the shift count is a compile-time immediate (imm32), independent of the
+  # element width; the {v} data vector still sweeps element widths.
+  - isa: clang_builtins
+    dtype: 'int'
+    signature: {a: '{v}', imm: imm32, res: '{v}'}
+    direct: 'a << imm;'
+
+  # core_simd — shift by a splatted count
+  - isa: core_simd
+    dtype: 'int'
+    signature: {a: '{v}', imm: imm32, res: '{v}'}
+    direct: 'a << Simd::splat(imm as _);'

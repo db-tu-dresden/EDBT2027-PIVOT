@@ -1,0 +1,73 @@
+# res = (a & b) == 0
+primitive: TESTZ
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_testz_si128(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm_testz_{dtype_suffix}(a, b);'
+
+  - isa: x86
+    direct: '_mm256_testz_si256(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm256_testz_{dtype_suffix}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: int32_t}
+    direct: '!__builtin_reduce_or(a & b);'
+
+---
+# res = (a & ~b) == 0
+primitive: TESTC
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_testc_si128(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm_testc_{dtype_suffix}(a, b);'
+
+  - isa: x86
+    direct: '_mm256_testc_si256(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm256_testc_{dtype_suffix}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: int32_t}
+    direct: '!__builtin_reduce_or(a & ~b);'
+
+---
+# res = (a & b) != 0 && (a & ~b) != 0
+primitive: TESTNZC
+input: [a, b]
+output: res
+definitions:
+  - isa: x86
+    direct: '_mm_testnzc_si128(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm_testnzc_{dtype_suffix}(a, b);'
+
+  - isa: x86
+    direct: '_mm256_testnzc_si256(a, b);'
+
+  - isa: x86
+    dtype: float
+    direct: '_mm256_testnzc_{dtype_suffix}(a, b);'
+
+  - isa: clang_builtins
+    dtype: '{int, uint}'
+    signature: {a: '{v}', b: '{v}', res: int32_t}
+    direct: '__builtin_reduce_or(a & b) && __builtin_reduce_or(a & ~b);'

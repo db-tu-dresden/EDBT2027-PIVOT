@@ -1,0 +1,17 @@
+# res = all-false mask (every lane inactive)
+primitive: MASK_FALSE
+input: []
+output: res
+definitions:
+  - isa: arm
+    direct: 'svpfalse_b();'
+
+  - isa: clang_builtins
+    dtype: '{int, uint, float}'
+    signature: {res: '{vbool}'}
+    direct: '({vbool})0;'
+
+  - isa: tsl
+    dtype: '{int, uint, float}'
+    signature: {res: '{vbool}'}
+    direct: 'tsl::mask_false<{simd_res}>();'
